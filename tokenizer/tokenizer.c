@@ -112,12 +112,14 @@ char *unescape(char *source, int length) {
         src_ptr++;
     }
 
+    // Copy over the remainder of string if necessary.
     if (source != src_ptr) {
         int offset = src_ptr - source;
         memcpy(dest_ptr, source, offset);
         dest_ptr += offset;
     }
 
+    // Terminate string.
     *dest_ptr = '\0';
 
     return expanded;
