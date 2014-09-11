@@ -51,7 +51,7 @@ char *unescape(char *source, int length) {
                     type == '\\' || type == '"') {
                 total_length += rep_len - 2;
             } else {
-                total_length--;
+                total_length -= 2;
             }
         }
         src_ptr++;
@@ -167,6 +167,12 @@ char *TKGetNextToken(TokenizerT *tk) {
             if (offset > 1) {
                 // Call unescape to parse out token and replace escape characters.
                 token = unescape(tk->remaining, offset);
+
+                // Protect against rare situation where unescape can return an empty string.
+                if (*token == '\0') {
+                    free(token);
+                    token = NULL;
+                }
 
                 // Advance the remaining pointer to update the struct.
                 tk->remaining = str + 1;
