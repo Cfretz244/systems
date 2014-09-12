@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 
+// Tokenizer struct.
 typedef struct TokenizerT_ {
     char *initial;
     char *remaining;
     char *delimeters;
 } TokenizerT;
 
+// Constant string definitions for replacing escape characters.
 const char *newline = "[0x0a]";
 const char *tab = "[0x09]";
 const char *vert_tab = "[0x0b]";
@@ -19,6 +21,7 @@ const char *backslash = "[0x5c]";
 const char *quote = "[0x22]";
 const int rep_len = 6;
 
+// Function returns a true escape character for the abbreviation given.
 char proper_char(char current) {
     switch (current) {
         case 'n':
@@ -40,10 +43,13 @@ char proper_char(char current) {
         case '"':
             return '\"';
         default:
+            // In the case of an invalid escape sequence being entered, function returns
+            // an untypable character to allow for ease of removal down the road.
             return '\xFF';
     }
 }
 
+// Function takes care of replacing escape characters with bracketed hex notation.
 char *escape(char *orig, int size) {
     int total_size = size;
     char *orig_ptr = orig;
@@ -61,10 +67,12 @@ char *escape(char *orig, int size) {
         orig_ptr++;
     }
 
+    // Malloc token string.
     char *expanded = (char *) malloc(sizeof(char) * total_size);
     char *dest = expanded;
     orig_ptr = orig;
 
+    // Scan over string, replacing any escape characters with bracketed hex notation.
     for (int i = 0; i < size; i++) {
         if (*orig_ptr == '\n' || *orig_ptr == '\t' || *orig_ptr == '\v' || *orig_ptr == '\b' || *orig_ptr == '\r' || *orig_ptr == '\f' ||
             *orig_ptr == '\a' || *orig_ptr == '\\' || *orig_ptr == '\"' || *orig_ptr == '\xFF') {
@@ -115,17 +123,23 @@ char *escape(char *orig, int size) {
         orig_ptr++;
     }
 
+    // Copy over the last part of the string if necessary.
     if (orig != orig_ptr) {
         int offset = orig_ptr - orig;
         memcpy(dest, orig, offset);
         dest += offset;
     }
 
+    // Terminate string.
     *dest = '\0';
 
     return expanded;
 }
 
+// Bash has a nasty habit of escaping escape characters when they're contained in double quotes. The single character \n is
+// much easier to deal with programtically than the character sequence \\n, so this function replaces all escaped escape
+// characters with valid escape characters. Kind of a hack, but it significantly simplifies the logic of the rest of the
+// program.
 char *unescape(char *orig, int size) {
     // Setup local variables and malloc a new string.
     char *new = (char *) malloc(sizeof(char) * size);
@@ -149,23 +163,26 @@ char *unescape(char *orig, int size) {
         curr++;
     }
 
-    // Last little bit.
+    // Copy over the last part of the string if necessary.
     if (dest != orig) {
         int offset = curr - orig;
         memcpy(dest, orig, offset);
         dest += offset;
     }
 
+    // Terminate string.
     *dest = '\0';
 
     return new;
 }
 
-char **format(char **argv) {
+// This function simply calculates what the length of the input strings will be after they've been unescaped, and passes
+// the information along to the unescape function.
+char **format(char *del_base, char *str_base) {
     // Create local variables and get initial string lengths.
-    char *del = argv[1];
+    char *del = del_base;
     int del_len = strlen(del) + 1;
-    char *str = argv[2];
+    char *str = str_base;
     int str_len = strlen(str) + 1;
 
     // Calculate formatted lengths.
@@ -182,8 +199,8 @@ char **format(char **argv) {
         str++;
     }
 
-    char *format_del = unescape(argv[1], del_len);
-    char *format_str = unescape(argv[2], str_len);
+    char *format_del = unescape(del_base, del_len);
+    char *format_str = unescape(str_base, str_len);
 
     char **formatted = (char **) malloc(sizeof(char *) * 2);
     formatted[0] = format_del;
@@ -208,10 +225,16 @@ TokenizerT *TKCreate(char *separators, char *ts) {
     // I know the cast isn't necessary. I like being explicit.
     TokenizerT *tokenizer = (TokenizerT *) malloc(sizeof(TokenizerT));
 
+    // Bash escapes escape characters when passed inside of double quotes.
+    // It's difficult to work with, and this undoes that.
+    char **formatted = format(separators, ts);
+    char *del = formatted[0];
+    char *str = formatted[1];
+
     // Copy string pointers into struct.
-    tokenizer->remaining = ts;
-    tokenizer->initial = ts;
-    tokenizer->delimeters = separators;
+    tokenizer->remaining = str;
+    tokenizer->initial = str;
+    tokenizer->delimeters = del;
 
     // Tokenizer is properly initialized. Time to return it.
     return tokenizer;
@@ -234,7 +257,8 @@ char *TKGetNextToken(TokenizerT *tk) {
         if (isDelimeter(str, del)) {
             // Figure out how far we've gone and continue only if the generated token would have length > 0.
             int offset = str - tk->remaining;
-            if (offset > 1) {
+            if (offset > 0) {
+                // Generate token and replace any escape characters with bracketed hex form.
                 token = escape(tk->remaining, offset);
 
                 // Advance the remaining pointer to update the struct.
@@ -247,12 +271,10 @@ char *TKGetNextToken(TokenizerT *tk) {
                 tk->remaining = str + 1;
             }
         }
-
-        // Consider the next character.
         str++;
     }
 
-    // No delimeter was found. Check if string is empty, meaning we're done, or if we still have one last token.
+    // No delimeter was found. Check if we're done, or if we still have one last token.
     if (tk->remaining != str) {
         int offset = str - tk->remaining;
         char *token = escape(tk->remaining, offset);
@@ -270,12 +292,8 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    // Bash escapes escape characters when passed inside of double quotes.
-    // It's difficult to work with, and this undoes that.
-    char **formatted = format(argv);
-
     // Create tokenizer struct from given arguments and get the first token.
-    TokenizerT *tokenizer = TKCreate(formatted[0], formatted[1]);
+    TokenizerT *tokenizer = TKCreate(argv[1], argv[2]);
     char *token = TKGetNextToken(tokenizer);
 
     // Continuously print the next token until there are none left.
