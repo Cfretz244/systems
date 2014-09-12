@@ -208,6 +208,7 @@ char **format(char *del_base, char *str_base) {
     return formatted;
 }
 
+// Function simply returns whether or not a specific character is a delimeter.
 int isDelimeter(char *current, char *del) {
     // Iterate over all delimeter characters.
     while (*del != '\0') {
@@ -220,6 +221,7 @@ int isDelimeter(char *current, char *del) {
     return 0;
 }
 
+// Function creates a Tokenizer struct.
 TokenizerT *TKCreate(char *separators, char *ts) {
     // Malloc our tokenizer.
     // I know the cast isn't necessary. I like being explicit.
@@ -230,6 +232,7 @@ TokenizerT *TKCreate(char *separators, char *ts) {
     char **formatted = format(separators, ts);
     char *del = formatted[0];
     char *str = formatted[1];
+    free(formatted);
 
     // Copy string pointers into struct.
     tokenizer->remaining = str;
@@ -240,12 +243,14 @@ TokenizerT *TKCreate(char *separators, char *ts) {
     return tokenizer;
 }
 
+// Function destroys a tokenizer.
 void TKDestroy(TokenizerT *tk) {
     free(tk->initial);
     free(tk->delimeters);
     free(tk);
 }
 
+// Function returns the next token from the string.
 char *TKGetNextToken(TokenizerT *tk) {
     // Create local variables.
     char *str = tk->remaining;
