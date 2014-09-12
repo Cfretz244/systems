@@ -19,18 +19,183 @@ const char *backslash = "[0x5c]";
 const char *quote = "[0x22]";
 const int rep_len = 6;
 
+char proper_char(char current) {
+    switch (current) {
+        case 'n':
+            return '\n';
+        case 't':
+            return '\t';
+        case 'v':
+            return '\v';
+        case 'b':
+            return '\b';
+        case 'r':
+            return '\r';
+        case 'f':
+            return '\f';
+        case 'a':
+            return '\a';
+        case '\\':
+            return '\\';
+        case '"':
+            return '\"';
+        default:
+            return '\xFF';
+    }
+}
+
+char *escape(char *orig, int size) {
+    int total_size = size;
+    char *orig_ptr = orig;
+
+    // Calculate total length of string after making replacements.
+    for (int i = 0; i < size; i++) {
+        if (*orig_ptr == '\n' || *orig_ptr == '\t' || *orig_ptr == '\v' || *orig_ptr == '\b' || *orig_ptr == '\r' || *orig_ptr == '\f' ||
+            *orig_ptr == '\a' || *orig_ptr == '\\' || *orig_ptr == '\"' || *orig_ptr == '\xFF') {
+            if (*orig_ptr == '\xFF') {
+                total_size--;
+            } else {
+                total_size += rep_len - 1;
+            }
+        }
+        orig_ptr++;
+    }
+
+    char *expanded = (char *) malloc(sizeof(char) * total_size);
+    char *dest = expanded;
+    orig_ptr = orig;
+
+    for (int i = 0; i < size; i++) {
+        if (*orig_ptr == '\n' || *orig_ptr == '\t' || *orig_ptr == '\v' || *orig_ptr == '\b' || *orig_ptr == '\r' || *orig_ptr == '\f' ||
+            *orig_ptr == '\a' || *orig_ptr == '\\' || *orig_ptr == '\"' || *orig_ptr == '\xFF') {
+            int offset = orig_ptr - orig;
+
+            if (offset > 0) {
+                memcpy(dest, orig, offset);
+                orig += offset;
+                dest += offset;
+            }
+
+            if (*orig_ptr != '\xFF') {
+                switch (*orig_ptr) {
+                    case '\n':
+                        memcpy(dest, newline, rep_len);
+                        break;
+                    case '\t':
+                        memcpy(dest, tab, rep_len);
+                        break;
+                    case '\v':
+                        memcpy(dest, vert_tab, rep_len);
+                        break;
+                    case '\b':
+                        memcpy(dest, backspace, rep_len);
+                        break;
+                    case '\r':
+                        memcpy(dest, car_ret, rep_len);
+                        break;
+                    case '\f':
+                        memcpy(dest, form_feed, rep_len);
+                        break;
+                    case '\a':
+                        memcpy(dest, alert, rep_len);
+                        break;
+                    case '\\':
+                        memcpy(dest, backslash, rep_len);
+                        break;
+                    case '\"':
+                        memcpy(dest, quote, rep_len);
+                        break;
+                }
+                dest += rep_len;
+                orig++;
+            } else {
+                orig++;
+            }
+        }
+        orig_ptr++;
+    }
+
+    if (orig != orig_ptr) {
+        int offset = orig_ptr - orig;
+        memcpy(dest, orig, offset);
+        dest += offset;
+    }
+
+    *dest = '\0';
+
+    return expanded;
+}
+
+char *unescape(char *orig, int size) {
+    // Setup local variables and malloc a new string.
+    char *new = (char *) malloc(sizeof(char) * size);
+    char *dest = new, *curr = orig;
+
+    // Copy across string, replacing escape sequences as we go.
+    while (*curr != '\0') {
+        if (*curr == '\\') {
+            char escape = proper_char(*(curr + 1));
+            int offset = curr - orig;
+            if (offset > 0) {
+                memcpy(dest, orig, offset);
+                orig += offset;
+                dest += offset;
+            }
+            *dest = escape;
+            dest++;
+            orig += 2;
+            curr++;
+        }
+        curr++;
+    }
+
+    // Last little bit.
+    if (dest != orig) {
+        int offset = curr - orig;
+        memcpy(dest, orig, offset);
+        dest += offset;
+    }
+
+    *dest = '\0';
+
+    return new;
+}
+
+char **format(char **argv) {
+    // Create local variables and get initial string lengths.
+    char *del = argv[1];
+    int del_len = strlen(del) + 1;
+    char *str = argv[2];
+    int str_len = strlen(str) + 1;
+
+    // Calculate formatted lengths.
+    while (*del != '\0') {
+        if (*del == '\\')  {
+            del_len--;
+        }
+        del++;
+    }
+    while (*str != '\0') {
+        if (*str == '\\') {
+            str_len--;
+        }
+        str++;
+    }
+
+    char *format_del = unescape(argv[1], del_len);
+    char *format_str = unescape(argv[2], str_len);
+
+    char **formatted = (char **) malloc(sizeof(char *) * 2);
+    formatted[0] = format_del;
+    formatted[1] = format_str;
+    return formatted;
+}
+
 int isDelimeter(char *current, char *del) {
     // Iterate over all delimeter characters.
     while (*del != '\0') {
-        if (*del != '\\') {
-            if (*del == *current) {
-                return 1;
-            }
-        } else {
-            if (*del == *current && *(del + 1) == *(current + 1)) {
-                return 1;
-            }
-            del++;
+        if (*del == *current) {
+            return 1;
         }
         del++;
     }
@@ -38,110 +203,15 @@ int isDelimeter(char *current, char *del) {
     return 0;
 }
 
-char *unescape(char *source, int length) {
-    // Make copies of necessary variables.
-    int total_length = length;
-    char *src_ptr = source;
-
-    // Calculate total length of string after making replacements.
-    for (int i = 0; i < length; i++) {
-        if (*src_ptr == '\\') {
-            char type = *(src_ptr + 1);
-            if (type == 'n' || type == 't' || type == 'v' || type == 'b' || type == 'r' || type == 'f' || type == 'a' ||
-                    type == '\\' || type == '"') {
-                total_length += rep_len - 2;
-            } else {
-                total_length -= 2;
-            }
-        }
-        src_ptr++;
-    }
-
-    // Malloc space for expanded token and setup pointers.
-    char *expanded = (char *) malloc(sizeof(char) * total_length);
-    src_ptr = source;
-    char *dest_ptr = expanded;
-
-    // I hate the code duplication here, but we needed to know the size of the token before we could start working on it.
-    for (int i = 0; i < length; i++) {
-        if (*src_ptr == '\\') {
-            int offset = src_ptr - source;
-
-            // Copy over substring if there is one.
-            if (offset > 0) {
-                memcpy(dest_ptr, source, offset);
-                source = src_ptr;
-                dest_ptr += offset;
-            }
-
-            // Indentify character case and copy over bracketed hex.
-            switch (*(src_ptr + 1)) {
-                case 'n':
-                    memcpy(dest_ptr, newline, rep_len);
-                    break;
-                case 't':
-                    memcpy(dest_ptr, tab, rep_len);
-                    break;
-                case 'v':
-                    memcpy(dest_ptr, vert_tab, rep_len);
-                    break;
-                case 'b':
-                    memcpy(dest_ptr, backspace, rep_len);
-                    break;
-                case 'r':
-                    memcpy(dest_ptr, car_ret, rep_len);
-                    break;
-                case 'f':
-                    memcpy(dest_ptr, form_feed, rep_len);
-                    break;
-                case 'a':
-                    memcpy(dest_ptr, alert, rep_len);
-                    break;
-                case '\\':
-                    memcpy(dest_ptr, backslash, rep_len);
-                    break;
-                case '"':
-                    memcpy(dest_ptr, quote, rep_len);
-                    break;
-            }
-
-            // Advance pointers.
-            dest_ptr += rep_len;
-            source += 2;
-        }
-        src_ptr++;
-    }
-
-    // Copy over the remainder of string if necessary.
-    if (source != src_ptr) {
-        int offset = src_ptr - source;
-        memcpy(dest_ptr, source, offset);
-        dest_ptr += offset;
-    }
-
-    // Terminate string.
-    *dest_ptr = '\0';
-
-    return expanded;
-}
-
 TokenizerT *TKCreate(char *separators, char *ts) {
     // Malloc our tokenizer.
     // I know the cast isn't necessary. I like being explicit.
     TokenizerT *tokenizer = (TokenizerT *) malloc(sizeof(TokenizerT));
 
-    // Copy first string into the tokenizer struct.
-    int size = strlen(ts) + 1;
-    char *copy = (char *) malloc(sizeof(char) * size);
-    strcpy(copy, ts);
-    tokenizer->remaining = copy;
-    tokenizer->initial = copy;
-
-    // Copy second string into the tokenizer struct.
-    size = strlen(separators) + 1;
-    copy = (char *) malloc(sizeof(char) * size);
-    strcpy(copy, separators);
-    tokenizer->delimeters = copy;
+    // Copy string pointers into struct.
+    tokenizer->remaining = ts;
+    tokenizer->initial = ts;
+    tokenizer->delimeters = separators;
 
     // Tokenizer is properly initialized. Time to return it.
     return tokenizer;
@@ -165,14 +235,7 @@ char *TKGetNextToken(TokenizerT *tk) {
             // Figure out how far we've gone and continue only if the generated token would have length > 0.
             int offset = str - tk->remaining;
             if (offset > 1) {
-                // Call unescape to parse out token and replace escape characters.
-                token = unescape(tk->remaining, offset);
-
-                // Protect against rare situation where unescape can return an empty string.
-                if (*token == '\0') {
-                    free(token);
-                    token = NULL;
-                }
+                token = escape(tk->remaining, offset);
 
                 // Advance the remaining pointer to update the struct.
                 tk->remaining = str + 1;
@@ -181,26 +244,18 @@ char *TKGetNextToken(TokenizerT *tk) {
                 return token;
             } else {
                 // Advance the remaining pointer to skip over worthless token if the size check fails.
-                if (*str == '\\') {
-                    tk->remaining = str + 2;
-                } else {
-                    tk->remaining = str + 1;
-                }
+                tk->remaining = str + 1;
             }
         }
 
         // Consider the next character.
-        if (*str == '\\') {
-            str += 2;
-        } else {
-            str++;
-        }
+        str++;
     }
 
     // No delimeter was found. Check if string is empty, meaning we're done, or if we still have one last token.
     if (tk->remaining != str) {
         int offset = str - tk->remaining;
-        char *token = unescape(tk->remaining, offset);
+        char *token = escape(tk->remaining, offset);
         tk->remaining = str;
         return token;
     } else {
@@ -215,8 +270,12 @@ int main(int argc, char **argv) {
         return 1;
     }
 
+    // Bash escapes escape characters when passed inside of double quotes.
+    // It's difficult to work with, and this undoes that.
+    char **formatted = format(argv);
+
     // Create tokenizer struct from given arguments and get the first token.
-    TokenizerT *tokenizer = TKCreate(argv[1], argv[2]);
+    TokenizerT *tokenizer = TKCreate(formatted[0], formatted[1]);
     char *token = TKGetNextToken(tokenizer);
 
     // Continuously print the next token until there are none left.
