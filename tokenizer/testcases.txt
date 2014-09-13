@@ -1,0 +1,53 @@
+Input:
+    ./tokenizer " " "today is a beautiful day"
+Output:
+    today
+    is
+    a
+    beautiful
+    day
+
+Input:
+    ./tokenizer "/?" "/usr/local?/bin? share"
+Output:
+    usr
+    local
+    bin
+     share
+
+Input:
+    ./tokenizer "\n" "all\n your\n base\n are\n belong\n to\n us\n"
+Output:
+    all
+     your
+     base
+     are
+     belong
+     to
+     us
+
+Input:
+    ./tokenizer "\n\t\v\b" "five\n dollar\t foot\v long\b"
+Output:
+    five
+     dollar
+     foot
+     long
+
+Input:
+    ./tokenizer "" "Now I am become death\n Destroyer of worlds.\r\n"
+Output:
+    Now I am become death[0x0a] Destroyer of worlds.[0x0d][0x0a]
+
+Input:
+    ./tokenizer "" "\h\d\s\k"
+Output:
+
+Input:
+    ./tokenizer " " "\n\n\n\n\n\n\n\n\n\n\n"
+Output:
+    [0x0a][0x0a][0x0a][0x0a][0x0a][0x0a][0x0a][0x0a][0x0a][0x0a][0x0a]
+
+Input:
+    ./tokenizer "\t" "\t\t\t\t\t\t\t\t"
+Output:
