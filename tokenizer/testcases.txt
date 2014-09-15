@@ -51,3 +51,17 @@ Output:
 Input:
     ./tokenizer "\t" "\t\t\t\t\t\t\t\t"
 Output:
+
+Input:
+    ./tokenizer " " "G\yod do\ees not\\\\ throw\n dice\t"
+Output:
+    God
+    does
+    not[0x5c]
+    throw[0x0a]
+    dice[0x09]
+
+Input:
+    ./tokenizer " " "\\\\\\\\\\\\\\\\"
+Output:
+    [0x5c][0x5c][0x5c][0x5c]
