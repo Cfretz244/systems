@@ -53,9 +53,10 @@ char proper_char(char current) {
 char *escape(char *orig, int size) {
     int total_size = size;
     char *orig_ptr = orig;
+    int i;
 
     // Calculate total length of string after making replacements.
-    for (int i = 0; i < size; i++) {
+    for (i = 0; i < size; i++) {
         // I hate splitting lines like this, but it really can't be helped on this one.
         if (*orig_ptr == '\n' || *orig_ptr == '\t' || *orig_ptr == '\v' || *orig_ptr == '\b' || *orig_ptr == '\r' || *orig_ptr == '\f' ||
             *orig_ptr == '\a' || *orig_ptr == '\\' || *orig_ptr == '\"' || *orig_ptr == '\xFF') {
@@ -75,7 +76,7 @@ char *escape(char *orig, int size) {
     orig_ptr = orig;
 
     // Scan over string, replacing any escape characters with bracketed hex notation.
-    for (int i = 0; i < size; i++) {
+    for (i = 0; i < size; i++) {
         // I hate splitting lines like this, but it really can't be helped on this one.
         if (*orig_ptr == '\n' || *orig_ptr == '\t' || *orig_ptr == '\v' || *orig_ptr == '\b' || *orig_ptr == '\r' || *orig_ptr == '\f' ||
             *orig_ptr == '\a' || *orig_ptr == '\\' || *orig_ptr == '\"' || *orig_ptr == '\xFF') {
