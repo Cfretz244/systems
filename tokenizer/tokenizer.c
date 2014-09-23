@@ -43,9 +43,7 @@ char proper_char(char current) {
         case '"':
             return '\"';
         default:
-            // In the case of an invalid escape sequence being entered, function returns
-            // an untypable character to allow for ease of removal down the road.
-            return '\xFF';
+            return current;
     }
 }
 
@@ -59,7 +57,7 @@ char *escape(char *orig, int size) {
     for (i = 0; i < size; i++) {
         // I hate splitting lines like this, but it really can't be helped on this one.
         if (*orig_ptr == '\n' || *orig_ptr == '\t' || *orig_ptr == '\v' || *orig_ptr == '\b' || *orig_ptr == '\r' || *orig_ptr == '\f' ||
-            *orig_ptr == '\a' || *orig_ptr == '\\' || *orig_ptr == '\"' || *orig_ptr == '\xFF') {
+                *orig_ptr == '\a' || *orig_ptr == '\\' || *orig_ptr == '\"' || *orig_ptr == '\xFF') {
 
             if (*orig_ptr == '\xFF') {
                 total_size--;
@@ -79,7 +77,7 @@ char *escape(char *orig, int size) {
     for (i = 0; i < size; i++) {
         // I hate splitting lines like this, but it really can't be helped on this one.
         if (*orig_ptr == '\n' || *orig_ptr == '\t' || *orig_ptr == '\v' || *orig_ptr == '\b' || *orig_ptr == '\r' || *orig_ptr == '\f' ||
-            *orig_ptr == '\a' || *orig_ptr == '\\' || *orig_ptr == '\"' || *orig_ptr == '\xFF') {
+                *orig_ptr == '\a' || *orig_ptr == '\\' || *orig_ptr == '\"' || *orig_ptr == '\xFF') {
 
             int offset = orig_ptr - orig;
 
@@ -115,8 +113,8 @@ char *escape(char *orig, int size) {
                     case '\\':
                         memcpy(dest, backslash, rep_len);
                         break;
-                    case '\"':
-                        memcpy(dest, quote, rep_len);
+                        case '\"':
+                            memcpy(dest, quote, rep_len);
                         break;
                 }
                 dest += rep_len;
@@ -161,9 +159,16 @@ char *unescape(char *orig, int size) {
                 dest += offset;
             }
             *dest = escape;
-            dest++;
-            orig += 2;
-            curr++;
+
+            // Check necessary for situation where the last character in the string is a backslash.
+            // Otherwise pointers get advanced beyond end of the string, and bad stuff happens.
+            if (escape != '\0') {
+                dest++;
+                orig += 2;
+                curr++;
+            } else {
+                orig++;
+            }
         }
         curr++;
     }

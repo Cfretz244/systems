@@ -42,6 +42,7 @@ Output:
 Input:
     ./tokenizer "" "\h\d\s\k"
 Output:
+    hdsk
 
 Input:
     ./tokenizer " " "\n\n\n\n\n\n\n\n\n\n\n"
@@ -55,8 +56,8 @@ Output:
 Input:
     ./tokenizer " " "G\yod do\ees not\\\\ throw\n dice\t"
 Output:
-    God
-    does
+    Gyod
+    doees
     not[0x5c]
     throw[0x0a]
     dice[0x09]
