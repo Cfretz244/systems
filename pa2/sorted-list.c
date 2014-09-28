@@ -12,6 +12,7 @@ ListNode *LNCreate(void *data) {
         node->next = NULL;
         node->opt1 = NULL;
         node->opt2 = NULL;
+        node->opt3 = NULL;
     }
 
     return node;
@@ -120,7 +121,7 @@ int SLTraverse(SortedList *list, void *func, void *data) {
             SortedList *current_node = (SortedList *) current_cpy;
             destroy(current_node);
             return 1;
-        } else if (compare(data, current->data) >= 0) {
+        } else if (compare(data, current_cpy->data) >= 0 || current == NULL) {
             // We've been called by either SLInsert or SLRemove
             int (*handle) (SortedList *, void *) = (int (*)(SortedList *, void *)) func;
             current_cpy->opt1 = (void *) prev_cpy;
