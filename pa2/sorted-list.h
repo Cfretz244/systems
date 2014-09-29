@@ -8,16 +8,11 @@ typedef int (*CompareFuncT)( void *, void * );
 typedef void (*DestructFuncT)( void * );
 
 typedef struct ListNode {
-    int flag;
     void *data;
     struct ListNode *next;
-    void *opt1;
-    void *opt2;
-    void *opt3;
 } ListNode;
 
 typedef struct SortedList {
-    int flag;
     ListNode *head;
     CompareFuncT comparator;
     DestructFuncT destructor;
