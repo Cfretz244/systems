@@ -73,8 +73,14 @@ int SLInsert(SortedList *list, void *newObj) {
         CompareFuncT compare = (CompareFuncT) current->opt2;
         if (compare(current->data, newObj) != 0) {
             ListNode *new = LNCreate(newObj);
-            prev->next = new;
-            new->next = current;
+            if (prev == NULL) {
+                new->next = current;
+                current->opt1 = (void *) new;
+                current->opt2 = NULL;
+            } else {
+                prev->next = new;
+                new->next = current;
+            }
             return 1;
         } else {
             return 0;
@@ -121,15 +127,22 @@ int SLTraverse(SortedList *list, void *func, void *data) {
             SortedList *current_node = (SortedList *) current_cpy;
             destroy(current_node);
             return 1;
-        } else if (compare(data, current_cpy->data) >= 0 || current == NULL) {
+        } else if (compare(data, current_cpy->data) >= 0) {
             // We've been called by either SLInsert or SLRemove
             int (*handle) (SortedList *, void *) = (int (*)(SortedList *, void *)) func;
             current_cpy->opt1 = (void *) prev_cpy;
             current_cpy->opt2 = (void *) compare;
             current_cpy->opt3 = (void *) list->destructor;
             SortedList *current_node = (SortedList *) current_cpy;
-            return handle(current_node, data);
+            int success = handle(current_node, data);
+            if (prev_cpy == NULL && current_cpy->opt2 == NULL) {
+                list->head = (ListNode *) current_cpy->opt1;
+            }
+            return success;
         }
+    }
+    if (compare(data, prev->data) != 0) {
+
     }
     return 0;
 }
