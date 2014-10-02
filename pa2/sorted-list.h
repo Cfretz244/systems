@@ -7,24 +7,30 @@
 typedef int (*CompareFuncT)( void *, void * );
 typedef void (*DestructFuncT)( void * );
 
+// ListNode Struct
 typedef struct ListNode {
     void *data;
     struct ListNode *next;
 } ListNode;
 
+// Sorted List Struct
 typedef struct SortedList {
     ListNode *head;
     CompareFuncT comparator;
     DestructFuncT destructor;
 } SortedList;
 
+// I don't like typedeffing pointers like this. I know that the professor thinks that it leads
+// to cleaner code, but I think that it obscures the fact that you're working with a pointer,
+// and makes it more difficult for a third party to read through your code.
 typedef SortedList* SortedListPtr;
 
 typedef struct SortedListIterator {
-    SortedList *head;
-    SortedList *current;
+    SortedList *list;
+    ListNode *current;
 } SortedListIterator;
 
+// Once again, don't like typedeffing away pointer syntax.
 typedef struct SortedListIterator* SortedListIteratorPtr;
 
 // Create a list
@@ -46,9 +52,9 @@ SortedListIteratorPtr SLCreateIterator(SortedListPtr list);
 void SLDestroyIterator(SortedListIteratorPtr iter);
 
 // Returns the value the iterator is currently on
-void * SLGetItem( SortedListIteratorPtr iter );
+void *SLGetItem( SortedListIteratorPtr iter );
 
 // Increments the iterator, and returns the next value.
-void * SLNextItem(SortedListIteratorPtr iter);
+void *SLNextItem(SortedListIteratorPtr iter);
 
 #endif

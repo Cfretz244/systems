@@ -58,5 +58,8 @@ int main()
     SLInsert(list, four);
     SLInsert(list, five);
     SLInsert(list, six);
+    SLRemove(list, three);
+    SLRemove(list, "asdf");
+    SLRemove(list, one);
     SLDestroy(list);
 }

@@ -1,3 +1,4 @@
+#include <string.h>
 #include "sorted-list.h"
 
 // Declare function in advance.
@@ -6,7 +7,7 @@ int SLTraverse(SortedList *list, void *func, void *data);
 ListNode *LNCreate(void *data) {
     ListNode *node = (ListNode *) malloc(sizeof(ListNode));
 
-    if (node != NULL) {
+    if (node) {
         node->data = data;
         node->next = NULL;
     }
@@ -24,7 +25,7 @@ void LNDestroy(ListNode *node, DestructFuncT destruct) {
 SortedList *SLCreate(CompareFuncT cf, DestructFuncT df) {
     SortedList *list = (SortedList *) malloc(sizeof(SortedList));
 
-    if (list != NULL) {
+    if (list) {
         list->head = NULL;
         list->comparator = cf;
         list->destructor = df;
@@ -35,7 +36,7 @@ SortedList *SLCreate(CompareFuncT cf, DestructFuncT df) {
 
 void SLDestroy(SortedList *list) {
     ListNode *current = list->head;
-    while (current != NULL) {
+    while (current) {
         ListNode *tmp = current;
         current = current->next;
         LNDestroy(tmp, list->destructor);
@@ -45,9 +46,9 @@ void SLDestroy(SortedList *list) {
 
 int SLInsert(SortedList *list, void *newObj) {
     // Check if we've been passed a null pointer.
-    if (newObj == NULL) {
+    if (!newObj) {
         return 0;
-    } else if (list->head == NULL) {
+    } else if (!list->head) {
         ListNode *head = LNCreate(newObj);
         list->head = head;
         return 1;
@@ -55,11 +56,11 @@ int SLInsert(SortedList *list, void *newObj) {
 
     ListNode *current = list->head, *prev = NULL;
     CompareFuncT compare = list->comparator;
-    while (current != NULL) {
+    while (current) {
         int comparison = compare(newObj, current->data);
         if (comparison > 0) {
             ListNode *node = LNCreate(newObj);
-            if (prev == NULL) {
+            if (!prev) {
                 node->next = list->head;
                 list->head = node;
             } else {
@@ -67,7 +68,7 @@ int SLInsert(SortedList *list, void *newObj) {
                 node->next = current;
             }
             return 1;
-        } else if (comparison == 0) {
+        } else if (!comparison) {
             return 0;
         }
         prev = current;
@@ -80,15 +81,15 @@ int SLInsert(SortedList *list, void *newObj) {
 }
 
 int SLRemove(SortedList *list, void *newObj) {
-    if (newObj == NULL) {
+    if (!newObj) {
         return 0;
     }
 
     ListNode *current = list->head, *prev = NULL;
     CompareFuncT compare = list->comparator;
-    while (current != NULL) {
+    while (current) {
         if (compare(newObj, current->data) == 0) {
-            if (prev == NULL) {
+            if (!prev) {
                 list->head = list->head->next;
                 LNDestroy(current, list->destructor);
             } else {
@@ -105,17 +106,24 @@ int SLRemove(SortedList *list, void *newObj) {
 }
 
 SortedListIterator *SLCreateIterator(SortedList *list) {
-    return NULL;
+    SortedListIterator *iterator = (SortedListIterator *) malloc(sizeof(SortedListIterator));
+
+    if (iterator) {
+        iterator->list = list;
+        iterator->current = (ListNode *) malloc(sizeof(ListNode));
+    }
+
+    return iterator;
 }
 
 void SLDestroyIterator(SortedListIterator *iter) {
-
+    free(iter);
 }
 
 void *SLGetItem(SortedListIterator *iter) {
-    return NULL;
+    return iter->current->data;
 }
 
 void *SLNextItem(SortedListIterator *iter) {
-    return NULL;
+
 }
