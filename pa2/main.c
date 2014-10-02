@@ -3,6 +3,7 @@
  */
 
 #include	<string.h>
+#include <stdio.h>
 #include	"sorted-list.h"
 
 int compareInts(void *p1, void *p2)
@@ -45,21 +46,21 @@ void destroyBasicTypeNoAlloc(void *p) {
 
 int main()
 {
-    SortedList *list = SLCreate(&compareStrings, &destroyBasicTypeNoAlloc);
-    char *one = "hello";
-    char *two = "goodbye";
-    char *three = "yes";
-    char *four = "no";
-    char *five = "stop";
-    char *six = "go";
-    SLInsert(list, one);
-    SLInsert(list, two);
-    SLInsert(list, three);
-    SLInsert(list, four);
-    SLInsert(list, five);
-    SLInsert(list, six);
-    SLRemove(list, three);
-    SLRemove(list, "asdf");
-    SLRemove(list, one);
-    SLDestroy(list);
+    SortedList *list = SLCreate(&compareInts, &destroyBasicTypeAlloc);
+    int i;
+    for (i = 0; i < 1000; i++) {
+        int *temp = (int *) malloc(sizeof(int));
+        *temp = i;
+        SLInsert(list, temp);
+    }
+
+    SortedListIterator *iterator = SLCreateIterator(list);
+    int *data = (int *) SLNextItem(iterator);
+    while (data) {
+        printf("%d\n", *data);
+        SLRemove(list, data);
+        data = (int *) SLNextItem(iterator);
+    }
+
+    return 0;
 }

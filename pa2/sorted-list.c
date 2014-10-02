@@ -1,13 +1,12 @@
 #include <string.h>
 #include "sorted-list.h"
 
-// Declare function in advance.
-int SLTraverse(SortedList *list, void *func, void *data);
-
 ListNode *LNCreate(void *data) {
     ListNode *node = (ListNode *) malloc(sizeof(ListNode));
 
     if (node) {
+        node->pointers = 0;
+        node->in_list = 1;
         node->data = data;
         node->next = NULL;
     }
@@ -89,11 +88,13 @@ int SLRemove(SortedList *list, void *newObj) {
     CompareFuncT compare = list->comparator;
     while (current) {
         if (compare(newObj, current->data) == 0) {
+            current->in_list = 0;
             if (!prev) {
                 list->head = list->head->next;
-                LNDestroy(current, list->destructor);
             } else {
                 prev->next = current->next;
+            }
+            if (!current->pointers) {
                 LNDestroy(current, list->destructor);
             }
             return 1;
@@ -110,20 +111,61 @@ SortedListIterator *SLCreateIterator(SortedList *list) {
 
     if (iterator) {
         iterator->list = list;
-        iterator->current = (ListNode *) malloc(sizeof(ListNode));
+        iterator->current = NULL;
+        iterator->started = 0;
     }
 
     return iterator;
 }
 
-void SLDestroyIterator(SortedListIterator *iter) {
-    free(iter);
+ListNode *SLFindNext(SortedList *list, ListNode *old) {
+    CompareFuncT compare = list->comparator;
+    ListNode *current = list->head;
+    while (current && compare(old->data, current->data) < 0) {
+        current = current->next;
+    }
+    return current;
+}
+
+void *SLNextItem(SortedListIterator *iter) {
+    if (!iter->started) {
+        iter->started = 1;
+        iter->current = iter->list->head;
+        iter->current->pointers++;
+        return iter->current->data;
+    } else if (!iter->current) {
+        return NULL;
+    }
+
+    ListNode *old = iter->current;
+    old->pointers--;
+    if (old->in_list) {
+        iter->current = old->next;
+        iter->current->pointers++;
+        if (iter->current) {
+            return iter->current->data;
+        } else {
+            return NULL;
+        }
+    } else {
+        ListNode *next = SLFindNext(iter->list, old);
+        iter->current = next;
+        if (!old->pointers) {
+            LNDestroy(old, iter->list->destructor);
+        }
+        if (next) {
+            iter->current->pointers++;
+            return next->data;
+        } else {
+            return NULL;
+        }
+    }
 }
 
 void *SLGetItem(SortedListIterator *iter) {
     return iter->current->data;
 }
 
-void *SLNextItem(SortedListIterator *iter) {
-
+void SLDestroyIterator(SortedListIterator *iter) {
+    free(iter);
 }

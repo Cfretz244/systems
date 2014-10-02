@@ -9,6 +9,8 @@ typedef void (*DestructFuncT)( void * );
 
 // ListNode Struct
 typedef struct ListNode {
+    int pointers;
+    int in_list;
     void *data;
     struct ListNode *next;
 } ListNode;
@@ -28,6 +30,7 @@ typedef SortedList* SortedListPtr;
 typedef struct SortedListIterator {
     SortedList *list;
     ListNode *current;
+    int started;
 } SortedListIterator;
 
 // Once again, don't like typedeffing away pointer syntax.
