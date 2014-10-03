@@ -141,8 +141,8 @@ void *SLNextItem(SortedListIterator *iter) {
     old->pointers--;
     if (old->in_list) {
         iter->current = old->next;
-        iter->current->pointers++;
         if (iter->current) {
+            iter->current->pointers++;
             return iter->current->data;
         } else {
             return NULL;
