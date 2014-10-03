@@ -1,0 +1,23 @@
+Test 1:
+    Setup:
+        Insert 126 integers into list in order, then iterate across the list to make sure they're in proper order.
+    Expected:
+        List should be in descending order, so each item should be smaller than the previous.
+
+Test 2:
+    Setup:
+        Insert 126 strings into list in reverse order, then iterate across the list, deleting random elements as it goes, and makes sure that everything is spat out in order.
+    Expected:
+        List should be in descending order, so each item should be smaller than the previous.
+
+Test 3:
+    Setup:
+        Insert 126 integers into list in order, then iterate across the list, deleting the previously seen element (as this exibits worst case runtime behavior) as it goes, and verify order.
+    Expected
+        List should be in descending order, so each item should be smaller than the previous.
+
+Test 4:
+    Setup:
+        Insert 126 strings into list in reverse order, then iterate across the liste to verify order.
+    Expected:
+        List should be in descending order, so each item should be smaller than the previous.
