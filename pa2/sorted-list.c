@@ -57,7 +57,7 @@ int SLInsert(SortedList *list, void *newObj) {
     CompareFuncT compare = list->comparator;
     while (current) {
         int comparison = compare(newObj, current->data);
-        if (comparison > 0) {
+        if (comparison >= 0) {
             ListNode *node = LNCreate(newObj);
             if (!prev) {
                 node->next = list->head;
@@ -67,8 +67,6 @@ int SLInsert(SortedList *list, void *newObj) {
                 node->next = current;
             }
             return 1;
-        } else if (!comparison) {
-            return 0;
         }
         prev = current;
         current = current->next;

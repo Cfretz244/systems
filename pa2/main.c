@@ -72,20 +72,17 @@ int main() {
     int current_size = 126;
 
     while (data_one || data_two || data_three || data_four) {
-        if (*data_one == 47) {
-            printf("cool\n");
-        }
         if (data_one) {
             data_one = SLNextItem(it_one);
             if (data_one) {
-                assert(*prev_one > *data_one);
+                assert(*prev_one >= *data_one);
             }
             prev_one = data_one;
         }
         if (data_two) {
             data_two = SLNextItem(it_two);
             if (data_two) {
-                assert(strcmp(prev_two, data_two) > 0);
+                assert(strcmp(prev_two, data_two) >= 0);
                 strcpy(prev_two, data_two);
                 int random = rand() % current_size;
                 char tmp_str[6];
@@ -101,14 +98,14 @@ int main() {
             SLRemove(list_three, data_three);
             data_three = SLNextItem(it_three);
             if (data_three) {
-                assert(prev_three > *data_three);
+                assert(prev_three >= *data_three);
                 prev_three = *data_three;
             }
         }
         if (data_four) {
             data_four = SLNextItem(it_four);
             if (data_four) {
-                assert(*prev_four > *data_four);
+                assert(*prev_four >= *data_four);
             }
             prev_four = data_four;
         }
