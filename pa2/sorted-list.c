@@ -1,6 +1,7 @@
 #include <string.h>
 #include "sorted-list.h"
 
+// Function creates a ListNode struct
 ListNode *LNCreate(void *data) {
     ListNode *node = (ListNode *) malloc(sizeof(ListNode));
 
@@ -14,13 +15,14 @@ ListNode *LNCreate(void *data) {
     return node;
 }
 
-// Destroys a list node struct. Should only be called after the node
-// has been safely removed from the list.
+// Destroys a list node struct. Function calls destructor provided to SLCreate.
+// Should only be called after the node has been safely removed from the list.
 void LNDestroy(ListNode *node, DestructFuncT destruct) {
     destruct(node->data);
     free(node);
 }
 
+// Function creates a SortedList struct
 SortedList *SLCreate(CompareFuncT cf, DestructFuncT df) {
     SortedList *list = (SortedList *) malloc(sizeof(SortedList));
 
@@ -33,21 +35,27 @@ SortedList *SLCreate(CompareFuncT cf, DestructFuncT df) {
     return list;
 }
 
+// Function destroys a SortedList struct
+// Iterates across entire list calling LNDestroy as it goes.
 void SLDestroy(SortedList *list) {
     ListNode *current = list->head;
     while (current) {
         ListNode *tmp = current;
+
+        // Advance local pointer before freeing node.
         current = current->next;
+
         LNDestroy(tmp, list->destructor);
     }
     free(list);
 }
 
 int SLInsert(SortedList *list, void *newObj) {
-    // Check if we've been passed a null pointer.
     if (!newObj) {
+        // We've been passed a null pointer.
         return 0;
     } else if (!list->head) {
+        // Handle edge case of inserting into an empty list.
         ListNode *head = LNCreate(newObj);
         list->head = head;
         return 1;
@@ -56,54 +64,73 @@ int SLInsert(SortedList *list, void *newObj) {
     ListNode *current = list->head, *prev = NULL;
     CompareFuncT compare = list->comparator;
     while (current) {
-        int comparison = compare(newObj, current->data);
-        if (comparison >= 0) {
+        // Check if our current position is right for the given data.
+        if (compare(newObj, current->data) >= 0) {
             ListNode *node = LNCreate(newObj);
             if (!prev) {
+                // Handle situation where given data needs to be inserted
+                // at the front of the list.
                 node->next = list->head;
                 list->head = node;
             } else {
+                // Handle typical insertion.
                 prev->next = node;
                 node->next = current;
             }
             return 1;
         }
+        // Advance pointers.
         prev = current;
         current = current->next;
     }
 
+    // Code inserts given data at the end of the list if no suitable spot
+    // was found.
     ListNode *node = LNCreate(newObj);
     prev->next = node;
     return 1;
 }
 
+// Function removes given data from list if present
 int SLRemove(SortedList *list, void *newObj) {
     if (!newObj) {
+        // We've been passed a null pointer.
         return 0;
     }
 
     ListNode *current = list->head, *prev = NULL;
     CompareFuncT compare = list->comparator;
     while (current) {
+        // Check if we've found the right node.
         if (compare(newObj, current->data) == 0) {
+            // Let any possible iterators know that this node has been removed
+            // from the list.
             current->in_list = 0;
             if (!prev) {
+                // Handle edge case where the list head needs to be removed.
                 list->head = list->head->next;
             } else {
+                // Handle a typical removal.
                 prev->next = current->next;
             }
+
+            // Check if node can be safely destroyed (i.e. there are no iterators
+            // parked on node).
             if (!current->pointers) {
                 LNDestroy(current, list->destructor);
             }
             return 1;
         }
+
+        // Advance pointers.
         prev = current;
         current = current->next;
     }
-    
+
     return 0;
 }
 
+// Function handles the creation of an iterator struct
 SortedListIterator *SLCreateIterator(SortedList *list) {
     SortedListIterator *iterator = (SortedListIterator *) malloc(sizeof(SortedListIterator));
 
@@ -116,6 +143,8 @@ SortedListIterator *SLCreateIterator(SortedList *list) {
     return iterator;
 }
 
+// Function finds the next node in a traversal in the case that the node an
+// iterator was parked on was removed from the list.
 ListNode *SLFindNext(SortedList *list, ListNode *old) {
     CompareFuncT compare = list->comparator;
     ListNode *current = list->head;
@@ -125,45 +154,57 @@ ListNode *SLFindNext(SortedList *list, ListNode *old) {
     return current;
 }
 
+// Function advances the given iterator and returns the next element in
+// the list
 void *SLNextItem(SortedListIterator *iter) {
     if (!iter->started) {
+        // Iteration has only just been allocated. Begin traversal.
         iter->started = 1;
         iter->current = iter->list->head;
         iter->current->pointers++;
         return iter->current->data;
     } else if (!iter->current) {
+        // Iteration is already over. Return NULL.
         return NULL;
     }
 
     ListNode *old = iter->current;
+
+    // Iterator is no longer parked on this node. Decrement pointer count
+    // to reflect this.
     old->pointers--;
     if (old->in_list) {
+        // Node is still in the list, so we can trust node->next field to
+        // lead to the correct node.
         iter->current = old->next;
-        if (iter->current) {
-            iter->current->pointers++;
-            return iter->current->data;
-        } else {
-            return NULL;
-        }
     } else {
-        ListNode *next = SLFindNext(iter->list, old);
-        iter->current = next;
+        // Node is no longer contained in the list, so we call SLFindNext
+        // to find the next node in the traversal.
+        iter->current = SLFindNext(iter->list, old);
+
+        // Check if we're the only iterator that was parked on this node,
+        // and destroy it if so.
         if (!old->pointers) {
             LNDestroy(old, iter->list->destructor);
         }
-        if (next) {
-            iter->current->pointers++;
-            return next->data;
-        } else {
-            return NULL;
-        }
+    }
+    if (iter->current) {
+        // We are now parked on a new node, so increment pointer count
+        // to reflect this.
+        iter->current->pointers++;
+        return iter->current->data;
+    } else {
+        return NULL;
     }
 }
 
+// Function returns data for the node iterator is currently parked on
 void *SLGetItem(SortedListIterator *iter) {
     return iter->current->data;
 }
 
+// Function destroys an iterator. As an iterator struct doesn't actually
+// own any of the pointers it keeps track of, we simply call free.
 void SLDestroyIterator(SortedListIterator *iter) {
     free(iter);
 }

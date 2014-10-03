@@ -3,11 +3,16 @@
 
 #include <stdlib.h>
 
-// Function pointer typedefs
+// Function pointer typedefs. Don't typically like typedeffing pointers, but with
+// function pointers it makes sense.
 typedef int (*CompareFuncT)( void *, void * );
 typedef void (*DestructFuncT)( void * );
 
 // ListNode Struct
+// Pointers field is used to keep track of how many iterators are currently parked at the
+// node, and in_list field is used to keep track of whether or not a node is currently
+// in a list. An example of a time when it wouldn't be is if SLRemove is called, targeting
+// the node, when an iterator is parked at the node.
 typedef struct ListNode {
     int pointers;
     int in_list;
@@ -27,6 +32,9 @@ typedef struct SortedList {
 // and makes it more difficult for a third party to read through your code.
 typedef SortedList* SortedListPtr;
 
+// Iterator struct
+// Started field is used to handle the edge case logic for when an iterator is just beginning
+// its traversal.
 typedef struct SortedListIterator {
     SortedList *list;
     ListNode *current;
