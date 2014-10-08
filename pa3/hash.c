@@ -76,6 +76,7 @@ bool drop(hash *table, char *key) {
     int hash = hash_key(key, table->size);
     if (find_hash_node(table->data[hash], key)) {
         table->data[hash] = remove_hash_node(table->data[hash], key);
+        table->count--;
         return true;
     } else {
         return false;

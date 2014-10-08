@@ -100,6 +100,7 @@ index_node *create_index_node(char *filename) {
     if (node) {
         char *intern_filename = (char *) malloc(sizeof(char) * (strlen(filename) + 1));
         if (intern_filename) {
+            strcpy(intern_filename, filename);
             node->filename = intern_filename;
             node->count = 0;
             node->next = NULL;
