@@ -67,15 +67,15 @@ hash_node *remove_hash_node(hash_node *head, char *key) {
             if (!strcmp(current->key, key)) {
                 if (prev) {
                     prev->next = current->next;
+                    return head;
+                } else {
+                    return head->next;
                 }
-                return current;
             }
             prev = current;
         }
-        return NULL;
-    } else {
-        return NULL;
     }
+    return head;
 }
 
 void destroy_hash_chain(hash_node *head) {
@@ -161,15 +161,15 @@ index_node *remove_index_node(index_node *head, char *filename) {
             if (!strcmp(current->filename, filename)) {
                 if (prev) {
                     prev->next = current->next;
-                } 
-                return current;
+                    return head;
+                } else {
+                    return head->next;
+                }
             }
             prev = current;
         }
-        return NULL;
-    } else {
-        return NULL;
     }
+    return head;
 }
 
 void destroy_index_chain(index_node *head) {
