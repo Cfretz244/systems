@@ -39,7 +39,6 @@ bool insert_hash_node(hash_node *head, hash_node *new) {
                 current->next = new;
                 return true;
             }
-            current = current->next;
         }
         return false;
     } else {

@@ -4,7 +4,7 @@ hash *create_hash() {
     hash *table = (hash *) malloc(sizeof(hash));
 
     if (table) {
-        table->data = (hash_node **) malloc(sizeof(hash_node *) * START_SIZE);
+        table->data = (hash_node **) calloc(START_SIZE, sizeof(hash_node *));
         table->count = 0;
         table->size = START_SIZE;
     }
@@ -22,7 +22,7 @@ int hash_key(char *key, int size) {
 
 void rehash(hash *table) {
     hash_node **old_data = table->data;
-    hash_node **new_data = (hash_node **) malloc(sizeof(hash_node *) * (table->size * 2));
+    hash_node **new_data = (hash_node **) calloc(table->size * 2, sizeof(hash_node *));
     for(int i = 0; i < table->size; i++) {
         hash_node *current = old_data[i];
         while (current) {
