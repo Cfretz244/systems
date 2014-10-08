@@ -72,6 +72,7 @@ hash_node *remove_hash_node(hash_node *head, char *key) {
             }
             prev = current;
         }
+        return NULL;
     } else {
         return NULL;
     }
@@ -155,15 +156,30 @@ bool index_node_is_larger(index_node *node, index_node *other) {
 
 index_node *remove_index_node(index_node *head, char *filename) {
     if (head && filename) {
-
+        index_node *prev = NULL;
+        for (index_node *current = head; current; current = current->next) {
+            if (!strcmp(current->filename, filename)) {
+                if (prev) {
+                    prev->next = current->next;
+                } 
+                return current;
+            }
+            prev = current;
+        }
+        return NULL;
     } else {
         return NULL;
     }
 }
 
 void destroy_index_chain(index_node *head) {
-
+    while (head) {
+        index_node *tmp = head;
+        head = head->next;
+        destroy_index_node(tmp);
+    }
 }
 void destroy_index_node(index_node *node) {
-
+    free(node->filename);
+    free(node);
 }
