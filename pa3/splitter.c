@@ -31,7 +31,7 @@ splitter *create_splitter(char *filename) {
 }
 
 bool is_delimeter(char del) {
-    return !(del >= 'A' && del <= 'Z' || del >= 'a' && del <= 'z');
+    return !(del >= 'A' && del <= 'Z' || del >= 'a' && del <= 'z' || del >= '0' && del <= '9');
 }
 
 char *split_next(splitter *split) {
