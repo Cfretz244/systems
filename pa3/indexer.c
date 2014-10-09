@@ -16,7 +16,7 @@ bool is_dir(char *path);
 
 int main(int argc, char **argv) {
     if (argc != 3) {
-        fprintf(stderr, "Error: Wrong number of arguments");
+        fprintf(stderr, "Error: Wrong number of arguments\n");
         return 1;
     }
 
@@ -26,7 +26,7 @@ int main(int argc, char **argv) {
     } else if (is_dir(argv[2])) {
         handle_dir(argv[2], table);
     } else {
-        fprintf(stderr, "Error: Could not open specified file. Perhaps it doesn't exist?");
+        fprintf(stderr, "Error: Could not open specified file. Perhaps it doesn't exist?\n");
         destroy_hash(table);
         return 1;
     }
@@ -46,12 +46,12 @@ void handle_dir(char *path, hash *table) {
                 } else if (entry->d_type & DT_DIR) {
                     handle_dir(new_path, table);
                 } else {
-                    fprintf(stderr, "Warning: Directory hierarchy contains an entry which is neither a regular file nor directory, skipping it");
+                    fprintf(stderr, "Warning: Directory hierarchy contains an entry which is neither a regular file nor directory, skipping it\n");
                 }
             }
         }
     } else {
-        fprintf(stderr, "Error: Directory %s could not be opened", path);
+        fprintf(stderr, "Error: Directory %s could not be opened\n", path);
     }
 }
 
@@ -76,7 +76,7 @@ void handle_file(char *path, hash *table) {
             }
         }
     } else {
-        fprintf(stderr, "Error: File %s could not be opened", path);
+        fprintf(stderr, "Error: File %s could not be opened\n", path);
     }
 }
 
