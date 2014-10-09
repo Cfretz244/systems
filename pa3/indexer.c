@@ -56,7 +56,28 @@ void handle_dir(char *path, hash *table) {
 }
 
 void handle_file(char *path, hash *table) {
-
+    FILE *file = fopen(path, "r");
+    if (file) {
+        splitter *split = create_splitter(file);
+        for (char *token = split_next(split); token; token = split_next(split)) {
+            index_node *head = get(table, token);
+            if (head) {
+                index_node *target = find_index_node(head, path);
+                if (target) {
+                    target->count++;
+                } else {
+                    target = create_index_node(path);
+                    target->count++;
+                }
+            } else {
+                index_node *node = create_index_node(path);
+                node->count++;
+                put(table, token, node);
+            }
+        }
+    } else {
+        fprintf(stderr, "Error: File %s could not be opened", path);
+    }
 }
 
 bool is_file(char *path) {

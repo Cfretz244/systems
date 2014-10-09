@@ -12,7 +12,7 @@ typedef struct splitter {
     char *remaining;
 } splitter;
 
-splitter *create_splitter(char *filename);
+splitter *create_splitter(FILE *file);
 char *split_next(splitter *split);
 void destroy_splitter(splitter *split);
 

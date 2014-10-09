@@ -8,16 +8,16 @@ char *get_line(FILE *file) {
     if (!fgets(tmp, sizeof(tmp), file) || ferror(file)) {
         return NULL;
     }
-    char *current_line = (char *) malloc(sizeof(char) * strlen(tmp));
+    char *current_line = (char *) malloc(sizeof(char) * (strlen(tmp) + 1));
     strcpy(current_line, tmp);
     return current_line;
 }
 
-splitter *create_splitter(char *filename) {
+splitter *create_splitter(FILE *file) {
     splitter *split = (splitter *) malloc(sizeof(splitter));
 
     if (split) {
-        split->file = fopen(filename, "r");
+        split->file = file;
         if (split->file) {
             split->current_line = get_line(split->file);
             split->remaining = split->current_line;

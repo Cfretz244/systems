@@ -18,15 +18,12 @@ int main() {
         asdf[100] = '\0';
         fdsa[100] = '\0';
         index_node *tmp = create_index_node(asdf);
-        put(table, fdsa, create_hash_node(fdsa, tmp));
+        put(table, fdsa, tmp);
     }
-    index_node *first = create_index_node("world.txt");
-    put(table, "hello", create_hash_node("hello", first));
-    hash_node *found = get(table, "hello");
-    drop(table, "hello");
     destroy_hash(table);
 
-    splitter *split = create_splitter("test.txt");
+    FILE *file = fopen("test/test_1/finn_1.txt", "r");
+    splitter *split = create_splitter(file);
     assert(split);
     char *token;
     while (token = split_next(split)) {
@@ -35,7 +32,8 @@ int main() {
     }
     destroy_splitter(split);
 
-    splitter *nosplit = create_splitter("doesntexist.txt");
+    FILE *nofile = fopen("doesntexist.txt", "r");
+    splitter *nosplit = create_splitter(nofile);
     assert(!nosplit);
 
     return 0;

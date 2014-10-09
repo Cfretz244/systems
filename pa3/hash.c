@@ -42,31 +42,39 @@ void rehash(hash *table) {
     free(old_data);
 }
 
-bool put(hash *table, char *key, hash_node *data) {
+bool put(hash *table, char *key, index_node *data) {
     if (table->count / (float) table->size > 0.8) {
         rehash(table);
     }
     int hash = hash_key(key, table->size);
     if(table->data[hash]) {
-        if (insert_hash_node(table->data[hash], data)) {
+        if (!find_hash_node(table->data[hash], key)) {
+            hash_node *node = create_hash_node(key, data);
+            insert_hash_node(table->data[hash], node);
             table->count++;
             return true;
         } else {
             return false;
         }
     } else {
-        table->data[hash] = data;
+        hash_node *node = create_hash_node(key, data);
+        table->data[hash] = node;
         table->count++;
         return true;
     }
 }
 
-hash_node *get(hash *table, char *key) {
+index_node *get(hash *table, char *key) {
     if (!table->count) {
         return NULL;
     }
     int hash = hash_key(key, table->size);
-    return find_hash_node(table->data[hash], key);
+    hash_node *found = find_hash_node(table->data[hash], key);
+    if (found) {
+        return found->data;
+    } else {
+        return NULL;
+    }
 }
 
 bool drop(hash *table, char *key) {
