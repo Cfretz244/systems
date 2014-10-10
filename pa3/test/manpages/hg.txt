@@ -1,0 +1,2517 @@
+HG(1)                          Mercurial Manual                          HG(1)
+
+
+
+NNAAMMEE
+       hg - Mercurial source code management system
+
+SSYYNNOOPPSSIISS
+       hhgg _c_o_m_m_a_n_d [_o_p_t_i_o_n]... [_a_r_g_u_m_e_n_t]...
+
+DDEESSCCRRIIPPTTIIOONN
+       The  hhgg command provides a command line interface to the Mercurial sys-
+       tem.
+
+CCOOMMMMAANNDD EELLEEMMEENNTTSS
+       ffiilleess......
+              indicates one or more filename or relative path  filenames;  see
+              File Name Patterns for information on pattern matching
+
+       ppaatthh   indicates a path on the local machine
+
+       rreevviissiioonn
+              indicates  a  changeset  which  can  be specified as a changeset
+              revision number, a tag, or a unique substring of  the  changeset
+              hash value
+
+       rreeppoossiittoorryy ppaatthh
+              either the pathname of a local repository or the URI of a remote
+              repository.
+
+OOPPTTIIOONNSS
+       --RR,, ----rreeppoossiittoorryy
+              repository root directory or name of overlay bundle file
+
+       ----ccwwdd  change working directory
+
+       --yy,, ----nnoonniinntteerraaccttiivvee
+              do not prompt, assume 'yes' for any required answers
+
+       --qq,, ----qquuiieett
+              suppress output
+
+       --vv,, ----vveerrbboossee
+              enable additional output
+
+       ----ccoonnffiigg
+              set/override config option
+
+       ----ddeebbuugg
+              enable debugging output
+
+       ----ddeebbuuggggeerr
+              start debugger
+
+       ----eennccooddiinngg
+              set the charset encoding (default: UTF-8)
+
+       ----eennccooddiinnggmmooddee
+              set the charset encoding mode (default: strict)
+
+       ----ttrraacceebbaacckk
+              always print a traceback on exception
+
+       ----ttiimmee time how long the command takes
+
+       ----pprrooffiillee
+              print command execution profile
+
+       ----vveerrssiioonn
+              output version information and exit
+
+       --hh,, ----hheellpp
+              display help and exit
+
+CCOOMMMMAANNDDSS
+       aadddd [[OOPPTTIIOONN]]...... [[FFIILLEE]]......
+
+              Schedule files to be version controlled and added to the reposi-
+              tory.
+
+              The files will be added to the repository at the next commit. To
+              undo an add before that, see hg forget.
+
+              If no names are given, add all files to the repository.
+
+              options:
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+              --nn,, ----ddrryy--rruunn
+                     do not perform actions, just print output
+
+       aaddddrreemmoovvee [[OOPPTTIIOONN]]...... [[FFIILLEE]]......
+
+              Add all new files and remove all missing files from the  reposi-
+              tory.
+
+              New  files are ignored if they match any of the patterns in com-
+              mit.
+
+              Use the -s/--similarity option to detect renamed files.  With  a
+              parameter  greater than 0, this compares every removed file with
+              every added file and records those similar  enough  as  renames.
+              This  option  takes  a  percentage  between 0 (disabled) and 100
+              (files must be identical) as its  parameter.  Detecting  renamed
+              files this way can be expensive.
+
+              options:
+
+              --ss,, ----ssiimmiillaarriittyy
+                     guess renamed files by similarity (0<=s<=100)
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+              --nn,, ----ddrryy--rruunn
+                     do not perform actions, just print output
+
+       aannnnoottaattee [[--rr RREEVV]] [[--ff]] [[--aa]] [[--uu]] [[--dd]] [[--nn]] [[--cc]] [[--ll]] FFIILLEE......
+
+              List  changes  in files, showing the revision id responsible for
+              each line
+
+              This command is useful for discovering when a  change  was  made
+              and by whom.
+
+              Without  the  -a/--text  option,  annotate will avoid processing
+              files it detects as binary. With -a, annotate will annotate  the
+              file  anyway,  although  the  results  will  probably be neither
+              useful nor desirable.
+
+              options:
+
+              --rr,, ----rreevv
+                     annotate the specified revision
+
+              --ff,, ----ffoollllooww
+                     follow file copies and renames
+
+              --aa,, ----tteexxtt
+                     treat all files as text
+
+              --uu,, ----uusseerr
+                     list the author (long with -v)
+
+              --dd,, ----ddaattee
+                     list the date (short with -q)
+
+              --nn,, ----nnuummbbeerr
+                     list the revision number (default)
+
+              --cc,, ----cchhaannggeesseett
+                     list the changeset
+
+              --ll,, ----lliinnee--nnuummbbeerr
+                     show line number at the first appearance
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+              aliases: blame
+
+       aarrcchhiivvee [[OOPPTTIIOONN]]...... DDEESSTT
+
+              By default, the revision used  is  the  parent  of  the  working
+              directory; use -r/--rev to specify a different revision.
+
+              To  specify  the type of archive to create, use -t/--type. Valid
+              types are:
+
+              "files" (default): a directory full of files
+              "tar": tar archive, uncompressed
+              "tbz2": tar archive, compressed using bzip2
+              "tgz": tar archive, compressed using gzip
+              "uzip": zip archive, uncompressed
+              "zip": zip archive, compressed using deflate
+
+              The exact name of the destination archive or directory is  given
+              using a format string; see 'hg help export' for details.
+
+              Each  member  added  to  an  archive file has a directory prefix
+              prepended. Use -p/--prefix to specify a format  string  for  the
+              prefix.  The  default  is the basename of the archive, with suf-
+              fixes removed.
+
+              options:
+
+              ----nnoo--ddeeccooddee
+                     do not pass files through decoders
+
+              --pp,, ----pprreeffiixx
+                     directory prefix for files in archive
+
+              --rr,, ----rreevv
+                     revision to distribute
+
+              --tt,, ----ttyyppee
+                     type of distribution to create
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+       bbaacckkoouutt [[OOPPTTIIOONN]]...... [[--rr]] RREEVV
+
+              Commit the backed out  changes  as  a  new  changeset.  The  new
+              changeset is a child of the backed out changeset.
+
+              If  you  backout  a  changeset other than the tip, a new head is
+              created. This head will be the new tip and you should merge this
+              backout changeset with another head.
+
+              The --merge option remembers the parent of the working directory
+              before starting the backout, then merges the new head with  that
+              changeset  afterwards.  This  saves  you from doing the merge by
+              hand.  The result of this merge is not committed, as with a nor-
+              mal merge.
+
+              See 'hg help dates' for a list of formats valid for -d/--date.
+
+              options:
+
+              ----mmeerrggee
+                     merge with old dirstate parent after backout
+
+              ----ppaarreenntt
+                     parent to choose when backing out merge
+
+              --rr,, ----rreevv
+                     revision to backout
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+              --mm,, ----mmeessssaaggee
+                     use <text> as commit message
+
+              --ll,, ----llooggffiillee
+                     read commit message from <file>
+
+              --dd,, ----ddaattee
+                     record datecode as commit date
+
+              --uu,, ----uusseerr
+                     record the specified user as committer
+
+       bbiisseecctt [[--ggbbssrr]] [[--cc CCMMDD]] [[RREEVV]]
+
+              This  command helps to find changesets which introduce problems.
+              To use, mark the earliest changeset you know exhibits the  prob-
+              lem  as  bad,  then mark the latest changeset which is free from
+              the problem as good. Bisect will update your  working  directory
+              to  a  revision  for testing (unless the -U/--noupdate option is
+              specified). Once you have  performed  tests,  mark  the  working
+              directory  as  good  or  bad,  and  bisect will either update to
+              another candidate changeset or announce that it  has  found  the
+              bad revision.
+
+              As  a shortcut, you can also use the revision argument to mark a
+              revision as good or bad without checking it out first.
+
+              If you supply a command, it will be used  for  automatic  bisec-
+              tion.  Its exit status will be used to mark revisions as good or
+              bad: status 0 means good, 125 means to skip  the  revision,  127
+              (command  not  found)  will  abort  the bisection, and any other
+              non-zero exit status means the revision is bad.
+
+              options:
+
+              --rr,, ----rreesseett
+                     reset bisect state
+
+              --gg,, ----ggoooodd
+                     mark changeset good
+
+              --bb,, ----bbaadd
+                     mark changeset bad
+
+              --ss,, ----sskkiipp
+                     skip testing changeset
+
+              --cc,, ----ccoommmmaanndd
+                     use command to check changeset state
+
+              --UU,, ----nnoouuppddaattee
+                     do not update to target
+
+       bbrraanncchh [[--ffCC]] [[NNAAMMEE]]
+
+              With no argument, show the current branch name. With  one  argu-
+              ment, set the working directory branch name (the branch will not
+              exist in the repository until the next commit).  Standard  prac-
+              tice  recommends  that  primary  development  take  place on the
+              'default' branch.
+
+              Unless -f/--force is specified, branch will not let  you  set  a
+              branch name that already exists, even if it's inactive.
+
+              Use  -C/--clean to reset the working directory branch to that of
+              the parent of the working directory, negating a previous  branch
+              change.
+
+              Use the command 'hg update' to switch to an existing branch. Use
+              'hg commit --close-branch' to mark this branch as closed.
+
+              options:
+
+              --ff,, ----ffoorrccee
+                     set branch name even if it shadows an existing branch
+
+              --CC,, ----cclleeaann
+                     reset branch name to parent branch name
+
+       bbrraanncchheess [[--aa]]
+
+              List the repository's named branches, indicating which ones  are
+              inactive.  If -c/--closed is specified, also list branches which
+              have been marked closed (see hg commit --close-branch).
+
+              If -a/--active is specified, only show active branches. A branch
+              is considered active if it contains repository heads.
+
+              Use the command 'hg update' to switch to an existing branch.
+
+              options:
+
+              --aa,, ----aaccttiivvee
+                     show only branches that have unmerged heads
+
+              --cc,, ----cclloosseedd
+                     show normal and closed branches
+
+       bbuunnddllee [[--ff]] [[--aa]] [[--rr RREEVV]]...... [[----bbaassee RREEVV]]...... FFIILLEE [[DDEESSTT]]
+
+              Generate a compressed changegroup file collecting changesets not
+              known to be in another repository.
+
+              If no destination repository is  specified  the  destination  is
+              assumed  to  have  all the nodes specified by one or more --base
+              parameters. To create a bundle containing  all  changesets,  use
+              -a/--all (or --base null).
+
+              You  can  change  compression  method with the -t/--type option.
+              The available compression methods are: none, bzip2, and gzip (by
+              default, bundles are compressed using bzip2).
+
+              The bundle file can then be transferred using conventional means
+              and applied to another repository with the unbundle or pull com-
+              mand. This is useful when direct push and pull are not available
+              or when exporting an entire repository is undesirable.
+
+              Applying bundles preserves all changeset contents including per-
+              missions, copy/rename information, and revision history.
+
+              options:
+
+              --ff,, ----ffoorrccee
+                     run even when remote repository is unrelated
+
+              --rr,, ----rreevv
+                     a changeset up to which you would like to bundle
+
+              ----bbaassee a base changeset to specify instead of a destination
+
+              --aa,, ----aallll
+                     bundle all changesets in the repository
+
+              --tt,, ----ttyyppee
+                     bundle compression type to use (default: bzip2)
+
+              --ee,, ----sssshh
+                     specify ssh command to use
+
+              ----rreemmootteeccmmdd
+                     specify hg command to run on the remote side
+
+       ccaatt [[OOPPTTIIOONN]]...... FFIILLEE......
+
+              Print the specified files as they were at the given revision. If
+              no revision is given, the parent of  the  working  directory  is
+              used, or tip if no revision is checked out.
+
+              Output  may  be to a file, in which case the name of the file is
+              given using a format string. The formatting rules are  the  same
+              as for the export command, with the following additions:
+
+              %s   basename of file being printed
+              %d   dirname of file being printed, or '.' if in repository root
+              %p   root-relative path name of file being printed
+
+              options:
+
+              --oo,, ----oouuttppuutt
+                     print output to file with formatted name
+
+              --rr,, ----rreevv
+                     print the given revision
+
+              ----ddeeccooddee
+                     apply any matching decode filter
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+       cclloonnee [[OOPPTTIIOONN]]...... SSOOUURRCCEE [[DDEESSTT]]
+
+              Create a copy of an existing repository in a new directory.
+
+              If  no  destination  directory name is specified, it defaults to
+              the basename of the source.
+
+              The location of the source is added to the new repository's
+
+              See 'hg help urls' for valid source format details.
+
+              It is possible to specify an ssh:// URL as the destination,  but
+              no  Please see 'hg help urls' for important details about ssh://
+              URLs.
+
+              If the -U/--noupdate option is specified,  the  new  clone  will
+              contain only a repository (.hg) and no working copy (the working
+              copy parent will be the null changeset). Otherwise,  clone  will
+              initially check out (in order of precedence):
+
+                  a. the    changeset,    tag   or   branch   specified   with
+                     -u/--updaterev
+
+                  b. the  changeset,  tag  or  branch  given  with  the  first
+                     -r/--rev
+
+                  c. the head of the default branch
+
+              Use  'hg clone -u . src dst' to checkout the source repository's
+              parent  changeset  (applicable  for  local  source  repositories
+              only).
+
+              A set of changesets (tags, or branch names) to pull may be spec-
+              ified by listing each  changeset  (tag,  or  branch  name)  with
+              -r/--rev.   If -r/--rev is used, the cloned repository will con-
+              tain only a subset of the changesets of the  source  repository.
+              Only  the  set  of  changesets  defined  by all -r/--rev options
+              (including all their ancestors) will be pulled into the destina-
+              tion repository.  No subsequent changesets (including subsequent
+              tags) will be present in the destination.
+
+              Using -r/--rev (or 'clone src#rev dest')  implies  --pull,  even
+              for local source repositories.
+
+              For  efficiency,  hardlinks  are  used  for cloning whenever the
+              source and destination are on the  same  filesystem  (note  this
+              applies  only  to  the  repository  data, not to the checked out
+              files). Some filesystems, such  as  AFS,  implement  hardlinking
+              incorrectly,  but  do not report errors. In these cases, use the
+              --pull option to avoid hardlinking.
+
+              In some cases, you can clone repositories and checked out  files
+              using full hardlinks with
+
+              $ cp -al REPO REPOCLONE
+
+              This is the fastest way to clone, but it is not always safe. The
+              operation is not atomic (making sure REPO is not modified during
+              the  operation is up to you) and you have to make sure your edi-
+              tor breaks hardlinks (Emacs and most Linux Kernel tools do  so).
+              Also,  this is not compatible with certain extensions that place
+              their metadata under the .hg directory, such as mq.
+
+              options:
+
+              --UU,, ----nnoouuppddaattee
+                     the clone will only  contain  a  repository  (no  working
+                     copy)
+
+              --uu,, ----uuppddaatteerreevv
+                     revision, tag or branch to check out
+
+              --rr,, ----rreevv
+                     a changeset you would like to have after cloning
+
+              ----ppuullll use pull protocol to copy metadata
+
+              ----uunnccoommpprreesssseedd
+                     use uncompressed transfer (fast over LAN)
+
+              --ee,, ----sssshh
+                     specify ssh command to use
+
+              ----rreemmootteeccmmdd
+                     specify hg command to run on the remote side
+
+       ccoommmmiitt [[OOPPTTIIOONN]]...... [[FFIILLEE]]......
+
+              Commit  changes to the given files into the repository. Unlike a
+              centralized RCS, this operation is a  local  operation.  See  hg
+              push for a way to actively distribute your changes.
+
+              If  a list of files is omitted, all changes reported by "hg sta-
+              tus" will be committed.
+
+              If you are committing the result of a merge, do not provide  any
+              filenames or -I/-X filters.
+
+              If  no  commit  message  is  specified, the configured editor is
+              started to prompt you for a message.
+
+              See 'hg help dates' for a list of formats valid for -d/--date.
+
+              options:
+
+              --AA,, ----aaddddrreemmoovvee
+                     mark new/missing files as added/removed before committing
+
+              ----cclloossee--bbrraanncchh
+                     mark a branch as closed, hiding it from the branch list
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+              --mm,, ----mmeessssaaggee
+                     use <text> as commit message
+
+              --ll,, ----llooggffiillee
+                     read commit message from <file>
+
+              --dd,, ----ddaattee
+                     record datecode as commit date
+
+              --uu,, ----uusseerr
+                     record the specified user as committer
+
+              aliases: ci
+
+       ccooppyy [[OOPPTTIIOONN]]...... [[SSOOUURRCCEE]]...... DDEESSTT
+
+              Mark  dest as having copies of source files. If dest is a direc-
+              tory, copies are put in that directory. If dest is a  file,  the
+              source must be a single file.
+
+              By  default,  this  command copies the contents of files as they
+              exist in the working directory. If invoked with -A/--after,  the
+              operation is recorded, but no copying is performed.
+
+              This  command  takes effect with the next commit. To undo a copy
+              before that, see hg revert.
+
+              options:
+
+              --AA,, ----aafftteerr
+                     record a copy that has already occurred
+
+              --ff,, ----ffoorrccee
+                     forcibly copy over an existing managed file
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+              --nn,, ----ddrryy--rruunn
+                     do not perform actions, just print output
+
+              aliases: cp
+
+       ddiiffff [[OOPPTTIIOONN]]...... [[--rr RREEVV11 [[--rr RREEVV22]]]] [[FFIILLEE]]......
+
+              Show differences between revisions for the specified files.
+
+              Differences between files are shown using the unified diff  for-
+              mat.
+
+              NOTE:  diff  may  generate  unexpected results for merges, as it
+              will default to comparing against the working directory's  first
+              parent changeset if no revisions are specified.
+
+              When  two  revision  arguments are given, then changes are shown
+              between those revisions. If only one revision is specified  then
+              that revision is compared to the working directory, and, when no
+              revisions are specified, the working directory  files  are  com-
+              pared to its parent.
+
+              Without  the  -a/--text option, diff will avoid generating diffs
+              of files it detects as binary. With -a,  diff  will  generate  a
+              diff anyway, probably with undesirable results.
+
+              Use  the  -g/--git  option to generate diffs in the git extended
+              diff format. For more information, read 'hg help diffs'.
+
+              options:
+
+              --rr,, ----rreevv
+                     revision
+
+              --cc,, ----cchhaannggee
+                     change made by revision
+
+              --aa,, ----tteexxtt
+                     treat all files as text
+
+              --gg,, ----ggiitt
+                     use git extended diff format
+
+              ----nnooddaatteess
+                     don't include dates in diff headers
+
+              --pp,, ----sshhooww--ffuunnccttiioonn
+                     show which function each change is in
+
+              ----rreevveerrssee
+                     produce a diff that undoes the changes
+
+              --ww,, ----iiggnnoorree--aallll--ssppaaccee
+                     ignore white space when comparing lines
+
+              --bb,, ----iiggnnoorree--ssppaaccee--cchhaannggee
+                     ignore changes in the amount of white space
+
+              --BB,, ----iiggnnoorree--bbllaannkk--lliinneess
+                     ignore changes whose lines are all blank
+
+              --UU,, ----uunniiffiieedd
+                     number of lines of context to show
+
+              ----ssttaatt output diffstat-style summary of changes
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+       eexxppoorrtt [[OOPPTTIIOONN]]...... [[--oo OOUUTTFFIILLEESSPPEECC]] RREEVV......
+
+              Print the changeset header and diffs for one or more  revisions.
+
+              The  information  shown  in  the  changeset  header  is: author,
+              changeset hash, parent(s) and commit comment.
+
+              NOTE: export may  generate  unexpected  diff  output  for  merge
+              changesets,  as  it will compare the merge changeset against its
+              first parent only.
+
+              Output may be to a file, in which case the name of the  file  is
+              given  using  a  format string. The formatting rules are as fol-
+              lows:
+
+              %%   literal "%" character
+              %H   changeset hash (40 bytes of hexadecimal)
+              %N   number of patches being generated
+              %R   changeset revision number
+              %b   basename of the exporting repository
+              %h   short-form changeset hash (12 bytes of hexadecimal)
+              %n   zero-padded sequence number, starting at 1
+              %r   zero-padded changeset revision number
+
+              Without the -a/--text option, export will avoid generating diffs
+              of  files  it detects as binary. With -a, export will generate a
+              diff anyway, probably with undesirable results.
+
+              Use the -g/--git option to generate diffs in  the  git  extended
+              diff format. See 'hg help diffs' for more information.
+
+              With  the  --switch-parent  option, the diff will be against the
+              second parent. It can be useful to review a merge.
+
+              options:
+
+              --oo,, ----oouuttppuutt
+                     print output to file with formatted name
+
+              ----sswwiittcchh--ppaarreenntt
+                     diff against the second parent
+
+              --aa,, ----tteexxtt
+                     treat all files as text
+
+              --gg,, ----ggiitt
+                     use git extended diff format
+
+              ----nnooddaatteess
+                     don't include dates in diff headers
+
+       ffoorrggeett [[OOPPTTIIOONN]]...... FFIILLEE......
+
+              Mark the specified files so they will no longer be tracked after
+              the next commit.
+
+              This  only  removes  files from the current branch, not from the
+              entire project history, and it does not  delete  them  from  the
+              working directory.
+
+              To undo a forget before the next commit, see hg add.
+
+              options:
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+       ggrreepp [[OOPPTTIIOONN]]...... PPAATTTTEERRNN [[FFIILLEE]]......
+
+              Search revisions of files for a regular expression.
+
+              This command behaves differently than Unix grep. It only accepts
+              Python/Perl regexps. It searches  repository  history,  not  the
+              working directory. It always prints the revision number in which
+              a match appears.
+
+              By default, grep only prints output for the first revision of  a
+              file  in  which it finds a match. To get it to print every revi-
+              sion that contains a change in match status  ("-"  for  a  match
+              that  becomes a non-match, or "+" for a non-match that becomes a
+              match), use the --all flag.
+
+              options:
+
+              --00,, ----pprriinntt00
+                     end fields with NUL
+
+              ----aallll  print all revisions that match
+
+              --ff,, ----ffoollllooww
+                     follow changeset history, or file history  across  copies
+                     and renames
+
+              --ii,, ----iiggnnoorree--ccaassee
+                     ignore case when matching
+
+              --ll,, ----ffiilleess--wwiitthh--mmaattcchheess
+                     print only filenames and revisions that match
+
+              --nn,, ----lliinnee--nnuummbbeerr
+                     print matching line numbers
+
+              --rr,, ----rreevv
+                     search in given revision range
+
+              --uu,, ----uusseerr
+                     list the author (long with -v)
+
+              --dd,, ----ddaattee
+                     list the date (short with -q)
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+       hheeaaddss [[--rr SSTTAARRTTRREEVV]] [[RREEVV]]......
+
+              With no arguments, show all repository head changesets.
+
+              Repository "heads" are changesets with no child changesets. They
+              are where development generally takes place and  are  the  usual
+              targets for update and merge operations.
+
+              If  one  or  more REV is given, the "branch heads" will be shown
+              for the named branch associated with the specified changeset(s).
+
+              Branch  heads  are  changesets on a named branch with no descen-
+              dants on the same branch.  A  branch  head  could  be  a  "true"
+              (repository)  head,  or  it  could be the last changeset on that
+              branch before it was merged into another branch, or it could  be
+              the  last  changeset  on the branch before a new branch was cre-
+              ated. If none of the branch heads are true heads, the branch  is
+              considered inactive.
+
+              If  -c/--closed  is  specified,  also  show  branch heads marked
+              closed (see hg commit --close-branch).
+
+              If STARTREV is specified, only those heads that are  descendants
+              of STARTREV will be displayed.
+
+              options:
+
+              --rr,, ----rreevv
+                     show only heads which are descendants of REV
+
+              --aa,, ----aaccttiivvee
+                     show only the active branch heads from open branches
+
+              --cc,, ----cclloosseedd
+                     show normal and closed branch heads
+
+              ----ssttyyllee
+                     display using template map file
+
+              ----tteemmppllaattee
+                     display with template
+
+       hheellpp [[TTOOPPIICC]]
+
+              With no arguments, print a list of commands with short help mes-
+              sages.
+
+              Given a topic, extension, or command name, print help  for  that
+              topic.
+
+       iiddeennttiiffyy [[--nniibbtt]] [[--rr RREEVV]] [[SSOOUURRCCEE]]
+
+              With  no  revision,  print a summary of the current state of the
+              repository.
+
+              Specifying a path to a repository root or Mercurial bundle  will
+              cause lookup to operate on that repository/bundle.
+
+              This  summary  identifies  the repository state using one or two
+              parent hash identifiers, followed by a "+" if there  are  uncom-
+              mitted changes in the working directory, a list of tags for this
+              revision and a branch name for non-default branches.
+
+              options:
+
+              --rr,, ----rreevv
+                     identify the specified revision
+
+              --nn,, ----nnuumm
+                     show local revision number
+
+              --ii,, ----iidd
+                     show global revision id
+
+              --bb,, ----bbrraanncchh
+                     show branch
+
+              --tt,, ----ttaaggss
+                     show tags
+
+              aliases: id
+
+       iimmppoorrtt [[OOPPTTIIOONN]]...... PPAATTCCHH......
+
+              Import a list of patches and commit  them  individually  (unless
+              --no-commit is specified).
+
+              If  there  are  outstanding  changes  in  the working directory,
+              import will abort unless given the -f/--force flag.
+
+              You can import a  patch  straight  from  a  mail  message.  Even
+              patches  as attachments work (to use the body part, it must have
+              type text/plain or text/x-patch). From and  Subject  headers  of
+              email  message are used as default committer and commit message.
+              All text/plain body parts before first diff are added to  commit
+              message.
+
+              If  the  imported  patch  was  generated  by hg export, user and
+              description from patch override values from message headers  and
+              body.  Values  given  on  command  line  with  -m/--message  and
+              -u/--user override these.
+
+              If --exact is specified, import will set the  working  directory
+              to  the  parent of each patch before applying it, and will abort
+              if the resulting changeset has  a  different  ID  than  the  one
+              recorded  in  the  patch.  This  may happen due to character set
+              problems or other deficiencies in the text patch format.
+
+              With -s/--similarity, hg will attempt to  discover  renames  and
+              copies in the patch in the same way as 'addremove'.
+
+              To  read a patch from standard input, use "-" as the patch name.
+              If a URL is specified, the patch will  be  downloaded  from  it.
+              See 'hg help dates' for a list of formats valid for -d/--date.
+
+              options:
+
+              --pp,, ----ssttrriipp
+                     directory strip option for patch. This has the same mean-
+                     ing as the corresponding patch option (default: 1)
+
+              --bb,, ----bbaassee
+                     base path
+
+              --ff,, ----ffoorrccee
+                     skip check for outstanding uncommitted changes
+
+              ----nnoo--ccoommmmiitt
+                     don't commit, just update the working directory
+
+              ----eexxaacctt
+                     apply patch to the nodes from which it was generated
+
+              ----iimmppoorrtt--bbrraanncchh
+                     use any branch information in patch (implied by --exact)
+
+              --mm,, ----mmeessssaaggee
+                     use <text> as commit message
+
+              --ll,, ----llooggffiillee
+                     read commit message from <file>
+
+              --dd,, ----ddaattee
+                     record datecode as commit date
+
+              --uu,, ----uusseerr
+                     record the specified user as committer
+
+              --ss,, ----ssiimmiillaarriittyy
+                     guess renamed files by similarity (0<=s<=100)
+
+              aliases: patch
+
+       iinnccoommiinngg [[--pp]] [[--nn]] [[--MM]] [[--ff]] [[--rr RREEVV]]...... [[----bbuunnddllee FFIILLEENNAAMMEE]] [[SSOOUURRCCEE]]
+
+              Show new changesets found  in  the  specified  path/URL  or  the
+              default  pull location. These are the changesets that would have
+              been pulled if a pull at the time you issued this command.
+
+              For remote repository, using  --bundle  avoids  downloading  the
+              changesets twice if the incoming is followed by a pull.
+
+              See pull for valid source format details.
+
+              options:
+
+              --ff,, ----ffoorrccee
+                     run even when remote repository is unrelated
+
+              --nn,, ----nneewweesstt--ffiirrsstt
+                     show newest record first
+
+              ----bbuunnddllee
+                     file to store the bundles into
+
+              --rr,, ----rreevv
+                     a  specific remote revision up to which you would like to
+                     pull
+
+              --pp,, ----ppaattcchh
+                     show patch
+
+              --gg,, ----ggiitt
+                     use git extended diff format
+
+              --ll,, ----lliimmiitt
+                     limit number of changes displayed
+
+              --MM,, ----nnoo--mmeerrggeess
+                     do not show merges
+
+              ----ssttyyllee
+                     display using template map file
+
+              ----tteemmppllaattee
+                     display with template
+
+              --ee,, ----sssshh
+                     specify ssh command to use
+
+              ----rreemmootteeccmmdd
+                     specify hg command to run on the remote side
+
+              aliases: in
+
+       iinniitt [[--ee CCMMDD]] [[----rreemmootteeccmmdd CCMMDD]] [[DDEESSTT]]
+
+              Initialize a new repository in the given directory. If the given
+              directory does not exist, it will be created.
+
+              If no directory is given, the current directory is used.
+
+              It is possible to specify an ssh:// URL as the destination.  See
+              'hg help urls' for more information.
+
+              options:
+
+              --ee,, ----sssshh
+                     specify ssh command to use
+
+              ----rreemmootteeccmmdd
+                     specify hg command to run on the remote side
+
+       llooccaattee [[OOPPTTIIOONN]]...... [[PPAATTTTEERRNN]]......
+
+              Print files under Mercurial control  in  the  working  directory
+              whose names match the given patterns.
+
+              By default, this command searches all directories in the working
+              directory. To search just the current directory and  its  subdi-
+              rectories, use "--include .".
+
+              If no patterns are given to match, this command prints the names
+              of all files under Mercurial control in the working directory.
+
+              If you want to feed the output of this command into the  "xargs"
+              command,  use  the  -0  option to both this command and "xargs".
+              This will avoid the problem of "xargs" treating single filenames
+              that contain whitespace as multiple filenames.
+
+              options:
+
+              --rr,, ----rreevv
+                     search the repository as it stood at REV
+
+              --00,, ----pprriinntt00
+                     end filenames with NUL, for use with xargs
+
+              --ff,, ----ffuullllppaatthh
+                     print complete paths from the filesystem root
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+       lloogg [[OOPPTTIIOONN]]...... [[FFIILLEE]]
+
+              Print  the revision history of the specified files or the entire
+              project.
+
+              File history is shown without following rename or  copy  history
+              of  files.  Use  -f/--follow  with  a filename to follow history
+              across renames and copies. --follow without a filename will only
+              show  ancestors  or descendants of the starting revision. --fol-
+              low-first only follows the first parent of merge revisions.
+
+              If no revision range is specified, the default  is  tip:0 unless
+              --follow  is  set, in which case the working directory parent is
+              used as the starting revision.
+
+              See 'hg help dates' for a list of formats valid for -d/--date.
+
+              By default this command prints revision number and changeset id,
+              tags,  non-trivial  parents,  user, date and time, and a summary
+              for each commit. When the -v/--verbose switch is used, the  list
+              of changed files and full commit message are shown.
+
+              NOTE:  log  -p/--patch  may  generate unexpected diff output for
+              merge changesets, as it will only compare  the  merge  changeset
+              against  its  first parent. Also, only files different from BOTH
+              parents will appear in files:.
+
+              options:
+
+              --ff,, ----ffoollllooww
+                     follow changeset history, or file history  across  copies
+                     and renames
+
+              ----ffoollllooww--ffiirrsstt
+                     only follow the first parent of merge changesets
+
+              --dd,, ----ddaattee
+                     show revisions matching date spec
+
+              --CC,, ----ccooppiieess
+                     show copied files
+
+              --kk,, ----kkeeyywwoorrdd
+                     do case-insensitive search for a keyword
+
+              --rr,, ----rreevv
+                     show the specified revision or range
+
+              ----rreemmoovveedd
+                     include revisions where files were removed
+
+              --mm,, ----oonnllyy--mmeerrggeess
+                     show only merges
+
+              --uu,, ----uusseerr
+                     revisions committed by user
+
+              --bb,, ----oonnllyy--bbrraanncchh
+                     show only changesets within the given named branch
+
+              --PP,, ----pprruunnee
+                     do not display revision or any of its ancestors
+
+              --pp,, ----ppaattcchh
+                     show patch
+
+              --gg,, ----ggiitt
+                     use git extended diff format
+
+              --ll,, ----lliimmiitt
+                     limit number of changes displayed
+
+              --MM,, ----nnoo--mmeerrggeess
+                     do not show merges
+
+              ----ssttyyllee
+                     display using template map file
+
+              ----tteemmppllaattee
+                     display with template
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+              aliases: history
+
+       mmaanniiffeesstt [[--rr RREEVV]]
+
+              Print a list of version controlled files for the given revision.
+              If no revision is given, the first parent of the working  direc-
+              tory  is  used,  or  the null revision if no revision is checked
+              out.
+
+              With -v, print file permissions, symlink  and  executable  bits.
+              With --debug, print file revision hashes.
+
+              options:
+
+              --rr,, ----rreevv
+                     revision to display
+
+       mmeerrggee [[--ff]] [[[[--rr]] RREEVV]]
+
+              The  current  working directory is updated with all changes made
+              in the requested revision  since  the  last  common  predecessor
+              revision.
+
+              Files  that  changed between either parent are marked as changed
+              for the next commit and a commit must be  performed  before  any
+              further  updates  to the repository are allowed. The next commit
+              will have two parents.
+
+              If no revision is specified, the working directory's parent is a
+              head revision, and the current branch contains exactly one other
+              head, the other head is merged with by  default.  Otherwise,  an
+              explicit revision with which to merge with must be provided.
+
+              options:
+
+              --ff,, ----ffoorrccee
+                     force a merge with outstanding changes
+
+              --rr,, ----rreevv
+                     revision to merge
+
+              --PP,, ----pprreevviieeww
+                     review revisions to merge (no merge is performed)
+
+       oouuttggooiinngg [[--MM]] [[--pp]] [[--nn]] [[--ff]] [[--rr RREEVV]]...... [[DDEESSTT]]
+
+              Show  changesets  not found in the specified destination reposi-
+              tory or the default push location. These are the changesets that
+              would be pushed if a push was requested.
+
+              See pull for valid destination format details.
+
+              options:
+
+              --ff,, ----ffoorrccee
+                     run even when remote repository is unrelated
+
+              --rr,, ----rreevv
+                     a specific revision up to which you would like to push
+
+              --nn,, ----nneewweesstt--ffiirrsstt
+                     show newest record first
+
+              --pp,, ----ppaattcchh
+                     show patch
+
+              --gg,, ----ggiitt
+                     use git extended diff format
+
+              --ll,, ----lliimmiitt
+                     limit number of changes displayed
+
+              --MM,, ----nnoo--mmeerrggeess
+                     do not show merges
+
+              ----ssttyyllee
+                     display using template map file
+
+              ----tteemmppllaattee
+                     display with template
+
+              --ee,, ----sssshh
+                     specify ssh command to use
+
+              ----rreemmootteeccmmdd
+                     specify hg command to run on the remote side
+
+              aliases: out
+
+       ppaarreennttss [[--rr RREEVV]] [[FFIILLEE]]
+
+              Print the working directory's parent revisions. If a revision is
+              given via -r/--rev, the parent of that revision will be printed.
+              If  a file argument is given, the revision in which the file was
+              last changed (before the working directory revision or the argu-
+              ment to --rev if given) is printed.
+
+              options:
+
+              --rr,, ----rreevv
+                     show parents from the specified revision
+
+              ----ssttyyllee
+                     display using template map file
+
+              ----tteemmppllaattee
+                     display with template
+
+       ppaatthhss [[NNAAMMEE]]
+
+              Show definition of symbolic path name NAME. If no name is given,
+              show definition of all available names.
+
+              Path names are defined in the  [paths]  section  of  /etc/mercu-
+              rial/hgrc  and $HOME/.hgrc. If run inside a repository, .hg/hgrc
+              is used, too.
+
+              See 'hg help urls' for more information.
+
+       ppuullll [[--uu]] [[--ff]] [[--rr RREEVV]]...... [[--ee CCMMDD]] [[----rreemmootteeccmmdd CCMMDD]] [[SSOOUURRCCEE]]
+
+              Pull changes from a remote repository to a local one.
+
+              This finds all changes from the repository at the specified path
+              or  URL  and  adds  them  to a local repository (the current one
+              unless -R is specified). By default, this does  not  update  the
+              copy of the project in the working directory.
+
+              Use hg incoming if you want to see what would have been added by
+              a pull at the time you issued this command. If you  then  decide
+              to added those changes to the repository, you should use pull -r
+              X where X is the last changeset listed by hg incoming.
+
+              If SOURCE is omitted, the 'default' path will be used.  See  'hg
+              help urls' for more information.
+
+              options:
+
+              --uu,, ----uuppddaattee
+                     update to new tip if changesets were pulled
+
+              --ff,, ----ffoorrccee
+                     run even when remote repository is unrelated
+
+              --rr,, ----rreevv
+                     a  specific remote revision up to which you would like to
+                     pull
+
+              --ee,, ----sssshh
+                     specify ssh command to use
+
+              ----rreemmootteeccmmdd
+                     specify hg command to run on the remote side
+
+       ppuusshh [[--ff]] [[--rr RREEVV]]...... [[--ee CCMMDD]] [[----rreemmootteeccmmdd CCMMDD]] [[DDEESSTT]]
+
+              Push changes from the local repository to the given destination.
+
+              This  is  the  symmetrical  operation for pull. It moves changes
+              from the current repository to a different one. If the  destina-
+              tion is local this is identical to a pull in that directory from
+              the current one.
+
+              By default, push will refuse to run if  it  detects  the  result
+              would  increase the number of remote heads. This generally indi-
+              cates the user forgot to pull and merge before pushing.
+
+              If -r/--rev is used, the named revision and  all  its  ancestors
+              will be pushed to the remote repository.
+
+              Please  see  'hg  help  urls' for important details about ssh://
+              URLs. If DESTINATION is omitted, a default path will be used.
+
+              options:
+
+              --ff,, ----ffoorrccee
+                     force push
+
+              --rr,, ----rreevv
+                     a specific revision up to which you would like to push
+
+              --ee,, ----sssshh
+                     specify ssh command to use
+
+              ----rreemmootteeccmmdd
+                     specify hg command to run on the remote side
+
+       rreeccoovveerr
+
+              Recover from an interrupted commit or pull.
+
+              This command tries to fix the repository status after an  inter-
+              rupted  operation.  It  should  only be necessary when Mercurial
+              suggests it.
+
+       rreemmoovvee [[OOPPTTIIOONN]]...... FFIILLEE......
+
+              Schedule the indicated files for removal from the repository.
+
+              This only removes files from the current branch,  not  from  the
+              entire  project  history.  -A/--after can be used to remove only
+              files that have already been deleted, -f/--force can be used  to
+              force  deletion,  and  -Af  can be used to remove files from the
+              next revision without deleting them from the working  directory.
+
+              The following table details the behavior of remove for different
+              file states (columns) and option combinations (rows).  The  file
+              states  are  Added  [A], Clean [C], Modified [M] and Missing [!]
+              (as reported by hg status). The actions are Warn,  Remove  (from
+              branch) and Delete (from disk):
+
+                     A  C  M  !
+              none   W  RD W  R
+              -f     R  RD RD R
+              -A     W  W  W  R
+              -Af    R  R  R  R
+
+              This  command schedules the files to be removed at the next com-
+              mit.  To undo a remove before that, see hg revert.
+
+              options:
+
+              --AA,, ----aafftteerr
+                     record delete for missing files
+
+              --ff,, ----ffoorrccee
+                     remove (and delete) file even if added or modified
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+              aliases: rm
+
+       rreennaammee [[OOPPTTIIOONN]]...... SSOOUURRCCEE...... DDEESSTT
+
+              Mark dest as copies of sources; mark sources  for  deletion.  If
+              dest  is  a directory, copies are put in that directory. If dest
+              is a file, there can only be one source.
+
+              By default, this command copies the contents of  files  as  they
+              exist  in the working directory. If invoked with -A/--after, the
+              operation is recorded, but no copying is performed.
+
+              This command takes effect at the next commit. To undo  a  rename
+              before that, see hg revert.
+
+              options:
+
+              --AA,, ----aafftteerr
+                     record a rename that has already occurred
+
+              --ff,, ----ffoorrccee
+                     forcibly copy over an existing managed file
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+              --nn,, ----ddrryy--rruunn
+                     do not perform actions, just print output
+
+              aliases: mv
+
+       rreessoollvvee [[OOPPTTIIOONN]]...... [[FFIILLEE]]......
+
+              This command can cleanly retry unresolved file merges using file
+              revisions preserved from the last update or merge.
+
+              If a conflict is resolved manually, please note that the changes
+              will  be  overwritten  if the merge is retried with resolve. The
+              -m/--mark switch should be used to mark the file as resolved.
+
+              You can specify a set of files to operate on, or use the -a/-all
+              switch to select all unresolved files.
+
+              This  command  also  allows  listing resolved files and manually
+              indicating whether or not files are resolved. All files must  be
+              marked as resolved before a commit is permitted.
+
+              The codes used to show the status of files are:
+
+              U = unresolved
+              R = resolved
+
+              options:
+
+              --aa,, ----aallll
+                     select all unresolved files
+
+              --ll,, ----lliisstt
+                     list state of files needing merge
+
+              --mm,, ----mmaarrkk
+                     mark files as resolved
+
+              --uu,, ----uunnmmaarrkk
+                     unmark files as resolved
+
+              --nn,, ----nnoo--ssttaattuuss
+                     hide status prefix
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+       rreevveerrtt [[OOPPTTIIOONN]]...... [[--rr RREEVV]] [[NNAAMMEE]]......
+
+              (Use  update  -r to check out earlier revisions, revert does not
+              change the working directory parents.)
+
+              With no revision specified, revert the named files  or  directo-
+              ries  to  the  contents  they  had  in the parent of the working
+              directory.  This restores the contents of the affected files  to
+              an  unmodified  state and unschedules adds, removes, copies, and
+              renames. If the working directory  has  two  parents,  you  must
+              explicitly specify the revision to revert to.
+
+              Using the -r/--rev option, revert the given files or directories
+              to their contents as of a specific revision. This can be helpful
+              to  "roll  back"  some or all of an earlier change. See 'hg help
+              dates' for a list of formats valid for -d/--date.
+
+              Revert modifies the working directory. It does  not  commit  any
+              changes,  or  change the parent of the working directory. If you
+              revert to a revision other than the parent of the working direc-
+              tory, the reverted files will thus appear modified afterwards.
+
+              If  a  file  has been deleted, it is restored. If the executable
+              mode of a file was changed, it is reset.
+
+              If names are given, all files matching the names  are  reverted.
+              If no arguments are given, no files are reverted.
+
+              Modified  files  are saved with a .orig suffix before reverting.
+              To disable these backups, use --no-backup.
+
+              options:
+
+              --aa,, ----aallll
+                     revert all changes when no arguments given
+
+              --dd,, ----ddaattee
+                     tipmost revision matching date
+
+              --rr,, ----rreevv
+                     revision to revert to
+
+              ----nnoo--bbaacckkuupp
+                     do not save backup copies of files
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+              --nn,, ----ddrryy--rruunn
+                     do not perform actions, just print output
+
+       rroollllbbaacckk
+
+              This command should be used with care. There is only  one  level
+              of  rollback,  and  there  is no way to undo a rollback. It will
+              also restore the dirstate at the time of the  last  transaction,
+              losing  any  dirstate changes since that time. This command does
+              not alter the working directory.
+
+              Transactions are used to encapsulate the effects of all commands
+              that create new changesets or propagate existing changesets into
+              a repository. For example, the following commands  are  transac-
+              tional, and their effects can be rolled back:
+
+              commit
+              import
+              pull
+              push (with this repository as destination)
+              unbundle
+
+              This  command  is  not  intended for use on public repositories.
+              Once changes are visible for pull  by  other  users,  rolling  a
+              transaction  back  locally  is  ineffective  (someone  else  may
+              already have pulled the changes). Furthermore, a race is  possi-
+              ble  with  readers of the repository; for example an in-progress
+              pull from the repository may fail if a rollback is performed.
+
+       rroooott
+
+              Print the root directory of the current repository.
+
+       sseerrvvee [[OOPPTTIIOONN]]......
+
+              Start a local HTTP repository browser and pull server.
+
+              By default, the server logs accesses to  stdout  and  errors  to
+              stderr.  Use the -A/--accesslog and -E/--errorlog options to log
+              to files.
+
+              options:
+
+              --AA,, ----aacccceesssslloogg
+                     name of access log file to write to
+
+              --dd,, ----ddaaeemmoonn
+                     run server in background
+
+              ----ddaaeemmoonn--ppiippeeffddss
+                     used internally by daemon mode
+
+              --EE,, ----eerrrroorrlloogg
+                     name of error log file to write to
+
+              --pp,, ----ppoorrtt
+                     port to listen on (default: 8000)
+
+              --aa,, ----aaddddrreessss
+                     address to listen on (default: all interfaces)
+
+              ----pprreeffiixx
+                     prefix path to serve from (default: server root)
+
+              --nn,, ----nnaammee
+                     name to show in web pages (default: working directory)
+
+              ----wweebbddiirr--ccoonnff
+                     name of the webdir  config  file  (serve  more  than  one
+                     repository)
+
+              ----ppiidd--ffiillee
+                     name of file to write process ID to
+
+              ----ssttddiioo
+                     for remote clients
+
+              --tt,, ----tteemmppllaatteess
+                     web templates to use
+
+              ----ssttyyllee
+                     template style to use
+
+              --66,, ----iippvv66
+                     use IPv6 in addition to IPv4
+
+              ----cceerrttiiffiiccaattee
+                     SSL certificate file
+
+       sshhoowwccoonnffiigg [[--uu]] [[NNAAMMEE]]......
+
+              With no arguments, print names and values of all config items.
+
+              With one argument of the form section.name, print just the value
+              of that config item.
+
+              With multiple arguments, print names and values  of  all  config
+              items with matching section names.
+
+              With  --debug,  the source (filename and line number) is printed
+              for each config item.
+
+              options:
+
+              --uu,, ----uunnttrruusstteedd
+                     show untrusted configuration options
+
+              aliases: debugconfig
+
+       ssttaattuuss [[OOPPTTIIOONN]]...... [[FFIILLEE]]......
+
+              Show status of files in the repository. If names are given, only
+              files  that  match are shown. Files that are clean or ignored or
+              the source of a  copy/move  operation,  are  not  listed  unless
+              -c/--clean,  -i/--ignored,  -C/--copies  or  -A/--all are given.
+              Unless options described with "show only  ..."  are  given,  the
+              options -mardu are used.
+
+              Option  -q/--quiet  hides  untracked (unknown and ignored) files
+              unless explicitly requested with -u/--unknown or -i/--ignored.
+
+              NOTE: status may appear to disagree  with  diff  if  permissions
+              have  changed  or a merge has occurred. The standard diff format
+              does not report permission changes and diff only reports changes
+              relative to one merge parent.
+
+              If  one  revision is given, it is used as the base revision.  If
+              two revisions are given, the differences between them are shown.
+
+              The codes used to show the status of files are:
+
+              M = modified
+              A = added
+              R = removed
+              C = clean
+              ! = missing (deleted by non-hg command, but still tracked)
+              ? = not tracked
+              I = ignored
+                = origin of the previous file listed as A (added)
+
+              options:
+
+              --AA,, ----aallll
+                     show status of all files
+
+              --mm,, ----mmooddiiffiieedd
+                     show only modified files
+
+              --aa,, ----aaddddeedd
+                     show only added files
+
+              --rr,, ----rreemmoovveedd
+                     show only removed files
+
+              --dd,, ----ddeelleetteedd
+                     show only deleted (but tracked) files
+
+              --cc,, ----cclleeaann
+                     show only files without changes
+
+              --uu,, ----uunnkknnoowwnn
+                     show only unknown (not tracked) files
+
+              --ii,, ----iiggnnoorreedd
+                     show only ignored files
+
+              --nn,, ----nnoo--ssttaattuuss
+                     hide status prefix
+
+              --CC,, ----ccooppiieess
+                     show source of copied files
+
+              --00,, ----pprriinntt00
+                     end filenames with NUL, for use with xargs
+
+              ----rreevv  show difference from revision
+
+              --II,, ----iinncclluuddee
+                     include names matching the given patterns
+
+              --XX,, ----eexxcclluuddee
+                     exclude names matching the given patterns
+
+              aliases: st
+
+       ssuummmmaarryy [[----rreemmoottee]]
+
+              This  generates  a brief summary of the working directory state,
+              including parents, branch, commit status, and available updates.
+
+              With  the --remote option, this will check the default paths for
+              incoming and outgoing changes. This can be time-consuming.
+
+              options:
+
+              ----rreemmoottee
+                     check for push and pull
+
+              aliases: sum
+
+       ttaagg [[--ll]] [[--mm TTEEXXTT]] [[--dd DDAATTEE]] [[--uu UUSSEERR]] [[--rr RREEVV]] NNAAMMEE......
+
+              Name a particular revision using <name>.
+
+              Tags are used to name particular revisions of the repository and
+              are  very  useful  to compare different revisions, to go back to
+              significant  earlier  versions  or  to  mark  branch  points  as
+              releases, etc.
+
+              If  no revision is given, the parent of the working directory is
+              used, or tip if no revision is checked out.
+
+              To facilitate version  control,  distribution,  and  merging  of
+              tags, they are stored as a file named ".hgtags" which is managed
+              similarly to other project files and can be hand-edited if  nec-
+              essary.  The  file  '.hg/localtags'  is used for local tags (not
+              shared among repositories).
+
+              See 'hg help dates' for a list of formats valid for -d/--date.
+
+              options:
+
+              --ff,, ----ffoorrccee
+                     replace existing tag
+
+              --ll,, ----llooccaall
+                     make the tag local
+
+              --rr,, ----rreevv
+                     revision to tag
+
+              ----rreemmoovvee
+                     remove a tag
+
+              --mm,, ----mmeessssaaggee
+                     use <text> as commit message
+
+              --dd,, ----ddaattee
+                     record datecode as commit date
+
+              --uu,, ----uusseerr
+                     record the specified user as committer
+
+       ttaaggss
+
+              This lists both regular and local tags.  When  the  -v/--verbose
+              switch  is  used,  a  third  column "local" is printed for local
+              tags.
+
+       ttiipp [[--pp]]
+
+              The tip revision (usually just called the tip) is the  changeset
+              most  recently  added  to the repository (and therefore the most
+              recently changed head).
+
+              If you have just made a commit, that commit will be the tip.  If
+              you have just pulled changes from another repository, the tip of
+              that repository becomes the current tip. The "tip" tag  is  spe-
+              cial and cannot be renamed or assigned to a different changeset.
+
+              options:
+
+              --pp,, ----ppaattcchh
+                     show patch
+
+              --gg,, ----ggiitt
+                     use git extended diff format
+
+              ----ssttyyllee
+                     display using template map file
+
+              ----tteemmppllaattee
+                     display with template
+
+       uunnbbuunnddllee [[--uu]] FFIILLEE......
+
+              Apply one or more compressed changegroup files generated by  the
+              bundle command.
+
+              options:
+
+              --uu,, ----uuppddaattee
+                     update to new tip if changesets were unbundled
+
+       uuppddaattee [[--cc]] [[--CC]] [[--dd DDAATTEE]] [[[[--rr]] RREEVV]]
+
+              Update  the  repository's  working  directory  to  the specified
+              changeset.
+
+              If no changeset is specified, attempt to update to the  head  of
+              the  current branch. If this head is a descendant of the working
+              directory's parent, update to it, otherwise abort.
+
+              The following rules apply when the  working  directory  contains
+              uncommitted changes:
+
+              1. If neither -c/--check nor -C/--clean is specified, and if the
+                 requested changeset is an ancestor or descendant of the work-
+                 ing  directory's  parent,  the uncommitted changes are merged
+                 into the requested changeset and the merged  result  is  left
+                 uncommitted. If the requested changeset is not an ancestor or
+                 descendant (that is, it is on another branch), the update  is
+                 aborted and the uncommitted changes are preserved.
+
+              2. With  the  -c/--check  option,  the update is aborted and the
+                 uncommitted changes are preserved.
+
+              3. With the -C/--clean option, uncommitted changes are discarded
+                 and the working directory is updated to the requested change-
+                 set.
+
+              Use null as the changeset to remove the working directory  (like
+              'hg clone -U').
+
+              If  you  want to update just one file to an older changeset, use
+              'hg revert'.
+
+              See 'hg help dates' for a list of formats valid for -d/--date.
+
+              options:
+
+              --CC,, ----cclleeaann
+                     discard uncommitted changes (no backup)
+
+              --cc,, ----cchheecckk
+                     check for uncommitted changes
+
+              --dd,, ----ddaattee
+                     tipmost revision matching date
+
+              --rr,, ----rreevv
+                     revision
+
+              aliases: up checkout co
+
+       vveerriiffyy
+
+              Verify the integrity of the current repository.
+
+              This  will  perform  an  extensive  check  of  the  repository's
+              integrity,  validating the hashes and checksums of each entry in
+              the changelog, manifest, and  tracked  files,  as  well  as  the
+              integrity of their crosslinks and indices.
+
+       vveerrssiioonn
+
+              output version and copyright information
+
+CCOONNFFIIGGUURRAATTIIOONN FFIILLEESS
+       Mercurial  reads  configuration data from several files, if they exist.
+       Below we list the most specific file first.
+
+       On Windows, these configuration files are read:
+
+       · <<rreeppoo>>\\..hhgg\\hhggrrcc
+
+       · %%UUSSEERRPPRROOFFIILLEE%%\\..hhggrrcc
+
+       · %%UUSSEERRPPRROOFFIILLEE%%\\MMeerrccuurriiaall..iinnii
+
+       · %%HHOOMMEE%%\\..hhggrrcc
+
+       · %%HHOOMMEE%%\\MMeerrccuurriiaall..iinnii
+
+       · CC::\\MMeerrccuurriiaall\\MMeerrccuurriiaall..iinnii
+
+       · HHKKEEYY__LLOOCCAALL__MMAACCHHIINNEE\\SSOOFFTTWWAARREE\\MMeerrccuurriiaall
+
+       · <<iinnssttaallll--ddiirr>>\\MMeerrccuurriiaall..iinnii
+
+       On Unix, these files are read:
+
+       · <<rreeppoo>>//..hhgg//hhggrrcc
+
+       · $$HHOOMMEE//..hhggrrcc
+
+       · //eettcc//mmeerrccuurriiaall//hhggrrcc
+
+       · //eettcc//mmeerrccuurriiaall//hhggrrcc..dd//**..rrcc
+
+       · <<iinnssttaallll--rroooott>>//eettcc//mmeerrccuurriiaall//hhggrrcc
+
+       · <<iinnssttaallll--rroooott>>//eettcc//mmeerrccuurriiaall//hhggrrcc..dd//**..rrcc
+
+       The configuration files for Mercurial use a simple ini-file  format.  A
+       configuration  file consists of sections, led by a [[sseeccttiioonn]] header and
+       followed by nnaammee == vvaalluuee entries:
+
+       [ui]
+       username = Firstname Lastname <firstname.lastname@example.net>
+       verbose = True
+
+       This above entries will be referred to as uuii..uusseerrnnaammee  and  uuii..vveerrbboossee,
+       respectively.  Please  see  the hgrc man page for a full description of
+       the possible configuration values:
+
+       · on Unix-like systems: mmaann hhggrrcc
+
+       · online: http://www.selenic.com/mercurial/hgrc.5.html
+
+DDAATTEE FFOORRMMAATTSS
+       Some commands allow the user to specify a date, e.g.:
+
+       · backout, commit, import, tag: Specify the commit date.
+
+       · log, revert, update: Select revision(s) by date.
+
+       Many date formats are valid. Here are some examples:
+
+       "Wed Dec 6 13:18:29 2006" (local timezone assumed)
+       "Dec 6 13:18 -0600" (year assumed, time offset provided)
+       "Dec 6 13:18 UTC" (UTC and GMT are aliases for +0000)
+       "Dec 6" (midnight)
+       "13:18" (today assumed)
+       "3:39" (3:39AM assumed)
+       "3:39pm" (15:39)
+       "2006-12-06 13:18:29" (ISO 8601 format)
+       "2006-12-6 13:18"
+       "2006-12-6"
+       "12-6"
+       "12/6"
+       "12/6/6" (Dec 6 2006)
+
+       Lastly, there is Mercurial's internal format:
+
+       "1165432709 0" (Wed Dec 6 13:18:29 2006 UTC)
+
+       This is the internal representation format for dates. unixtime  is  the
+       number of seconds since the epoch (1970-01-01 00:00 UTC). offset is the
+       offset of the local timezone, in seconds west of UTC (negative  if  the
+       timezone is east of UTC).
+
+       The log command also accepts date ranges:
+
+       "<{datetime}" - at or before a given date/time
+       ">{datetime}" - on or after a given date/time
+       "{datetime} to {datetime}" - a date range, inclusive
+       "-{days}" - within a given number of days of today
+
+FFIILLEE NNAAMMEE PPAATTTTEERRNNSS
+       Mercurial  accepts  several notations for identifying one or more files
+       at a time.
+
+       By default, Mercurial treats filenames  as  shell-style  extended  glob
+       patterns.
+
+       Alternate pattern notations must be specified explicitly.
+
+       To  use  a  plain path name without any pattern matching, start it with
+       ppaatthh::. These path names must completely match starting at  the  current
+       repository root.
+
+       To  use  an extended glob, start a name with gglloobb::. Globs are rooted at
+       the current directory; a glob such as **..cc will only match files in  the
+       current directory ending with ..cc.
+
+       The  supported glob syntax extensions are **** to match any string across
+       path separators and {{aa,,bb}} to mean "a or b".
+
+       To use a Perl/Python regular expression, start a name with rree::.  Regexp
+       pattern matching is anchored at the root of the repository.
+
+       Plain examples:
+
+       path:foo/bar   a name bar in a directory named foo in the root
+                      of the repository
+       path:path:name a file or directory named "path:name"
+
+       Glob examples:
+
+       glob:*.c       any name ending in ".c" in the current directory
+       *.c            any name ending in ".c" in the current directory
+       **.c           any name ending in ".c" in any subdirectory of the
+                      current directory including itself.
+       foo/*.c        any name ending in ".c" in the directory foo
+       foo/**.c       any name ending in ".c" in any subdirectory of foo
+                      including itself.
+
+       Regexp examples:
+
+       re:.*\.c$      any name ending in ".c", anywhere in the repository
+
+EENNVVIIRROONNMMEENNTT VVAARRIIAABBLLEESS
+       HHGG     Path  to  the 'hg' executable, automatically passed when running
+              hooks, extensions or external tools. If unset or empty, this  is
+              the  hg executable's name if it's frozen, or an executable named
+              'hg' (with %PATHEXT% [defaulting to COM/EXE/BAT/CMD]  extensions
+              on Windows) is searched.
+
+       HHGGEEDDIITTOORR
+              This  is the name of the editor to run when committing. See EDI-
+              TOR.
+
+              (deprecated, use .hgrc)
+
+       HHGGEENNCCOODDIINNGG
+              This overrides the default locale setting detected by Mercurial.
+              This  setting  is  used  to  convert  data  including usernames,
+              changeset descriptions, tag names, and  branches.  This  setting
+              can be overridden with the --encoding command-line option.
+
+       HHGGEENNCCOODDIINNGGMMOODDEE
+              This  sets  Mercurial's behavior for handling unknown characters
+              while transcoding user input. The  default  is  "strict",  which
+              causes  Mercurial  to  abort  if it can't map a character. Other
+              settings include "replace", which replaces  unknown  characters,
+              and  "ignore",  which drops them. This setting can be overridden
+              with the --encodingmode command-line option.
+
+       HHGGMMEERRGGEE
+              An executable to use for resolving merge conflicts. The  program
+              will  be executed with three arguments: local file, remote file,
+              ancestor file.
+
+              (deprecated, use .hgrc)
+
+       HHGGRRCCPPAATTHH
+              A list of files or directories to search for  hgrc  files.  Item
+              separator  is  ":"  on  Unix, ";" on Windows. If HGRCPATH is not
+              set, platform default search path is used. If  empty,  only  the
+              .hg/hgrc from the current repository is read.
+
+              For each element in HGRCPATH:
+
+              · if it's a directory, all files ending with .rc are added
+
+              · otherwise, the file itself will be added
+
+       HHGGUUSSEERR This  is  the string used as the author of a commit. If not set,
+              available values will be considered in this order:
+
+              · HGUSER (deprecated)
+
+              · hgrc files from the HGRCPATH
+
+              · EMAIL
+
+              · interactive prompt
+
+              · LOGNAME (with @@hhoossttnnaammee appended)
+
+              (deprecated, use .hgrc)
+
+       EEMMAAIILL  May be used as the author of a commit; see HGUSER.
+
+       LLOOGGNNAAMMEE
+              May be used as the author of a commit; see HGUSER.
+
+       VVIISSUUAALL This is the name of the editor to use when committing. See  EDI-
+              TOR.
+
+       EEDDIITTOORR Sometimes Mercurial needs to open a text file in an editor for a
+              user to modify, for example when writing  commit  messages.  The
+              editor it uses is determined by looking at the environment vari-
+              ables HGEDITOR, VISUAL and EDITOR,  in  that  order.  The  first
+              non-empty  one  is  chosen. If all of them are empty, the editor
+              defaults to 'vi'.
+
+       PPYYTTHHOONNPPAATTHH
+              This is used by Python to find imported modules and may need  to
+              be  set  appropriately  if  this Mercurial is not installed sys-
+              tem-wide.
+
+SSPPEECCIIFFYYIINNGG SSIINNGGLLEE RREEVVIISSIIOONNSS
+       Mercurial supports several ways to specify individual revisions.
+
+       A plain integer is treated as a revision number. Negative integers  are
+       treated  as  sequential offsets from the tip, with -1 denoting the tip,
+       -2 denoting the revision prior to the tip, and so forth.
+
+       A 40-digit hexadecimal string is treated as a unique  revision  identi-
+       fier.
+
+       A  hexadecimal  string  less  than  40  characters long is treated as a
+       unique  revision  identifier  and  is  referred  to  as  a   short-form
+       identifier.  A  short-form identifier is only valid if it is the prefix
+       of exactly one full-length identifier.
+
+       Any other string is treated as a tag or branch name. A tag  name  is  a
+       symbolic  name  associated  with  a  revision identifier. A branch name
+       denotes the tipmost revision of that branch. Tag and branch names  must
+       not contain the ":" character.
+
+       The  reserved  name  "tip"  is a special tag that always identifies the
+       most recent revision.
+
+       The reserved name "null" indicates the null revision. This is the revi-
+       sion of an empty repository, and the parent of revision 0.
+
+       The  reserved  name  "."  indicates the working directory parent. If no
+       working directory is checked out, it  is  equivalent  to  null.  If  an
+       uncommitted merge is in progress, "." is the revision of the first par-
+       ent.
+
+SSPPEECCIIFFYYIINNGG MMUULLTTIIPPLLEE RREEVVIISSIIOONNSS
+       When Mercurial accepts more than one revision, they  may  be  specified
+       individually,  or  provided  as a topologically continuous range, sepa-
+       rated by the ":" character.
+
+       The syntax of range notation is [BEGIN]:[END], where BEGIN and END  are
+       revision  identifiers. Both BEGIN and END are optional. If BEGIN is not
+       specified, it defaults to revision number 0. If END is  not  specified,
+       it defaults to the tip. The range ":" thus means "all revisions".
+
+       If BEGIN is greater than END, revisions are treated in reverse order.
+
+       A range acts as a closed interval. This means that a range of 3:5 gives
+       3, 4 and 5. Similarly, a range of 9:6 gives 9, 8, 7, and 6.
+
+DDIIFFFF FFOORRMMAATTSS
+       Mercurial's default format for showing changes between two versions  of
+       a  file is compatible with the unified format of GNU diff, which can be
+       used by GNU patch and many other standard tools.
+
+       While this standard format is often enough, it does not encode the fol-
+       lowing information:
+
+       · executable status and other permission bits
+
+       · copy or rename information
+
+       · changes in binary files
+
+       · creation or deletion of empty files
+
+       Mercurial also supports the extended diff format from the git VCS which
+       addresses these limitations. The git diff format  is  not  produced  by
+       default  because  a  few  widespread tools still do not understand this
+       format.
+
+       This means that when generating diffs from a Mercurial repository (e.g.
+       with  "hg export"), you should be careful about things like file copies
+       and renames or other things mentioned above, because  when  applying  a
+       standard  diff  to  a  different  repository, this extra information is
+       lost. Mercurial's internal operations (like  push  and  pull)  are  not
+       affected by this, because they use an internal binary format for commu-
+       nicating changes.
+
+       To make Mercurial produce the git extended diff format, use  the  --git
+       option  available  for many commands, or set 'git = True' in the [diff]
+       section of your hgrc. You do not need to set this option when importing
+       diffs in this format or using them in the mq extension.
+
+TTEEMMPPLLAATTEE UUSSAAGGEE
+       Mercurial allows you to customize output of commands through templates.
+       You can either pass in a template from the command line, via the --tem-
+       plate option, or select an existing template-style (--style).
+
+       You  can  customize  output  for any "log-like" command: log, outgoing,
+       incoming, tip, parents, heads and glog.
+
+       Three styles are packaged with Mercurial: default (the style used  when
+       no explicit preference is passed), compact and changelog.  Usage:
+
+       $ hg log -r1 --style changelog
+
+       A  template  is  a piece of text, with markup to invoke variable expan-
+       sion:
+
+       $ hg log -r1 --template "{node}\n"
+       b56ce7b07c52de7d5fd79fb89701ea538af65746
+
+       Strings in curly braces are called keywords. The availability  of  key-
+       words depends on the exact context of the templater. These keywords are
+       usually available for templating a log-like command:
+
+       aauutthhoorr String. The unmodified author of the changeset.
+
+       bbrraanncchheess
+              String. The name of the branch on which the changeset  was  com-
+              mitted. Will be empty if the branch name was default.
+
+       ddaattee   Date information. The date when the changeset was committed.
+
+       ddeesscc   String. The text of the changeset description.
+
+       ddiiffffssttaatt
+              String.  Statistics of changes with the following format: "modi-
+              fied files: +added/-removed lines"
+
+       ffiilleess  List of strings. All files modified, added, or removed  by  this
+              changeset.
+
+       ffiillee__aaddddss
+              List of strings. Files added by this changeset.
+
+       ffiillee__mmooddss
+              List of strings. Files modified by this changeset.
+
+       ffiillee__ddeellss
+              List of strings. Files removed by this changeset.
+
+       nnooddee   String.  The  changeset  identification  hash, as a 40-character
+              hexadecimal string.
+
+       ppaarreennttss
+              List of strings. The parents of the changeset.
+
+       rreevv    Integer. The repository-local changeset revision number.
+
+       ttaaggss   List of strings. Any tags associated with the changeset.
+
+       llaatteessttttaagg
+              String. Most recent global tag in the ancestors of this  change-
+              set.
+
+       llaatteessttttaaggddiissttaannccee
+              Integer. Longest path to the latest tag.
+
+       The  "date" keyword does not produce human-readable output. If you want
+       to use a date in your output, you can use a filter to process it.  Fil-
+       ters  are  functions which return a string based on the input variable.
+       You can also use a chain of filters to get the desired output:
+
+       $ hg tip --template "{date|isodate}\n"
+       2008-08-21 18:22 +0000
+
+       List of filters:
+
+       aaddddbbrreeaakkss
+              Any text. Add an XHTML "<br />" tag before the end of every line
+              except the last.
+
+       aaggee    Date.  Returns a human-readable date/time difference between the
+              given date/time and the current date/time.
+
+       bbaasseennaammee
+              Any text. Treats the text as a path, and returns the last compo-
+              nent of the path after splitting by the path separator (ignoring
+              trailing separators). For example, "foo/bar/baz"  becomes  "baz"
+              and "foo/bar//" becomes "bar".
+
+       ssttrriippddiirr
+              Treat the text as path and strip a directory level, if possible.
+              For example, "foo" and "foo/bar" becomes "foo".
+
+       ddaattee   Date. Returns a date in a Unix date format, including the  time-
+              zone: "Mon Sep 04 15:13:13 2006 0700".
+
+       ddoommaaiinn Any  text.  Finds  the  first  string  that  looks like an email
+              address, and extracts just the domain component.  Example:  UUsseerr
+              <<uusseerr@@eexxaammppllee..ccoomm>> becomes eexxaammppllee..ccoomm.
+
+       eemmaaiill  Any  text.  Extracts  the  first string that looks like an email
+              address. Example:  UUsseerr  <<uusseerr@@eexxaammppllee..ccoomm>>  becomes  uusseerr@@eexxaamm--
+              ppllee..ccoomm.
+
+       eessccaappee Any text. Replaces the special XML/XHTML characters "&", "<" and
+              ">" with XML entities.
+
+       ffiillll6688 Any text. Wraps the text to fit in 68 columns.
+
+       ffiillll7766 Any text. Wraps the text to fit in 76 columns.
+
+       ffiirrssttlliinnee
+              Any text. Returns the first line of text.
+
+       nnoonneemmppttyy
+              Any text. Returns '(none)' if the string is empty.
+
+       hhggddaattee Date. Returns the date as a pair of numbers: "1157407993  25200"
+              (Unix timestamp, timezone offset).
+
+       iissooddaattee
+              Date.  Returns  the  date  in ISO 8601 format: "2009-08-18 13:00
+              +0200".
+
+       iissooddaatteesseecc
+              Date. Returns the date in ISO 8601  format,  including  seconds:
+              "2009-08-18 13:00:13 +0200". See also the rfc3339date filter.
+
+       llooccaallddaattee
+              Date. Converts a date to local date.
+
+       oobbffuussccaattee
+              Any  text.  Returns the input text rendered as a sequence of XML
+              entities.
+
+       ppeerrssoonn Any text. Returns the text before an email address.
+
+       rrffcc882222ddaattee
+              Date. Returns a date using the same format used in  email  head-
+              ers: "Tue, 18 Aug 2009 13:00:13 +0200".
+
+       rrffcc33333399ddaattee
+              Date. Returns a date using the Internet date format specified in
+              RFC 3339: "2009-08-18T13:00:13+02:00".
+
+       sshhoorrtt  Changeset hash. Returns the short form of a changeset hash, i.e.
+              a 12-byte hexadecimal string.
+
+       sshhoorrttddaattee
+              Date. Returns a date like "2006-09-18".
+
+       ssttrriipp  Any text. Strips all leading and trailing whitespace.
+
+       ttaabbiinnddeenntt
+              Any  text.  Returns  the  text, with every line except the first
+              starting with a tab character.
+
+       uurrlleessccaappee
+              Any text. Escapes all "special" characters.  For  example,  "foo
+              bar" becomes "foo%20bar".
+
+       uusseerr   Any text. Returns the user portion of an email address.
+
+UURRLL PPAATTHHSS
+       Valid URLs are of the form:
+
+       local/filesystem/path[#revision]
+       file://local/filesystem/path[#revision]
+       http://[user[:pass]@]host[:port]/[path][#revision]
+       https://[user[:pass]@]host[:port]/[path][#revision]
+       ssh://[user[:pass]@]host[:port]/[path][#revision]
+
+       Paths  in  the local filesystem can either point to Mercurial reposito-
+       ries or to bundle files (as created by  'hg  bundle'  or  'hg  incoming
+       --bundle').
+
+       An  optional  identifier after # indicates a particular branch, tag, or
+       changeset to use from the remote repository. See also  'hg  help  revi-
+       sions'.
+
+       Some  features,  such  as pushing to http:// and https:// URLs are only
+       possible if the feature is explicitly enabled on the  remote  Mercurial
+       server.
+
+       Some notes about using SSH with Mercurial:
+
+       · SSH  requires  an accessible shell account on the destination machine
+         and a copy of hg in the remote path or specified with as remotecmd.
+
+       · path is relative to the remote user's home directory by default.  Use
+         an extra slash at the start of a path to specify an absolute path:
+
+         ssh://example.com//tmp/repository
+
+       · Mercurial doesn't use its own compression via SSH; the right thing to
+         do is to configure it in your ~/.ssh/config, e.g.:
+
+         Host *.mylocalnetwork.example.com
+           Compression no
+         Host *
+           Compression yes
+
+         Alternatively specify "ssh -C" as your ssh command in  your  hgrc  or
+         with the --ssh command line option.
+
+       These  URLs  can all be stored in your hgrc with path aliases under the
+       [paths] section like so:
+
+       [paths]
+       alias1 = URL1
+       alias2 = URL2
+       ...
+
+       You can then use the alias for any command that uses a URL (for example
+       'hg pull alias1' will be treated as 'hg pull URL1').
+
+       Two path aliases are special because they are used as defaults when you
+       do not provide the URL to a command:
+
+       ddeeffaauulltt::
+              When you create a repository with hg clone,  the  clone  command
+              saves  the  location of the source repository as the new reposi-
+              tory's 'default' path. This is then used when you omit path from
+              push-  and pull-like commands (including incoming and outgoing).
+
+       ddeeffaauulltt--ppuusshh::
+              The push command will look for a path named 'default-push',  and
+              prefer it over 'default' if both are defined.
+
+UUSSIINNGG AADDDDIITTIIOONNAALL FFEEAATTUURREESS
+       Mercurial has the ability to add new features through the use of exten-
+       sions. Extensions may add new commands, add options  to  existing  com-
+       mands, change the default behavior of commands, or implement hooks.
+
+       Extensions are not loaded by default for a variety of reasons: they can
+       increase startup overhead; they may be meant for advanced  usage  only;
+       they  may  provide potentially dangerous abilities (such as letting you
+       destroy or modify history); they might not be ready for prime time;  or
+       they  may  alter some usual behaviors of stock Mercurial. It is thus up
+       to the user to activate extensions as needed.
+
+       To enable the "foo" extension, either shipped with Mercurial or in  the
+       Python search path, create an entry for it in your hgrc, like this:
+
+       [extensions]
+       foo =
+
+       You may also specify the full path to an extension:
+
+       [extensions]
+       myfeature = ~/.hgext/myfeature.py
+
+       To explicitly disable an extension enabled in an hgrc of broader scope,
+       prepend its path with !:
+
+       [extensions]
+       # disabling extension bar residing in /path/to/extension/bar.py
+       hgext.bar = !/path/to/extension/bar.py
+       # ditto, but no path was supplied for extension baz
+       hgext.baz = !
+
+       disabled extensions:
+
+           aaccll    hooks for controlling repository access
+
+           bbooookkmmaarrkkss
+                  track a line of development with movable markers
+
+           bbuuggzziillllaa
+                  hooks for integrating with the Bugzilla bug tracker
+
+           cchhiillddrreenn
+                  command to display child changesets
+
+           cchhuurrnn  command to display statistics about repository history
+
+           ccoolloorr  colorize output from some commands
+
+           ccoonnvveerrtt
+                  import revisions from foreign VCS repositories  into  Mercu-
+                  rial
+
+           eexxttddiiffff
+                  command to allow external programs to compare revisions
+
+           ffeettcchh  pull, update and merge in one command
+
+           ggppgg    commands to sign and verify changesets
+
+           ggrraapphhlloogg
+                  command to view revision graphs from a shell
+
+           hhggcciiaa  hooks for integrating with the CIA.vc notification service
+
+           hhggkk    browse the repository in a graphical way
+
+           hhiigghhlliigghhtt
+                  syntax highlighting for hgweb (requires Pygments)
+
+           iinnoottiiffyy
+                  accelerate status report using Linux's inotify service
+
+           iinntteerrhhgg
+                  expand expressions into changelog and summaries
+
+           kkeeyywwoorrdd
+                  expand keywords in tracked files
+
+           mmqq     manage a stack of patches
+
+           nnoottiiffyy hooks for sending email notifications at commit/push time
+
+           ppaaggeerr  browse command output with an external pager
+
+           ppaarreennttrreevvssppeecc
+                  interpret suffixes to refer to ancestor revisions
+
+           ppaattcchhbboommbb
+                  command to send changesets as (a series of) patch emails
+
+           ppuurrggee  command to delete untracked files from the working directory
+
+           rreebbaassee command to move sets of revisions to a different ancestor
+
+           rreeccoorrdd commands to interactively select changes for commit/qrefresh
+
+           rreelliinnkk recreates hardlinks between repository clones
+
+           sshhaarree  share a common history between several working directories
+
+           ttrraannssppllaanntt
+                  command to transplant changesets from another branch
+
+           wwiinn3322mmbbccss
+                  allow the use of MBCS paths with problematic encodings
+
+           wwiinn3322tteexxtt
+                  perform automatic newline conversion
+
+           zzeerrooccoonnff
+                  discover and advertise repositories on the local network
+
+FFIILLEESS
+       ..hhggiiggnnoorree
+
+              This  file  contains  regular  expressions  (one  per line) that
+              describe file names that should be ignored by hhgg.  For  details,
+              see hhggiiggnnoorree(5).
+
+       ..hhggttaaggss
+
+              This file contains changeset hash values and text tag names (one
+              of each separated by spaces) that correspond to tagged  versions
+              of the repository contents.
+
+       //eettcc//mmeerrccuurriiaall//hhggrrcc,, $$HHOOMMEE//..hhggrrcc,, ..hhgg//hhggrrcc
+
+              This   file  contains  defaults  and  configuration.  Values  in
+              ..hhgg//hhggrrcc override those in $$HHOOMMEE//..hhggrrcc, and these override  set-
+              tings made in the global //eettcc//mmeerrccuurriiaall//hhggrrcc configuration.  See
+              hhggrrcc(5) for details of the contents and format of these files.
+
+       Some commands (e.g. revert) produce backup files ending  in  ..oorriigg,  if
+       the  ..oorriigg file already exists and is not tracked by Mercurial, it will
+       be overwritten.
+
+BBUUGGSS
+       Probably lots, please post them to  the  mailing  list  (see  Resources
+       below) when you find them.
+
+SSEEEE AALLSSOO
+       hhggiiggnnoorree(5), hhggrrcc(5)
+
+AAUUTTHHOORR
+       Written by Matt Mackall <mpm@selenic.com>
+
+RREESSOOUURRCCEESS
+       Main Web Site: http://mercurial.selenic.com/
+
+       Source code repository: http://selenic.com/hg
+
+       Mailing list: http://selenic.com/mailman/listinfo/mercurial
+
+CCOOPPYYIINNGG
+       Copyright  (C)  2005-2009  Matt  Mackall.  Free use of this software is
+       granted under the terms of the GNU General Public License version 2.
+
+AAUUTTHHOORR
+       Matt Mackall <mpm@selenic.com>
+
+       Organization: Mercurial
+
+
+
+                                                                         HG(1)

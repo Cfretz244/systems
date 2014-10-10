@@ -1,0 +1,120 @@
+LN(1)                            User Commands                           LN(1)
+
+
+
+NNAAMMEE
+       ln - make links between files
+
+SSYYNNOOPPSSIISS
+       llnn [_O_P_T_I_O_N]... [_-_T] _T_A_R_G_E_T _L_I_N_K___N_A_M_E   _(_1_s_t _f_o_r_m_)
+       llnn [_O_P_T_I_O_N]... _T_A_R_G_E_T                  _(_2_n_d _f_o_r_m_)
+       llnn [_O_P_T_I_O_N]... _T_A_R_G_E_T... _D_I_R_E_C_T_O_R_Y     _(_3_r_d _f_o_r_m_)
+       llnn [_O_P_T_I_O_N]... _-_t _D_I_R_E_C_T_O_R_Y _T_A_R_G_E_T...  _(_4_t_h _f_o_r_m_)
+
+DDEESSCCRRIIPPTTIIOONN
+       In  the  1st form, create a link to TARGET with the name LINK_NAME.  In
+       the 2nd form, create a link to TARGET in the current directory.  In the
+       3rd  and  4th  forms, create links to each TARGET in DIRECTORY.  Create
+       hard links by default, symbolic links with ----ssyymmbboolliicc.   When  creating
+       hard  links, each TARGET must exist.  Symbolic links can hold arbitrary
+       text; if later resolved, a relative link is interpreted in relation  to
+       its parent directory.
+
+       Mandatory  arguments  to  long  options are mandatory for short options
+       too.
+
+       ----bbaacckkuupp[=_C_O_N_T_R_O_L]
+              make a backup of each existing destination file
+
+       --bb     like ----bbaacckkuupp but does not accept an argument
+
+       --dd, --FF, ----ddiirreeccttoorryy
+              allow the superuser to attempt to hard link  directories  (note:
+              will  probably  fail  due  to  system restrictions, even for the
+              superuser)
+
+       --ff, ----ffoorrccee
+              remove existing destination files
+
+       --ii, ----iinntteerraaccttiivvee
+              prompt whether to remove destinations
+
+       --LL, ----llooggiiccaall
+              make hard links to symbolic link references
+
+       --nn, ----nnoo--ddeerreeffeerreennccee
+              treat destination that is a symlink to a directory as if it were
+              a normal file
+
+       --PP, ----pphhyyssiiccaall
+              make hard links directly to symbolic links
+
+       --ss, ----ssyymmbboolliicc
+              make symbolic links instead of hard links
+
+       --SS, ----ssuuffffiixx=_S_U_F_F_I_X
+              override the usual backup suffix
+
+       --tt, ----ttaarrggeett--ddiirreeccttoorryy=_D_I_R_E_C_T_O_R_Y
+              specify the DIRECTORY in which to create the links
+
+       --TT, ----nnoo--ttaarrggeett--ddiirreeccttoorryy
+              treat LINK_NAME as a normal file
+
+       --vv, ----vveerrbboossee
+              print name of each linked file
+
+       ----hheellpp display this help and exit
+
+       ----vveerrssiioonn
+              output version information and exit
+
+       The   backup   suffix   is  ‘~’,  unless  set  with  ----ssuuffffiixx  or  SIM-
+       PLE_BACKUP_SUFFIX.  The version control method may be selected via  the
+       ----bbaacckkuupp  option  or  through the VERSION_CONTROL environment variable.
+       Here are the values:
+
+       Using --ss ignores --LL and --PP.  Otherwise, the last option specified  con-
+       trols behavior when the source is a symbolic link, defaulting to --PP.
+
+       none, off
+              never make backups (even if ----bbaacckkuupp is given)
+
+       numbered, t
+              make numbered backups
+
+       existing, nil
+              numbered if numbered backups exist, simple otherwise
+
+       simple, never
+              always make simple backups
+
+AAUUTTHHOORR
+       Written by Mike Parker and David MacKenzie.
+
+RREEPPOORRTTIINNGG BBUUGGSS
+       Report ln bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: <http://www.gnu.org/software/coreutils/>
+       General help using GNU software: <http://www.gnu.org/gethelp/>
+       Report ln translation bugs to <http://translationproject.org/team/>
+
+CCOOPPYYRRIIGGHHTT
+       Copyright  ©  2010  Free Software Foundation, Inc.  License GPLv3+: GNU
+       GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+       This is free software: you are free  to  change  and  redistribute  it.
+       There is NO WARRANTY, to the extent permitted by law.
+
+SSEEEE AALLSSOO
+       link(2), symlink(2)
+
+       The  full  documentation  for llnn is maintained as a Texinfo manual.  If
+       the iinnffoo and llnn programs are properly installed at your site, the  com-
+       mand
+
+              iinnffoo ccoorreeuuttiillss ''llnn iinnvvooccaattiioonn''
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.4                  June 2014                             LN(1)

@@ -1,0 +1,252 @@
+RUBY(1)                Ruby Programmers Reference Guide                RUBY(1)
+
+NNAAMMEE
+     rruubbyy - Interpreted object-oriented scripting language
+
+SSYYNNOOPPSSIISS
+     rruubbyy [----ccooppyyrriigghhtt] [----vveerrssiioonn] [--SSaaccddllnnppsswwvvyy] [--00[_o_c_t_a_l]] [--CC _d_i_r_e_c_t_o_r_y]
+          [--FF _p_a_t_t_e_r_n] [--II _d_i_r_e_c_t_o_r_y] [--KK _c] [--TT[_l_e_v_e_l]] [--ee _c_o_m_m_a_n_d]
+          [--ii[_e_x_t_e_n_s_i_o_n]] [--rr _l_i_b_r_a_r_y] [--xx[_d_i_r_e_c_t_o_r_y]] [----] [_p_r_o_g_r_a_m___f_i_l_e]
+          [_a_r_g_u_m_e_n_t _._._.]
+
+DDEESSCCRRIIPPTTIIOONN
+     Ruby is an interpreted scripting language for quick and easy object-ori-
+     ented programming.  It has many features to process text files and to do
+     system management tasks (as in Perl).  It is simple, straight-forward,
+     and extensible.
+
+     If you want a language for easy object-oriented programming, or you don’t
+     like the Perl ugliness, or you do like the concept of LISP, but don’t
+     like too much parentheses, Ruby may be the language of your choice.
+
+FFEEAATTUURREESS
+     Ruby’s features are as follows:
+
+     IInntteerrpprreettiivvee
+             Ruby is an interpreted language, so you don’t have to recompile
+             programs written in Ruby to execute them.
+
+     VVaarriiaabblleess hhaavvee nnoo ttyyppee ((ddyynnaammiicc ttyyppiinngg))
+             Variables in Ruby can contain data of any type.  You don’t have
+             to worry about variable typing.  Consequently, it has a weaker
+             compile time check.
+
+     NNoo ddeeccllaarraattiioonn nneeeeddeedd
+             You can use variables in your Ruby programs without any declara-
+             tions.  Variable names denote their scope, local, global,
+             instance, etc.
+
+     SSiimmppllee ssyynnttaaxx
+             Ruby has a simple syntax influenced slightly from Eiffel.
+
+     NNoo uusseerr--lleevveell mmeemmoorryy mmaannaaggeemmeenntt
+             Ruby has automatic memory management.  Objects no longer refer-
+             enced from anywhere are automatically collected by the garbage
+             collector built into the interpreter.
+
+     EEvveerryytthhiinngg iiss aann oobbjjeecctt
+             Ruby is the purely object-oriented language, and was so since its
+             creation.  Even such basic data as integers are seen as objects.
+
+     CCllaassss,, iinnhheerriittaannccee,, aanndd mmeetthhooddss
+             Of course, as an object-oriented language, Ruby has such basic
+             features like classes, inheritance, and methods.
+
+     SSiinngglleettoonn mmeetthhooddss
+             Ruby has the ability to define methods for certain objects.  For
+             example, you can define a press-button action for certain widget
+             by defining a singleton method for the button.  Or, you can make
+             up your own prototype based object system using singleton meth-
+             ods, if you want to.
+
+     MMiixx--iinn bbyy mmoodduulleess
+             Ruby intentionally does not have the multiple inheritance as it
+             is a source of confusion.  Instead, Ruby has the ability to share
+             implementations across the inheritance tree.  This is often
+             called ‘Mix-in’.
+
+     IItteerraattoorrss
+             Ruby has iterators for loop abstraction.
+
+     CClloossuurreess
+             In Ruby, you can objectify the procedure.
+
+     TTeexxtt pprroocceessssiinngg aanndd rreegguullaarr eexxpprreessssiioonn
+             Ruby has a bunch of text processing features like in Perl.
+
+     BBiiggnnuummss
+             With built-in bignums, you can for example calculate facto-
+             rial(400).
+
+     EExxcceeppttiioonn hhaannddlliinngg
+             As in Java(tm).
+
+     DDiirreecctt aacccceessss ttoo tthhee OOSS
+             Ruby can use most UNIX system calls, often used in system pro-
+             gramming.
+
+     DDyynnaammiicc llooaaddiinngg
+             On most UNIX systems, you can load object files into the Ruby
+             interpreter on-the-fly.
+
+OOPPTTIIOONNSS
+     Ruby interpreter accepts following command-line options (switches).  They
+     are quite similar to those of perl(1).
+
+     ----ccooppyyrriigghhtt    Prints the copyright notice.
+
+     ----vveerrssiioonn      Prints the version of Ruby interpreter.
+
+     --00[_o_c_t_a_l]      (The digit “zero”.)  Specifies the input record separator
+                    ($/) as an octal number. If no digit is given, the null
+                    character is taken as the separator.  Other switches may
+                    follow the digits.  --0000 turns Ruby into paragraph mode.
+                    --00777777 makes Ruby read whole file at once as a single
+                    string since there is no legal character with that value.
+
+     --CC _d_i_r_e_c_t_o_r_y   Causes Ruby to switch to the directory.
+
+     --FF _p_a_t_t_e_r_n     Specifies input field separator ($;).
+
+     --II _d_i_r_e_c_t_o_r_y   Used to tell Ruby where to load the library scripts.
+                    Directory path will be added to the load-path variable
+                    ($:).
+
+     --KK _k_c_o_d_e       Specifies KANJI (Japanese) encoding.
+
+     --SS             Makes Ruby use the PATH environment variable to search for
+                    script, unless if its name begins with a slash.  This is
+                    used to emulate #! on machines that don’t support it, in
+                    the following manner:
+
+                          #! /usr/local/bin/ruby
+                          # This line makes the next one a comment in Ruby \
+                            exec /usr/local/bin/ruby -S $0 $*
+
+     --TT[_l_e_v_e_l]      Turns on taint checks at the specified level (default 1).
+
+     --aa             Turns on auto-split mode when used with --nn or --pp.  In
+                    auto-split mode, Ruby executes
+                          $F = $_.split
+                    at beginning of each loop.
+
+     --cc             Causes Ruby to check the syntax of the script and exit
+                    without executing. If there are no syntax errors, Ruby
+                    will print “Syntax OK” to the standard output.
+
+     --dd
+     ----ddeebbuugg        Turns on debug mode.  $DEBUG will be set to true.
+
+     --ee _c_o_m_m_a_n_d     Specifies script from command-line while telling Ruby not
+                    to search the rest of arguments for a script file name.
+
+     --hh
+     ----hheellpp         Prints a summary of the options.
+
+     --ii _e_x_t_e_n_s_i_o_n   Specifies in-place-edit mode.  The extension, if speci-
+                    fied, is added to old file name to make a backup copy.
+                    For example:
+
+                          % echo matz > /tmp/junk
+                          % cat /tmp/junk
+                          matz
+                          % ruby -p -i.bak -e ’$_.upcase!’ /tmp/junk
+                          % cat /tmp/junk
+                          MATZ
+                          % cat /tmp/junk.bak
+                          matz
+
+     --ll             (The lowercase letter “ell”.)  Enables automatic line-end-
+                    ing processing, which means to firstly set $\ to the value
+                    of $/, and secondly chops every line read using chop!.
+
+     --nn             Causes Ruby to assume the following loop around your
+                    script, which makes it iterate over file name arguments
+                    somewhat like sseedd --nn or aawwkk.
+
+                          while gets
+                            ...
+                          end
+
+     --pp             Acts mostly same as -n switch, but print the value of
+                    variable $_ at the each end of the loop.  For example:
+
+                          % echo matz | ruby -p -e ’$_.tr! "a-z", "A-Z"’
+                          MATZ
+
+     --rr _l_i_b_r_a_r_y     Causes Ruby to load the library using require.  It is use-
+                    ful when using --nn or --pp.
+
+     --ss             Enables some switch parsing for switches after script name
+                    but before any file name arguments (or before a ----).  Any
+                    switches found there are removed from ARGV and set the
+                    corresponding variable in the script.  For example:
+
+                          #! /usr/local/bin/ruby -s
+                          # prints "true" if invoked with ‘-xyz’ switch.
+                          print "true\n" if $xyz
+
+                    On some systems $0 does not always contain the full path-
+                    name, so you need the --SS switch to tell Ruby to search for
+                    the script if necessary.  To handle embedded spaces or
+                    such.  A better construct than $* would be ${1+"$@"}, but
+                    it does not work if the script is being interpreted by
+                    csh(1).
+
+     --vv
+     ----vveerrbboossee      Enables verbose mode.  Ruby will print its version at the
+                    beginning, and set the variable $VERBOSE to true.  Some
+                    methods print extra messages if this variable is true.  If
+                    this switch is given, and no other switches are present,
+                    Ruby quits after printing its version.
+
+     --ww             Enables verbose mode without printing version message at
+                    the beginning.  It sets the $VERBOSE variable to true.
+
+     --xx[_d_i_r_e_c_t_o_r_y]  Tells Ruby that the script is embedded in a message.
+                    Leading garbage will be discarded until the first that
+                    starts with “#!” and contains the string, “ruby”.  Any
+                    meaningful switches on that line will applied.  The end of
+                    script must be specified with either EOF, ^D (control-D),
+                    ^Z (control-Z), or reserved word __END__.  If the direc-
+                    tory name is specified, Ruby will switch to that directory
+                    before executing script.
+
+     --yy
+     ----yyyyddeebbuugg      Turns on compiler debug mode.  Ruby will print a bunch of
+                    internal state messages during compiling scripts.  You
+                    don’t have to specify this switch, unless you are going to
+                    debug the Ruby interpreter.
+
+EENNVVIIRROONNMMEENNTT
+     RUBYLIB         A colon-separated list of directories that are added to
+                     Ruby’s library load path ($:). Directories from this
+                     environment variable are searched before the standard
+                     load path is searched.
+
+                     e.g.:
+                           RUBYLIB="$HOME/lib/ruby:$HOME/lib/rubyext"
+
+     RUBYOPT         Additional Ruby options.
+
+                     e.g.
+                           RUBYOPT="-w -Ke"
+
+     RUBYPATH        A colon-separated list of directories that Ruby searches
+                     for Ruby programs when the --SS flag is specified.  This
+                     variable precedes the PATH environment variable.
+
+     RUBYSHELL       The path to the system shell command.  This environment
+                     variable is enabled for only mswin32, mingw32, and OS/2
+                     platforms.  If this variable is not defined, Ruby refers
+                     to COMSPEC.
+
+     PATH            Ruby refers to the PATH environment variable on calling
+                     Kernel#system.
+
+     RUBYLIB_PREFIX  This variable is obsolete.
+
+AAUUTTHHOORRSS
+     Ruby is designed and implemented by Yukihiro Matsumoto 〈matz@netlab.jp〉.
+
+UNIX                           December 31, 2002                          UNIX
