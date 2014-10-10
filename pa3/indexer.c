@@ -110,6 +110,7 @@ void handle_output(char *path, hash *table) {
         sprintf(line, "<list> %s\n", key);
         filled += needed;
         for (index_node *node = get(table, key); node; node = node->next) {
+            word_count++;
             char *filename = node->filename, *format;
             if (word_count && word_count % 5 == 0 || !node->next) {
                 needed = strlen(filename);
@@ -126,7 +127,6 @@ void handle_output(char *path, hash *table) {
                 line[filled] = '\n';
                 filled++;
             }
-            word_count++;
         }
         if (word_count % 5) {
             line = enforce(line, 1 + CLOSE_TAG_LENGTH, size, filled, &size);
@@ -180,6 +180,8 @@ void handle_file(char *path, hash *table) {
                 } else {
                     target = create_index_node(path);
                     target->count++;
+                    head = insert_index_node(head, target);
+                    update(table, token, head);
                 }
             } else {
                 index_node *node = create_index_node(path);

@@ -17,8 +17,9 @@ typedef struct hash {
 hash *create_hash();
 bool put(hash *table, char *key, index_node *data);
 index_node *get(hash *table, char *key);
-bool drop(hash *table, char *key);
+bool update(hash *table, char *key, index_node *head);
 char **get_keys(hash *table);
+bool drop(hash *table, char *key);
 void destroy_hash(hash *table);
 
 #endif

@@ -43,6 +43,9 @@ void rehash(hash *table) {
 }
 
 bool put(hash *table, char *key, index_node *data) {
+    if (!table || !key || !data) {
+        return false;
+    }
     if (table->count / (float) table->size > 0.8) {
         rehash(table);
     }
@@ -65,7 +68,7 @@ bool put(hash *table, char *key, index_node *data) {
 }
 
 index_node *get(hash *table, char *key) {
-    if (!table->count) {
+    if (!table || !table->count || !key) {
         return NULL;
     }
     int hash = hash_key(key, table->size);
@@ -77,21 +80,46 @@ index_node *get(hash *table, char *key) {
     }
 }
 
-bool drop(hash *table, char *key) {
-    if (table->count == 0) {
+bool update(hash *table, char *key, index_node *head) {
+    if (!table || !table->count || !key || !head) {
         return false;
     }
     int hash = hash_key(key, table->size);
-    if (find_hash_node(table->data[hash], key)) {
-        table->data[hash] = remove_hash_node(table->data[hash], key);
-        table->count--;
-        return true;
+    if (table->data[hash]) {
+        hash_node *found = find_hash_node(table->data[hash], key);
+        if (found) {
+            found->data = head;
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
+bool drop(hash *table, char *key) {
+    if (!table || table->count == 0 || !key) {
+        return false;
+    }
+    int hash = hash_key(key, table->size);
+    if (table->data[hash]) {
+        if (find_hash_node(table->data[hash], key)) {
+            table->data[hash] = remove_hash_node(table->data[hash], key);
+            table->count--;
+            return true;
+        } else {
+            return false;
+        }
     } else {
         return false;
     }
 }
 
 char **get_keys(hash *table) {
+    if (!table) {
+        return NULL;
+    }
     int current = 0;
     char **keys = (char **) malloc(sizeof(char *) * table->count);
     for (int i = 0; i < table->size; i++) {
@@ -106,6 +134,9 @@ char **get_keys(hash *table) {
 }
 
 void destroy_hash(hash *table) {
+    if (!table) {
+        return;
+    }
     if (table->count > 0) {
         for (int i = 0; i < table->size; i++) {
             hash_node *node = table->data[i];

@@ -111,8 +111,8 @@ index_node *create_index_node(char *filename) {
 
 index_node *insert_index_node(index_node *head, index_node *new) {
     if (head && new) {
-        index_node *prev = NULL;
-        for (index_node *current = head; current; current = current->next) {
+        index_node *current = head, *prev = NULL;
+        while (current) {
             if (index_node_is_larger(new, current)) {
                 if (prev) {
                     prev->next = new;
@@ -124,10 +124,11 @@ index_node *insert_index_node(index_node *head, index_node *new) {
                 }
             }
             prev = current;
+            current = current->next;
         }
-    } else {
-        return head;
+        prev->next = new;
     }
+    return head;
 }
 
 index_node *find_index_node(index_node *head, char *filename) {
