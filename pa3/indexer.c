@@ -6,6 +6,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <errno.h>
 #include "definitions.h"
 #include "nodes.h"
 #include "hash.h"
@@ -185,6 +186,9 @@ void handle_file(char *path, hash *table) {
                 node->count++;
                 put(table, token, node);
             }
+        }
+        if (errno) {
+            panic("Splitter could not allocate memory for string");
         }
     } else {
         fprintf(stderr, "Error: File %s could not be opened\n", path);

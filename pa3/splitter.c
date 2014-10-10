@@ -4,13 +4,31 @@ char *get_line(FILE *file) {
     if (feof(file)) {
         return NULL;
     }
-    char tmp[1048576];
-    if (!fgets(tmp, sizeof(tmp), file) || ferror(file)) {
+    int size = 1;
+    char *input = (char *) malloc(sizeof(char) * size);
+    if (input) {
+        for (int i = 0; true; i++) {
+            char c = fgetc(file);
+            if (c == '\n' || c == EOF) {
+                input[i] = '\0';
+                break;
+            }
+            input[i] = c;
+            if (i == size - 1) {
+                size *= 2;
+                input = (char *) realloc(input, size);
+                if (!input) {
+                    errno = 12;
+                    return NULL;
+                }
+            }
+        }
+        errno = 0;
+        return input;
+    } else {
+        errno = 12;
         return NULL;
     }
-    char *current_line = (char *) malloc(sizeof(char) * (strlen(tmp) + 1));
-    strcpy(current_line, tmp);
-    return current_line;
 }
 
 splitter *create_splitter(FILE *file) {
