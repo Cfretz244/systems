@@ -91,6 +91,20 @@ bool drop(hash *table, char *key) {
     }
 }
 
+char **get_keys(hash *table) {
+    int current = 0;
+    char **keys = (char **) malloc(sizeof(char *) * table->count);
+    for (int i = 0; i < table->size; i++) {
+        if (table->data[i]) {
+            for (hash_node *tmp = table->data[i]; tmp; tmp = tmp->next) {
+                keys[current] = tmp->key;
+                current++;
+            }
+        }
+    }
+    return keys;
+}
+
 void destroy_hash(hash *table) {
     if (table->count > 0) {
         for (int i = 0; i < table->size; i++) {
