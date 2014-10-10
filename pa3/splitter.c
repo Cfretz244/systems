@@ -63,6 +63,9 @@ char *split_next(splitter *split) {
     }
     char *current = split->remaining;
     while(!is_delimeter(*current) && *current != '\0') {
+        if (*current >= 'A' && *current <= 'Z') {
+            *current -= ('A' - 'a');
+        }
         current++;
     }
     int size = (current - split->remaining);
@@ -73,6 +76,9 @@ char *split_next(splitter *split) {
         current++;
     }
     split->remaining = current;
+    if (!strcmp(token, "")) {
+        token = split_next(split);
+    }
     return token;
 }
 

@@ -24,12 +24,15 @@ char *get_user_input();
 void sort(char **keys, int left, int right);
 char *enforce(char *str, int needed, int size, int filled, int *new_size);
 void panic(char *reason);
+void sanitize(char **argv);
 
 int main(int argc, char **argv) {
     if (argc != 3) {
         fprintf(stderr, "Error: Wrong number of arguments\n");
         return 1;
     }
+
+    sanitize(argv);
 
     hash *table = create_hash();
 
@@ -294,4 +297,13 @@ char *enforce(char *str, int needed, int size, int filled, int *new_size) {
 void panic(char *reason) {
     fprintf(stderr, "Fatal Error: Sorry, the indexer has encountered an unrecoverable error. Given reason was: %s\n", reason);
     exit(1);
+}
+
+void sanitize(char **argv) {
+    if (argv[1][strlen(argv[1]) - 1] == '/') {
+        argv[1][strlen(argv[1]) - 1] = '\0';
+    }
+    if (argv[2][strlen(argv[2]) - 1] == '/') {
+        argv[2][strlen(argv[2]) - 1] = '\0';
+    }
 }
