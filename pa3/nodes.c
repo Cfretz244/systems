@@ -159,6 +159,7 @@ index_node *find_index_node(index_node *head, char *filename) {
                 return current;
             }
         }
+        return NULL;
     } else {
         return NULL;
     }

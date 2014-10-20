@@ -49,7 +49,7 @@ splitter *create_splitter(FILE *file) {
 }
 
 bool is_delimeter(char del) {
-    return !(del >= 'A' && del <= 'Z' || del >= 'a' && del <= 'z' || del >= '0' && del <= '9');
+    return !((del >= 'A' && del <= 'Z') || (del >= 'a' && del <= 'z') || (del >= '0' && del <= '9'));
 }
 
 char *split_next(splitter *split) {
