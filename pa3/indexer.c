@@ -376,7 +376,7 @@ char *enforce(char *str, int needed, int size, int filled, int *new_size) {
 
 // Handle reporting of, and terminate due to, a fatal error.
 void panic(char *reason) {
-    fprintf(stderr, "Fatal Error: Sorry, the indexer has encountered an unrecoverable error. Given reason was: %s\n", reason);
+    fprintf(stderr, "Sorry, the indexer has encountered an unrecoverable error. Given reason was: %s\n", reason);
     exit(EXIT_FAILURE);
 }
 
@@ -390,6 +390,7 @@ void sanitize(char **argv) {
     }
 }
 
+// Return number of digits in a particular number.
 int digits(int num) {
     int count = 0;
     while (num > 0) {

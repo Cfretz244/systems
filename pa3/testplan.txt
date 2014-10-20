@@ -1,0 +1,8 @@
+Small Testplan:
+    Run indexer 4 times, once where the specified output file doesn't exist, one where there's already a file with the specified name,
+    one where there's already a directory with the specified name, and once when the specified input doesn't exist. Use the test directory
+    for all valid input. Indexer passes this test.
+
+Large Testplan:
+    Run indexer through the exact same test cases as with the small testplan, however, this time run it across the entire combined text of
+    the Harry Potter and Narnia series. Indexer passes this test.
