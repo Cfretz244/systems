@@ -8,12 +8,14 @@
 #include "definitions.h"
 #define START_SIZE 10
 
+// Main hashtable struct.
 typedef struct hash {
     hash_node **data;
     int count;
     int size;
 } hash;
 
+// Function declarations.
 hash *create_hash();
 bool put(hash *table, char *key, index_node *data);
 index_node *get(hash *table, char *key);

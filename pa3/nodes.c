@@ -2,6 +2,7 @@
 
 /*---- Generic Functions ----*/
 
+// Function handles checking if two nodes of a single specified type are equal.
 bool nodes_are_equal(void *f, void *s, node_type type) {
     if (type == INDEX) {
         index_node *first = (index_node *) f, *second = (index_node *) s;
@@ -14,6 +15,7 @@ bool nodes_are_equal(void *f, void *s, node_type type) {
 
 /*---- Hash Node Functions ----*/
 
+// Function handles the creation of a hash_node struct.
 hash_node *create_hash_node(char *key, index_node *data) {
     hash_node *node = (hash_node *) malloc(sizeof(hash_node));
 
@@ -30,7 +32,10 @@ hash_node *create_hash_node(char *key, index_node *data) {
     return node;
 }
 
+// Function handles inserting a hash node into a linked list of hash nodes.
 bool insert_hash_node(hash_node *head, hash_node *new) {
+    // Validate paramaters and insert if the list doesn't already contain
+    // the given node.
     if (head && new) {
         for (hash_node *current = head; current; current = current->next) {
             if (nodes_are_equal(current, new, HASH)) {
@@ -46,7 +51,10 @@ bool insert_hash_node(hash_node *head, hash_node *new) {
     }
 }
 
+// Function handles finding hash_node with a specific key in a linked list
+// of nodes.
 hash_node *find_hash_node(hash_node *head, char *key) {
+    // Validate parameters and search.
     if (head && key) {
         for (hash_node *current = head; current; current = current->next) {
             if (!strcmp(current->key, key)) {
@@ -59,6 +67,8 @@ hash_node *find_hash_node(hash_node *head, char *key) {
     }
 }
 
+// Function handles removing a hash_node specified by key from a linked
+// list of nodes.
 hash_node *remove_hash_node(hash_node *head, char *key) {
     if (head && key) {
         hash_node *prev = NULL;
@@ -77,6 +87,7 @@ hash_node *remove_hash_node(hash_node *head, char *key) {
     return head;
 }
 
+// Function handles the destruction of an entire linked list of hash_nodes.
 void destroy_hash_chain(hash_node *head) {
     while (head) {
         hash_node *tmp = head;
@@ -85,6 +96,7 @@ void destroy_hash_chain(hash_node *head) {
     }
 }
 
+// Function handles the destruction of a specific hash_node struct.
 void destroy_hash_node(hash_node *node) {
     free(node->key);
     destroy_index_node(node->data);
@@ -93,6 +105,7 @@ void destroy_hash_node(hash_node *node) {
 
 /*---- Index Node Functions ----*/
 
+// Function handles the creation of an index_node struct.
 index_node *create_index_node(char *filename) {
     index_node *node = (index_node *) malloc(sizeof(index_node));
 
@@ -109,16 +122,21 @@ index_node *create_index_node(char *filename) {
     return node;
 }
 
+// Function handles the insertion of an index_node into a linked list of
+// index_nodes, returning the new/old head.
 index_node *insert_index_node(index_node *head, index_node *new) {
+    // Validate parameters and traverse.
     if (head && new) {
         index_node *current = head, *prev = NULL;
         while (current) {
             if (index_node_is_larger(new, current)) {
                 if (prev) {
+                    // Node belongs somewhere in the middle of the list.
                     prev->next = new;
                     new->next = current;
                     return head;
                 } else {
+                    // Node must replace head at the beginning of the list.
                     new->next = head;
                     return new;
                 }
@@ -131,7 +149,10 @@ index_node *insert_index_node(index_node *head, index_node *new) {
     return head;
 }
 
+// Function handles finding an index_node for a specific filename in a linked
+// list of index_nodes.
 index_node *find_index_node(index_node *head, char *filename) {
+    // Validate parameters and search.
     if (head && filename) {
         for (index_node *current = head; current; current = current->next) {
             if (!strcmp(current->filename, filename)) {
@@ -143,6 +164,8 @@ index_node *find_index_node(index_node *head, char *filename) {
     }
 }
 
+// Function handles the comparison of two index_nodes, and returns whether the
+// first is larger than the second.
 bool index_node_is_larger(index_node *node, index_node *other) {
     if (node && other) {
         if (node->count != other->count) {
@@ -155,6 +178,8 @@ bool index_node_is_larger(index_node *node, index_node *other) {
     }
 }
 
+// Function handles removing an index_node, specified by filename, from a
+// linked list of index_nodes.
 index_node *remove_index_node(index_node *head, char *filename) {
     if (head && filename) {
         index_node *prev = NULL;
@@ -173,6 +198,7 @@ index_node *remove_index_node(index_node *head, char *filename) {
     return head;
 }
 
+// Function handles destroying a linked list of index_nodes.
 void destroy_index_chain(index_node *head) {
     while (head) {
         index_node *tmp = head;
@@ -180,6 +206,8 @@ void destroy_index_chain(index_node *head) {
         destroy_index_node(tmp);
     }
 }
+
+// Function handles destroying a single index_node.
 void destroy_index_node(index_node *node) {
     free(node->filename);
     free(node);

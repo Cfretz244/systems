@@ -5,17 +5,21 @@
 #include <string.h>
 #include "definitions.h"
 
+// Enum used for distinguishing between nodes.
 typedef enum node_type {
     INDEX,
     HASH
 } node_type;
 
+// index_node struct represents the current count for a specific token and filename.
 typedef struct index_node {
     char *filename;
     int count;
     struct index_node *next;
 } index_node;
 
+// hash_node struct represents a collection of all filenames that reference
+// a particular token.
 typedef struct hash_node {
     char *key;
     index_node *data;

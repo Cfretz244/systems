@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 
+// A simple boolean typedef from an enum.
 typedef enum {
     false,
     true
