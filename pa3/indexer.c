@@ -25,6 +25,7 @@ void sort(char **keys, int left, int right);
 char *enforce(char *str, int needed, int size, int filled, int *new_size);
 void panic(char *reason);
 void sanitize(char **argv);
+int digits(int num);
 
 // Handles main program execution.
 int main(int argc, char **argv) {
@@ -133,20 +134,21 @@ void handle_output(char *path, hash *table) {
         for (index_node *node = get(table, key); node; node = node->next) {
             word_count++;
             char *filename = node->filename, *format;
+            int count = node->count, count_size = digits(count);
 
             // Calculate space needed for the current filename.
             if (word_count && word_count % 5 == 0 || !node->next) {
-                needed = strlen(filename);
-                format = "%s";
+                needed = strlen(filename) + count_size + 1;
+                format = "%s %d";
             } else {
-                needed = strlen(filename) + 1;
-                format = "%s ";
+                needed = strlen(filename) + count_size + 2;
+                format = "%s %d ";
             }
 
             // Ensure line is big enough.
             line = enforce(line, needed, size, filled, &size);
 
-            sprintf(line + filled, format, filename);
+            sprintf(line + filled, format, filename, count);
             filled += needed;
 
             // One line can contain at most 5 files, so this splits lines every 5 files.
@@ -383,4 +385,13 @@ void sanitize(char **argv) {
     if (argv[2][strlen(argv[2]) - 1] == '/') {
         argv[2][strlen(argv[2]) - 1] = '\0';
     }
+}
+
+int digits(int num) {
+    int count = 0;
+    while (num > 0) {
+        num /= 10;
+        count++;
+    }
+    return count;
 }
