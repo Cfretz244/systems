@@ -233,6 +233,9 @@ void handle_file(char *path, hash *table) {
                 if (target) {
                     // Entry for current token exists, increment counter.
                     target->count++;
+                    head = remove_index_node(head, target->filename);
+                    head = insert_index_node(head, target);
+                    update(table, token, head);
                 } else {
                     // First time encountering this token in this file. Add current filename to the chain.
                     target = create_index_node(path);
