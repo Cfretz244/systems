@@ -20,7 +20,6 @@ int main(int argc, char **argv) {
     if (input) {
         hash *table = create_hash();
         construct(input, table);
-        printf("Finished.\n");
     } else {
         panic("Error opening file. Perhaps it doesn't exist?");
     }
