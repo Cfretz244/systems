@@ -20,42 +20,48 @@ int main(int argc, char **argv) {
     if (input) {
         hash *table = create_hash();
         construct(input, table);
+        printf("Finished.\n");
     } else {
         panic("Error opening file. Perhaps it doesn't exist?");
     }
 }
 
 void construct(FILE *file, hash *table) {
-    char *open_tag = get_line(file);
-    while (true) {
+    for (char *open_tag = get_line(file); open_tag; open_tag = get_line(file)) {
         if (!strstr(open_tag, "<list>")) {
             panic("Index file is malformatted");
         }
-        char *token = open_tag + OPEN_TAG_LENGTH, *line = get_line(file);
+        char *token = open_tag + OPEN_TAG_LENGTH, *data = get_line(file);
         index_node *head = get(table, token);
-        char *name = strtok(line, " ");
-        while (name) {
-            char *potential = strtok(NULL, " ");
-            if (potential) {
-                int count = strtol(potential, NULL, 0);
-                if (count) {
-                    index_node *node = create_index_node(name);
-                    node->count = count;
-                    if (head) {
-                        head = insert_index_node(head, node);
-                        update(table, token, head);
+        while(!strstr(data, "</list>")) {
+            char *name = strtok(data, " ");
+            while (name) {
+                char *potential = strtok(NULL, " ");
+                if (potential) {
+                    int count = strtol(potential, NULL, 0);
+                    if (count) {
+                        index_node *node = create_index_node(name);
+                        node->count = count;
+                        if (head) {
+                            head = insert_index_node(head, node);
+                            update(table, token, head);
+                        } else {
+                            head = node;
+                            put(table, token, node);
+                        }
                     } else {
-                        put(table, token, node);
+                        panic("Index file is malformatted");
                     }
+                    name = strtok(NULL, " ");
                 } else {
                     panic("Index file is malformatted");
                 }
-                name = strtok(NULL, " ");
-            } else {
-                panic("Index file is malformatted");
             }
+            free(data);
+            data = get_line(file);
         }
-        free(line);
+        free(data);
+        free(open_tag);
     }
 }
 

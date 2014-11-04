@@ -124,6 +124,9 @@ void handle_output(char *path, hash *table) {
         char *line = (char *) malloc(sizeof(char) * size), *key = keys[i];
 
         // Calculate space needed for the opening tag and ensure line is big enough.
+        if (strstr(key, "championship")) {
+            printf("Problem found\n");
+        }
         int needed = OPEN_TAG_LENGTH + strlen(key) + 1;
         line = enforce(line, needed, size, filled, &size);
 
@@ -161,15 +164,16 @@ void handle_output(char *path, hash *table) {
         // Handle edge case.
         if (word_count % 5) {
             line = enforce(line, 1 + CLOSE_TAG_LENGTH, size, filled, &size);
-            strcat(line + filled, "\n</list>\n");
+            strcpy(line + filled, "\n</list>\n");
             filled += CLOSE_TAG_LENGTH + 1;
         } else {
             line = enforce(line, CLOSE_TAG_LENGTH, size, filled, &size);
-            strcat(line + filled, "</list>\n");
+            strcpy(line + filled, "</list>\n");
             filled += CLOSE_TAG_LENGTH;
         }
         
         // Terminate string.
+        line = enforce(line, 1, size, filled, &size);
         line[filled] = '\0';
         if (fputs(line, output) == EOF) {
             // File could not be written to.
@@ -362,7 +366,7 @@ void sort(char **keys, int left, int right) {
 
 // Function takes care of any reallocations required to fit data into given string.
 char *enforce(char *str, int needed, int size, int filled, int *new_size) {
-    while (needed + filled > size - filled) {
+    while (needed >= size - filled) {
         size *= 2;
         str = (char *) realloc(str, size);
         if (!str) {
