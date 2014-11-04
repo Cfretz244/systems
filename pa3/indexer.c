@@ -124,9 +124,6 @@ void handle_output(char *path, hash *table) {
         char *line = (char *) malloc(sizeof(char) * size), *key = keys[i];
 
         // Calculate space needed for the opening tag and ensure line is big enough.
-        if (strstr(key, "championship")) {
-            printf("Problem found\n");
-        }
         int needed = OPEN_TAG_LENGTH + strlen(key) + 1;
         line = enforce(line, needed, size, filled, &size);
 
