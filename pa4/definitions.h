@@ -9,6 +9,7 @@ typedef enum {
     true
 } bool;
 
+// Enum for distinguishing between query types.
 typedef enum {
     AND,
     OR
