@@ -13,6 +13,21 @@ bool nodes_are_equal(void *f, void *s, node_type type) {
     }
 }
 
+int compare_nodes(index_node *f, index_node *s) {
+    index_node *first = (index_node *) f, *second = (index_node *) s;
+    if (first->count == second->count) {
+        return strcmp(first->filename, second->filename);
+    } else {
+        if (first->count > second->count) {
+            return 1;
+        } else if (first->count < second->count) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+}
+
 /*---- Hash Node Functions ----*/
 
 // Function handles the creation of a hash_node struct.

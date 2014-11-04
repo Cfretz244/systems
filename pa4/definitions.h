@@ -9,4 +9,9 @@ typedef enum {
     true
 } bool;
 
+typedef enum {
+    AND,
+    OR
+} query_type;
+
 #endif

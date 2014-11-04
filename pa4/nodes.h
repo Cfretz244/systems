@@ -27,6 +27,7 @@ typedef struct hash_node {
 } hash_node;
 
 bool nodes_are_equal(void *f, void *s, node_type type);
+int compare_nodes(index_node *f, index_node *s);
 
 hash_node *create_hash_node(char *key, index_node *data);
 bool insert_hash_node(hash_node *head, hash_node *new);
