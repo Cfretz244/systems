@@ -1,0 +1,227 @@
+NANO(1)                                                                NANO(1)
+
+
+
+NNAAMMEE
+       nano - Nano’s ANOther editor, an enhanced free Pico clone
+
+
+SSYYNNOOPPSSIISS
+       nnaannoo _[_O_P_T_I_O_N_S_] _[_[_+_L_I_N_E_,_C_O_L_U_M_N_] _F_I_L_E_]_._._.
+
+
+DDEESSCCRRIIPPTTIIOONN
+       This manual page briefly documents the nnaannoo command.
+
+       nnaannoo  is  a small, free and friendly editor which aims to replace Pico,
+       the default editor included in the non-free Pine package.  Rather  than
+       just  copying  Pico’s  look and feel, nnaannoo also implements some missing
+       (or disabled by default) features in Pico, such as "search and replace"
+       and "go to line and column number".
+
+
+OOPPTTIIOONNSS
+       ++_L_I_N_E,,_C_O_L_U_M_N
+              Places  cursor  at line number _L_I_N_E and column number _C_O_L_U_M_N (at
+              least one of which must be specified) on startup, instead of the
+              default of line 1, column 1.
+
+       --??     Same as --hh ((----hheellpp)).
+
+       --AA ((----ssmmaarrtthhoommee))
+              Make the Home key smarter.  When Home is pressed anywhere but at
+              the very beginning of non-whitespace characters on a  line,  the
+              cursor  will  jump  to  that beginning (either forwards or back-
+              wards).  If the cursor is already at that position, it will jump
+              to the true beginning of the line.
+
+       --BB ((----bbaacckkuupp))
+              When  saving  a  file, back up the previous version of it to the
+              current filename suffixed with a ~.
+
+       --CC _d_i_r ((----bbaacckkuuppddiirr==_d_i_r))
+              Set the directory where nnaannoo puts unique backup  files  if  file
+              backups are enabled.
+
+       --DD ((----bboollddtteexxtt))
+              Use bold text instead of reverse video text.
+
+       --EE ((----ttaabbssttoossppaacceess))
+              Convert typed tabs to spaces.
+
+       --FF ((----mmuullttiibbuuffffeerr))
+              Enable multiple file buffers, if available.
+
+       --HH ((----hhiissttoorryylloogg))
+              Log  search  and replace strings to _~_/_._n_a_n_o___h_i_s_t_o_r_y, so they can
+              be retrieved in later sessions, if nanorc support is  available.
+
+       --II ((----iiggnnoorreerrccffiilleess))
+              Don’t  look at _S_Y_S_C_O_N_F_D_I_R_/_n_a_n_o_r_c or _~_/_._n_a_n_o_r_c, if nanorc support
+              is available.
+
+       --KK ((----rreebbiinnddkkeeyyppaadd))
+              Interpret the numeric keypad keys so that they  all  work  prop-
+              erly.  You should only need to use this option if they don’t, as
+              mouse support won’t work properly with this option enabled.
+
+       --LL ((----nnoonneewwlliinneess))
+              Don’t add newlines to the ends of files.
+
+       --NN ((----nnooccoonnvveerrtt))
+              Disable automatic conversion of files from DOS/Mac format.
+
+       --OO ((----mmoorreessppaaccee))
+              Use the blank line below the titlebar as extra editing space.
+
+       --QQ _s_t_r ((----qquuootteessttrr==_s_t_r))
+              Set  the  quoting  string  for  justifying.   The   default   is
+              "_^_(_[ _\_t_]_*_[_#_:_>_\_|_}_]_)_+"  if  extended regular expression support is
+              available, or "_> " otherwise.  Note that _\_t stands for a Tab.
+
+       --RR ((----rreessttrriicctteedd))
+              Restricted mode: don’t read or write to any file  not  specified
+              on  the  command  line; read any nanorc files; allow suspending;
+              allow a file to be appended to, prepended to, or saved  under  a
+              different  name  if  it  already has one; or use backup files or
+              spell checking.  Also accessible by invoking nnaannoo with any  name
+              beginning with ’r’ (e.g. "rnano").
+
+       --SS ((----ssmmooootthh))
+              Enable smooth scrolling.  Text will scroll line-by-line, instead
+              of the usual chunk-by-chunk behavior.
+
+       --TT _c_o_l_s ((----ttaabbssiizzee==_c_o_l_s))
+              Set the size (width) of a tab to _c_o_l_s  columns.   The  value  of
+              _c_o_l_s must be greater than 0.  The default value is 8.
+
+       --UU ((----qquuiicckkbbllaannkk))
+              Do  quick statusbar blanking.  Statusbar messages will disappear
+              after 1 keystroke instead of 25.  Note that --cc overrides this.
+
+       --VV ((----vveerrssiioonn))
+              Show the current version number and exit.
+
+       --WW ((----wwoorrddbboouunnddss))
+              Detect word boundaries more accurately by  treating  punctuation
+              characters as part of a word.
+
+       --YY _s_t_r ((----ssyynnttaaxx==_s_t_r))
+              Specify  a  specific syntax highlighting from the _n_a_n_o_r_c to use,
+              if available.
+
+       --cc ((----ccoonnsstt))
+              Constantly show the cursor position.  Note that  this  overrides
+              --UU.
+
+       --dd ((----rreebbiinnddddeelleettee))
+              Interpret  the Delete key differently so that both Backspace and
+              Delete work properly.  You should only need to use  this  option
+              if Backspace acts like Delete on your system.
+
+       --hh ((----hheellpp))
+              Show a summary of command line options and exit.
+
+       --ii ((----aauuttooiinnddeenntt))
+              Indent  new  lines  to  the previous line’s indentation.  Useful
+              when editing source code.
+
+       --kk ((----ccuutt))
+              Enable cut from cursor to end of line.
+
+       --ll ((----nnooffoollllooww))
+              If the file being edited is a symbolic link,  replace  the  link
+              with a new file instead of following it.  Good for editing files
+              in _/_t_m_p, perhaps?
+
+       --mm ((----mmoouussee))
+              Enable mouse  support,  if  available  for  your  system.   When
+              enabled,  mouse  clicks can be used to place the cursor, set the
+              mark (with a double click), and execute  shortcuts.   The  mouse
+              will work in the X Window System, and on the console when gpm is
+              running.
+
+       --oo _d_i_r ((----ooppeerraattiinnggddiirr==_d_i_r))
+              Set operating directory.  Makes nnaannoo set up something similar to
+              a chroot.
+
+       --pp ((----pprreesseerrvvee))
+              Preserve  the XON and XOFF sequences (^Q and ^S) so they will be
+              caught by the terminal.
+
+       --rr _c_o_l_s ((----ffiillll==_c_o_l_s))
+              Wrap lines at column _c_o_l_s.  If this value is 0 or less, wrapping
+              will  occur at the width of the screen less _c_o_l_s columns, allow-
+              ing the wrap point to vary along with the width of the screen if
+              the screen is resized.  The default value is -8.
+
+       --ss _p_r_o_g ((----ssppeelllleerr==_p_r_o_g))
+              Enable alternative spell checker command.
+
+       --tt ((----tteemmppffiillee))
+              Always save changed buffer without prompting.  Same as Pico’s --tt
+              option.
+
+       --vv ((----vviieeww))
+              View file (read only) mode.
+
+       --ww ((----nnoowwrraapp))
+              Disable wrapping of long lines.
+
+       --xx ((----nnoohheellpp))
+              Disable help screen at bottom of editor.
+
+       --zz ((----ssuussppeenndd))
+              Enable suspend ability.
+
+       --aa,, --bb,, --ee,, --ff,, --gg,, --jj
+              Ignored, for compatibility with Pico.
+
+
+IINNIITTIIAALLIIZZAATTIIOONN FFIILLEE
+       nnaannoo  will  read  initialization  files   in   the   following   order:
+       _S_Y_S_C_O_N_F_D_I_R_/_n_a_n_o_r_c,  then _~_/_._n_a_n_o_r_c.  Please see nnaannoorrcc((55)) and the exam-
+       ple file nnaannoorrcc..ssaammppllee, both of which should be provided with nnaannoo.
+
+
+NNOOTTEESS
+       If no alternative spell checker command is  specified  on  the  command
+       line  or in one of the nanorc files, nnaannoo will check the SSPPEELLLL environ-
+       ment variable for one.
+
+       In some cases nnaannoo will try to dump the buffer into an emergency  file.
+       This  will  happen  mainly if nnaannoo receives a SIGHUP or SIGTERM or runs
+       out of memory.  It will write the buffer into a file named _n_a_n_o_._s_a_v_e if
+       the  buffer didn’t have a name already, or will add a ".save" suffix to
+       the current filename.  If an emergency  file  with  that  name  already
+       exists  in  the  current  directory,  it will add ".save" plus a number
+       (e.g. ".save.1") to the current filename in order to  make  it  unique.
+       In  multibuffer  mode,  nnaannoo  will  write all the open buffers to their
+       respective emergency files.
+
+
+BBUUGGSS
+       Please send any comments or bug reports to nnaannoo@@nnaannoo--eeddiittoorr..oorrgg.
+
+       The nnaannoo mailing list is available from nnaannoo--ddeevveell@@ggnnuu..oorrgg.
+
+       To subscribe, email to nnaannoo--ddeevveell--rreeqquueesstt@@ggnnuu..oorrgg  with  a  subject  of
+       "subscribe".
+
+
+HHOOMMEEPPAAGGEE
+       http://www.nano-editor.org/
+
+
+SSEEEE AALLSSOO
+       nnaannoorrcc(5)
+       _/_u_s_r_/_s_h_a_r_e_/_d_o_c_/_n_a_n_o_/ (or equivalent on your system)
+
+AAUUTTHHOORR
+       Chris  Allegretta  <chrisa@asty.org>, et al (see _A_U_T_H_O_R_S and _T_H_A_N_K_S for
+       details).  This manual page was originally  written  by  Jordi  Mallach
+       <jordi@gnu.org>, for the Debian system (but may be used by others).
+
+
+
+August 23, 2007                  version 2.0.0                         NANO(1)

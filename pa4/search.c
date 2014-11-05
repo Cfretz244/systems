@@ -350,6 +350,6 @@ char *enforce(char *str, int needed, int size, int filled, int *new_size) {
 
 // Function is responsible for reporting a fatal error and halting execution.
 void panic(char *reason) {
-    fprintf(stderr, "Sorry, the indexer has encountered an unrecoverable error. Given reason was: %s\n", reason);
+    fprintf(stderr, "Sorry, the search tool has encountered an unrecoverable error. Given reason was: %s\n", reason);
     exit(EXIT_FAILURE);
 }

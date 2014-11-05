@@ -1,0 +1,80 @@
+CAT(1)                           User Commands                          CAT(1)
+
+
+
+NNAAMMEE
+       cat - concatenate files and print on the standard output
+
+SSYYNNOOPPSSIISS
+       ccaatt [_O_P_T_I_O_N]... [_F_I_L_E]...
+
+DDEESSCCRRIIPPTTIIOONN
+       Concatenate FILE(s), or standard input, to standard output.
+
+       --AA, ----sshhooww--aallll
+              equivalent to --vvEETT
+
+       --bb, ----nnuummbbeerr--nnoonnbbllaannkk
+              number nonempty output lines
+
+       --ee     equivalent to --vvEE
+
+       --EE, ----sshhooww--eennddss
+              display $ at end of each line
+
+       --nn, ----nnuummbbeerr
+              number all output lines
+
+       --ss, ----ssqquueeeezzee--bbllaannkk
+              suppress repeated empty output lines
+
+       --tt     equivalent to --vvTT
+
+       --TT, ----sshhooww--ttaabbss
+              display TAB characters as ^I
+
+       --uu     (ignored)
+
+       --vv, ----sshhooww--nnoonnpprriinnttiinngg
+              use ^ and M- notation, except for LFD and TAB
+
+       ----hheellpp display this help and exit
+
+       ----vveerrssiioonn
+              output version information and exit
+
+       With no FILE, or when FILE is -, read standard input.
+
+EEXXAAMMPPLLEESS
+       cat f - g
+              Output f’s contents, then standard input, then g’s contents.
+
+       cat    Copy standard input to standard output.
+
+AAUUTTHHOORR
+       Written by Torbjorn Granlund and Richard M. Stallman.
+
+RREEPPOORRTTIINNGG BBUUGGSS
+       Report cat bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: <http://www.gnu.org/software/coreutils/>
+       General help using GNU software: <http://www.gnu.org/gethelp/>
+       Report cat translation bugs to <http://translationproject.org/team/>
+
+CCOOPPYYRRIIGGHHTT
+       Copyright  ©  2010  Free Software Foundation, Inc.  License GPLv3+: GNU
+       GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+       This is free software: you are free  to  change  and  redistribute  it.
+       There is NO WARRANTY, to the extent permitted by law.
+
+SSEEEE AALLSSOO
+       The  full  documentation for ccaatt is maintained as a Texinfo manual.  If
+       the iinnffoo and ccaatt programs are properly installed at your site, the com-
+       mand
+
+              iinnffoo ccoorreeuuttiillss ''ccaatt iinnvvooccaattiioonn''
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.4                  June 2014                            CAT(1)

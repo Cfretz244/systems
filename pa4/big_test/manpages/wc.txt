@@ -1,0 +1,67 @@
+WC(1)                            User Commands                           WC(1)
+
+
+
+NNAAMMEE
+       wc - print newline, word, and byte counts for each file
+
+SSYYNNOOPPSSIISS
+       wwcc [_O_P_T_I_O_N]... [_F_I_L_E]...
+       wwcc [_O_P_T_I_O_N]... _-_-_f_i_l_e_s_0_-_f_r_o_m_=_F
+
+DDEESSCCRRIIPPTTIIOONN
+       Print newline, word, and byte counts for each FILE, and a total line if
+       more than one FILE is specified.  With no FILE, or when FILE is -, read
+       standard input.
+
+       --cc, ----bbyytteess
+              print the byte counts
+
+       --mm, ----cchhaarrss
+              print the character counts
+
+       --ll, ----lliinneess
+              print the newline counts
+
+       ----ffiilleess00--ffrroomm=_F
+              read  input  from the files specified by NUL-terminated names in
+              file F; If F is - then read names from standard input
+
+       --LL, ----mmaaxx--lliinnee--lleennggtthh
+              print the length of the longest line
+
+       --ww, ----wwoorrddss
+              print the word counts
+
+       ----hheellpp display this help and exit
+
+       ----vveerrssiioonn
+              output version information and exit
+
+AAUUTTHHOORR
+       Written by Paul Rubin and David MacKenzie.
+
+RREEPPOORRTTIINNGG BBUUGGSS
+       Report wc bugs to bug-coreutils@gnu.org
+       GNU coreutils home page: <http://www.gnu.org/software/coreutils/>
+       General help using GNU software: <http://www.gnu.org/gethelp/>
+       Report wc translation bugs to <http://translationproject.org/team/>
+
+CCOOPPYYRRIIGGHHTT
+       Copyright © 2010 Free Software Foundation, Inc.   License  GPLv3+:  GNU
+       GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+       This  is  free  software:  you  are free to change and redistribute it.
+       There is NO WARRANTY, to the extent permitted by law.
+
+SSEEEE AALLSSOO
+       The full documentation for wwcc is maintained as a  Texinfo  manual.   If
+       the  iinnffoo and wwcc programs are properly installed at your site, the com-
+       mand
+
+              iinnffoo ccoorreeuuttiillss ''wwcc iinnvvooccaattiioonn''
+
+       should give you access to the complete manual.
+
+
+
+GNU coreutils 8.4                  June 2014                             WC(1)

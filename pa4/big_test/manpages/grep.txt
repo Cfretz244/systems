@@ -1,0 +1,640 @@
+GREP(1)                                                                GREP(1)
+
+
+
+NNAAMMEE
+       grep, egrep, fgrep - print lines matching a pattern
+
+SSYYNNOOPPSSIISS
+       ggrreepp [_O_P_T_I_O_N_S] _P_A_T_T_E_R_N [_F_I_L_E...]
+       ggrreepp [_O_P_T_I_O_N_S] [--ee _P_A_T_T_E_R_N | --ff _F_I_L_E] [_F_I_L_E...]
+
+DDEESSCCRRIIPPTTIIOONN
+       ggrreepp  searches the named input _F_I_L_Es (or standard input if no files are
+       named, or if a single hyphen-minus (--) is given as file name) for lines
+       containing  a  match to the given _P_A_T_T_E_R_N.  By default, ggrreepp prints the
+       matching lines.
+
+       In addition, two variant programs eeggrreepp and ffggrreepp are available.  eeggrreepp
+       is  the  same  as  ggrreepp --EE.   ffggrreepp  is  the  same  as ggrreepp --FF.  Direct
+       invocation as either eeggrreepp or ffggrreepp is deprecated, but is  provided  to
+       allow historical applications that rely on them to run unmodified.
+
+OOPPTTIIOONNSS
+   GGeenneerriicc PPrrooggrraamm IInnffoorrmmaattiioonn
+       ----hheellpp Print  a  usage  message  briefly summarizing these command-line
+              options and the bug-reporting address, then exit.
+
+       --VV, ----vveerrssiioonn
+              Print the version number of ggrreepp to the standard output  stream.
+              This  version  number should be included in all bug reports (see
+              below).
+
+   MMaattcchheerr SSeelleeccttiioonn
+       --EE, ----eexxtteennddeedd--rreeggeexxpp
+              Interpret _P_A_T_T_E_R_N as an extended regular  expression  (ERE,  see
+              below).  (--EE is specified by POSIX.)
+
+       --FF, ----ffiixxeedd--ssttrriinnggss
+              Interpret  _P_A_T_T_E_R_N  as  a  list  of  fixed strings, separated by
+              newlines, any of which is to be matched.  (--FF  is  specified  by
+              POSIX.)
+
+       --GG, ----bbaassiicc--rreeggeexxpp
+              Interpret  _P_A_T_T_E_R_N  as  a  basic  regular  expression  (BRE, see
+              below).  This is the default.
+
+       --PP, ----ppeerrll--rreeggeexxpp
+              Interpret _P_A_T_T_E_R_N as a Perl regular expression.  This is  highly
+              experimental and ggrreepp --PP may warn of unimplemented features.
+
+   MMaattcchhiinngg CCoonnttrrooll
+       --ee _P_A_T_T_E_R_N, ----rreeggeexxpp==_P_A_T_T_E_R_N
+              Use  _P_A_T_T_E_R_N  as  the  pattern.   This  can  be  used to specify
+              multiple search patterns, or to protect a pattern beginning with
+              a hyphen (--).  (--ee is specified by POSIX.)
+
+       --ff _F_I_L_E, ----ffiillee==_F_I_L_E
+              Obtain  patterns  from  _F_I_L_E,  one  per  line.   The  empty file
+              contains zero patterns, and therefore matches nothing.   (--ff  is
+              specified by POSIX.)
+
+       --ii, ----iiggnnoorree--ccaassee
+              Ignore  case  distinctions  in  both  the  _P_A_T_T_E_R_N and the input
+              files.  (--ii is specified by POSIX.)
+
+       --vv, ----iinnvveerrtt--mmaattcchh
+              Invert the sense of matching, to select non-matching lines.  (--vv
+              is specified by POSIX.)
+
+       --ww, ----wwoorrdd--rreeggeexxpp
+              Select  only  those  lines  containing  matches  that form whole
+              words.  The test is that the matching substring must  either  be
+              at  the  beginning  of  the  line,  or  preceded  by  a non-word
+              constituent character.  Similarly, it must be either at the  end
+              of  the  line  or  followed by a non-word constituent character.
+              Word-constituent  characters  are  letters,  digits,   and   the
+              underscore.
+
+       --xx, ----lliinnee--rreeggeexxpp
+              Select  only  those  matches  that exactly match the whole line.
+              (--xx is specified by POSIX.)
+
+       --yy     Obsolete synonym for --ii.
+
+   GGeenneerraall OOuuttppuutt CCoonnttrrooll
+       --cc, ----ccoouunntt
+              Suppress normal output; instead print a count of matching  lines
+              for  each  input  file.  With the --vv, ----iinnvveerrtt--mmaattcchh option (see
+              below), count non-matching lines.  (--cc is specified by POSIX.)
+
+       ----ccoolloorr[==_W_H_E_N], ----ccoolloouurr[==_W_H_E_N]
+              Surround  the  matched  (non-empty)  strings,  matching   lines,
+              context  lines,  file  names,  line  numbers,  byte offsets, and
+              separators (for fields and groups of context lines) with  escape
+              sequences  to display them in color on the terminal.  The colors
+              are  defined  by  the  environment  variable  GGRREEPP__CCOOLLOORRSS.   The
+              deprecated  environment  variable GGRREEPP__CCOOLLOORR is still supported,
+              but its setting does not have priority.  _W_H_E_N is nneevveerr,  aallwwaayyss,
+              or aauuttoo.
+
+       --LL, ----ffiilleess--wwiitthhoouutt--mmaattcchh
+              Suppress  normal  output;  instead  print the name of each input
+              file from which no output would normally have been printed.  The
+              scanning will stop on the first match.
+
+       --ll, ----ffiilleess--wwiitthh--mmaattcchheess
+              Suppress  normal  output;  instead  print the name of each input
+              file from which output would normally have  been  printed.   The
+              scanning  will  stop  on  the  first match.  (--ll is specified by
+              POSIX.)
+
+       --mm _N_U_M, ----mmaaxx--ccoouunntt==_N_U_M
+              Stop reading a file after _N_U_M matching lines.  If the  input  is
+              standard  input  from a regular file, and _N_U_M matching lines are
+              output, ggrreepp ensures that the standard input  is  positioned  to
+              just  after the last matching line before exiting, regardless of
+              the presence of trailing context lines.  This enables a  calling
+              process  to resume a search.  When ggrreepp stops after _N_U_M matching
+              lines, it outputs any trailing context lines.  When  the  --cc  or
+              ----ccoouunntt  option  is  also  used,  ggrreepp  does  not output a count
+              greater than _N_U_M.  When the --vv or ----iinnvveerrtt--mmaattcchh option is  also
+              used, ggrreepp stops after outputting _N_U_M non-matching lines.
+
+       --oo, ----oonnllyy--mmaattcchhiinngg
+              Print  only  the  matched  (non-empty) parts of a matching line,
+              with each such part on a separate output line.
+
+       --qq, ----qquuiieett, ----ssiilleenntt
+              Quiet;  do  not  write  anything  to  standard   output.    Exit
+              immediately  with  zero status if any match is found, even if an
+              error was detected.  Also see the --ss  or  ----nnoo--mmeessssaaggeess  option.
+              (--qq is specified by POSIX.)
+
+       --ss, ----nnoo--mmeessssaaggeess
+              Suppress  error  messages about nonexistent or unreadable files.
+              Portability note: unlike GNU ggrreepp, 7th Edition Unix ggrreepp did not
+              conform to POSIX, because it lacked --qq and its --ss option behaved
+              like GNU ggrreepp’s --qq option.  USG-style ggrreepp also  lacked  --qq  but
+              its  --ss  option  behaved  like GNU ggrreepp.  Portable shell scripts
+              should avoid both --qq and --ss and  should  redirect  standard  and
+              error  output to //ddeevv//nnuullll instead.  (--ss is specified by POSIX.)
+
+   OOuuttppuutt LLiinnee PPrreeffiixx CCoonnttrrooll
+       --bb, ----bbyyttee--ooffffsseett
+              Print the 0-based byte offset within the input file before  each
+              line of output.  If --oo (----oonnllyy--mmaattcchhiinngg) is specified, print the
+              offset of the matching part itself.
+
+       --HH, ----wwiitthh--ffiilleennaammee
+              Print the file name for each match.  This is  the  default  when
+              there is more than one file to search.
+
+       --hh, ----nnoo--ffiilleennaammee
+              Suppress  the  prefixing  of  file names on output.  This is the
+              default when there is only one file (or only standard input)  to
+              search.
+
+       ----llaabbeell==_L_A_B_E_L
+              Display  input  actually  coming  from  standard  input as input
+              coming  from  file  _L_A_B_E_L.   This  is  especially  useful   when
+              implementing  tools  like  zzggrreepp,  e.g.,  ggzziipp --ccdd ffoooo..ggzz || ggrreepp
+              ----llaabbeell==ffoooo --HH ssoommeetthhiinngg.  See also the --HH option.
+
+       --nn, ----lliinnee--nnuummbbeerr
+              Prefix each line of output with the 1-based line  number  within
+              its input file.  (--nn is specified by POSIX.)
+
+       --TT, ----iinniittiiaall--ttaabb
+              Make  sure  that the first character of actual line content lies
+              on a tab stop, so that the alignment of tabs looks normal.  This
+              is  useful  with  options that prefix their output to the actual
+              content: --HH,--nn, and --bb.  In order  to  improve  the  probability
+              that lines from a single file will all start at the same column,
+              this also causes the line number and byte offset (if present) to
+              be printed in a minimum size field width.
+
+       --uu, ----uunniixx--bbyyttee--ooffffsseettss
+              Report  Unix-style  byte  offsets.   This  switch causes ggrreepp to
+              report byte offsets as if the file were a Unix-style text  file,
+              i.e.,  with  CR  characters  stripped  off.   This  will produce
+              results identical to running  ggrreepp  on  a  Unix  machine.   This
+              option  has  no  effect unless --bb option is also used; it has no
+              effect on platforms other than MS-DOS and MS-Windows.
+
+       --ZZ, ----nnuullll
+              Output a zero byte (the ASCII  NNUULL  character)  instead  of  the
+              character  that normally follows a file name.  For example, ggrreepp
+              --llZZ outputs a zero byte after each  file  name  instead  of  the
+              usual  newline.   This option makes the output unambiguous, even
+              in the presence of file names containing unusual characters like
+              newlines.   This  option  can  be  used  with commands like ffiinndd
+              --pprriinntt00, ppeerrll --00, ssoorrtt --zz, and xxaarrggss  --00  to  process  arbitrary
+              file names, even those that contain newline characters.
+
+   CCoonntteexxtt LLiinnee CCoonnttrrooll
+       --AA _N_U_M, ----aafftteerr--ccoonntteexxtt==_N_U_M
+              Print  _N_U_M  lines  of  trailing  context  after  matching lines.
+              Places  a  line  containing  a  group  separator  (----)   between
+              contiguous  groups  of  matches.  With the --oo or ----oonnllyy--mmaattcchhiinngg
+              option, this has no effect and a warning is given.
+
+       --BB _N_U_M, ----bbeeffoorree--ccoonntteexxtt==_N_U_M
+              Print _N_U_M  lines  of  leading  context  before  matching  lines.
+              Places   a  line  containing  a  group  separator  (----)  between
+              contiguous groups of matches.  With the  --oo  or  ----oonnllyy--mmaattcchhiinngg
+              option, this has no effect and a warning is given.
+
+       --CC _N_U_M, --_N_U_M, ----ccoonntteexxtt==_N_U_M
+              Print  _N_U_M  lines of output context.  Places a line containing a
+              group separator (----) between contiguous groups of matches.  With
+              the  --oo  or  ----oonnllyy--mmaattcchhiinngg  option,  this  has no effect and a
+              warning is given.
+
+   FFiillee aanndd DDiirreeccttoorryy SSeelleeccttiioonn
+       --aa, ----tteexxtt
+              Process a binary file as if it were text; this is equivalent  to
+              the ----bbiinnaarryy--ffiilleess==tteexxtt option.
+
+       ----bbiinnaarryy--ffiilleess==_T_Y_P_E
+              If the first few bytes of a file indicate that the file contains
+              binary data, assume that the file is of type _T_Y_P_E.  By  default,
+              _T_Y_P_E  is  bbiinnaarryy,  and  ggrreepp  normally outputs either a one-line
+              message saying that a binary file  matches,  or  no  message  if
+              there  is no match.  If _T_Y_P_E is wwiitthhoouutt--mmaattcchh, ggrreepp assumes that
+              a binary file does not match;  this  is  equivalent  to  the  --II
+              option.   If _T_Y_P_E is tteexxtt, ggrreepp processes a binary file as if it
+              were text; this is equivalent to the --aa option.   _W_a_r_n_i_n_g_:  ggrreepp
+              ----bbiinnaarryy--ffiilleess==tteexxtt  might output binary garbage, which can have
+              nasty side effects if the  output  is  a  terminal  and  if  the
+              terminal driver interprets some of it as commands.
+
+       --DD _A_C_T_I_O_N, ----ddeevviicceess==_A_C_T_I_O_N
+              If  an  input  file  is  a device, FIFO or socket, use _A_C_T_I_O_N to
+              process it.  By  default,  _A_C_T_I_O_N  is  rreeaadd,  which  means  that
+              devices are read just as if they were ordinary files.  If _A_C_T_I_O_N
+              is sskkiipp, devices are silently skipped.
+
+       --dd _A_C_T_I_O_N, ----ddiirreeccttoorriieess==_A_C_T_I_O_N
+              If an input file is a directory, use _A_C_T_I_O_N to process  it.   By
+              default,  _A_C_T_I_O_N  is rreeaadd, which means that directories are read
+              just as if  they  were  ordinary  files.   If  _A_C_T_I_O_N  is  sskkiipp,
+              directories  are  silently  skipped.  If _A_C_T_I_O_N is rreeccuurrssee, ggrreepp
+              reads all files  under  each  directory,  recursively;  this  is
+              equivalent to the --rr option.
+
+       ----eexxcclluuddee==_G_L_O_B
+              Skip   files  whose  base  name  matches  _G_L_O_B  (using  wildcard
+              matching).  A file-name  glob  can  use  **,  ??,  and  [[...]]   as
+              wildcards,  and  \\  to  quote  a wildcard or backslash character
+              literally.
+
+       ----eexxcclluuddee--ffrroomm==_F_I_L_E
+              Skip files whose base name matches any of  the  file-name  globs
+              read  from  _F_I_L_E  (using  wildcard  matching  as described under
+              ----eexxcclluuddee).
+
+       ----eexxcclluuddee--ddiirr==_D_I_R
+              Exclude directories matching  the  pattern  _D_I_R  from  recursive
+              searches.
+
+       --II     Process  a  binary  file as if it did not contain matching data;
+              this is equivalent to the ----bbiinnaarryy--ffiilleess==wwiitthhoouutt--mmaattcchh option.
+
+       ----iinncclluuddee==_G_L_O_B
+              Search only files whose base name matches _G_L_O_B  (using  wildcard
+              matching as described under ----eexxcclluuddee).
+
+       --RR, --rr, ----rreeccuurrssiivvee
+              Read  all  files  under  each  directory,  recursively;  this is
+              equivalent to the --dd rreeccuurrssee option.
+
+   OOtthheerr OOppttiioonnss
+       ----lliinnee--bbuuffffeerreedd
+              Use line buffering on output.   This  can  cause  a  performance
+              penalty.
+
+       ----mmmmaapp If  possible, use the mmmmaapp(2) system call to read input, instead
+              of the default rreeaadd(2) system call.  In some situations,  ----mmmmaapp
+              yields  better performance.  However, ----mmmmaapp can cause undefined
+              behavior (including core dumps) if an input file  shrinks  while
+              ggrreepp is operating, or if an I/O error occurs.
+
+       --UU, ----bbiinnaarryy
+              Treat  the  file(s) as binary.  By default, under MS-DOS and MS-
+              Windows, ggrreepp guesses the file type by looking at  the  contents
+              of  the first 32KB read from the file.  If ggrreepp decides the file
+              is a text file, it strips the CR characters  from  the  original
+              file  contents  (to  make  regular expressions with ^^ and $$ work
+              correctly).  Specifying --UU overrules this guesswork, causing all
+              files  to be read and passed to the matching mechanism verbatim;
+              if the file is a text file with CR/LF pairs at the end  of  each
+              line,  this  will  cause some regular expressions to fail.  This
+              option has no effect on platforms  other  than  MS-DOS  and  MS-
+              Windows.
+
+       --zz, ----nnuullll--ddaattaa
+              Treat  the  input  as  a set of lines, each terminated by a zero
+              byte (the ASCII NNUULL character) instead of a newline.   Like  the
+              --ZZ  or ----nnuullll option, this option can be used with commands like
+              ssoorrtt --zz to process arbitrary file names.
+
+RREEGGUULLAARR EEXXPPRREESSSSIIOONNSS
+       A regular expression is a pattern that  describes  a  set  of  strings.
+       Regular   expressions   are   constructed   analogously  to  arithmetic
+       expressions, by using various operators to combine smaller expressions.
+
+       ggrreepp understands three different versions of regular expression syntax:
+       “basic,” “extended” and “perl.” In GNU ggrreepp, there is no difference  in
+       available  functionality between basic and extended syntaxes.  In other
+       implementations, basic regular  expressions  are  less  powerful.   The
+       following   description   applies   to  extended  regular  expressions;
+       differences for basic regular expressions  are  summarized  afterwards.
+       Perl   regular  expressions  give  additional  functionality,  and  are
+       documented  in  pcresyntax(3)  and  pcrepattern(3),  but  may  not   be
+       available on every system.
+
+       The  fundamental building blocks are the regular expressions that match
+       a single character.  Most characters, including all letters and digits,
+       are regular expressions that match themselves.  Any meta-character with
+       special meaning may be quoted by preceding it with a backslash.
+
+       The period .. matches any single character.
+
+   CChhaarraacctteerr CCllaasssseess aanndd BBrraacckkeett EExxpprreessssiioonnss
+       A _b_r_a_c_k_e_t _e_x_p_r_e_s_s_i_o_n is a list of characters enclosed by [[ and  ]].   It
+       matches  any  single  character in that list; if the first character of
+       the list is the caret ^^ then it matches any character _n_o_t in the  list.
+       For  example,  the  regular  expression [[00112233445566778899]] matches any single
+       digit.
+
+       Within a  bracket  expression,  a  _r_a_n_g_e  _e_x_p_r_e_s_s_i_o_n  consists  of  two
+       characters separated by a hyphen.  It matches any single character that
+       sorts  between  the  two  characters,  inclusive,  using  the  locale’s
+       collating  sequence  and  character set.  For example, in the default C
+       locale, [[aa--dd]] is equivalent to [[aabbccdd]].  Many locales sort characters in
+       dictionary   order,  and  in  these  locales  [[aa--dd]]  is  typically  not
+       equivalent to [[aabbccdd]]; it might be equivalent to [[aaBBbbCCccDDdd]], for example.
+       To  obtain  the  traditional interpretation of bracket expressions, you
+       can use the C locale by setting the LLCC__AALLLL environment variable to  the
+       value CC.
+
+       Finally,  certain  named  classes  of  characters are predefined within
+       bracket expressions, as follows.  Their names are self explanatory, and
+       they   are   [[::aallnnuumm::]],  [[::aallpphhaa::]],  [[::ccnnttrrll::]],  [[::ddiiggiitt::]],  [[::ggrraapphh::]],
+       [[::lloowweerr::]], [[::pprriinntt::]], [[::ppuunncctt::]], [[::ssppaaccee::]], [[::uuppppeerr::]], and  [[::xxddiiggiitt::]]..
+       For  example,  [[[[::aallnnuumm::]]]]  means  [[00--99AA--ZZaa--zz]],  except the latter form
+       depends upon the C locale and the ASCII character encoding, whereas the
+       former  is  independent  of  locale  and character set.  (Note that the
+       brackets in these class names are part of the symbolic names, and  must
+       be  included  in  addition  to  the  brackets  delimiting  the  bracket
+       expression.)  Most meta-characters lose their  special  meaning  inside
+       bracket  expressions.   To  include  a  literal ]] place it first in the
+       list.  Similarly, to include a literal ^^ place it anywhere  but  first.
+       Finally, to include a literal -- place it last.
+
+   AAnncchhoorriinngg
+       The caret ^^ and the dollar sign $$ are meta-characters that respectively
+       match the empty string at the beginning and end of a line.
+
+   TThhee BBaacckkssllaasshh CChhaarraacctteerr aanndd SSppeecciiaall EExxpprreessssiioonnss
+       The symbols \\<< and \\>>  respectively  match  the  empty  string  at  the
+       beginning and end of a word.  The symbol \\bb matches the empty string at
+       the edge of a word, and \\BB matches the empty string provided  it’s  _n_o_t
+       at  the edge of a word.  The symbol \\ww is a synonym for [[[[::aallnnuumm::]]]] and
+       \\WW is a synonym for [[^^[[::aallnnuumm::]]]].
+
+   RReeppeettiittiioonn
+       A regular expression may be  followed  by  one  of  several  repetition
+       operators:
+       ??      The preceding item is optional and matched at most once.
+       **      The preceding item will be matched zero or more times.
+       ++      The preceding item will be matched one or more times.
+       {{_n}}    The preceding item is matched exactly _n times.
+       {{_n,,}}   The preceding item is matched _n or more times.
+       {{,,_m}}   The preceding item is matched at most _m times.
+       {{_n,,_m}}  The  preceding  item  is  matched at least _n times, but not more
+              than _m times.
+
+   CCoonnccaatteennaattiioonn
+       Two regular expressions may  be  concatenated;  the  resulting  regular
+       expression  matches  any  string formed by concatenating two substrings
+       that respectively match the concatenated expressions.
+
+   AAlltteerrnnaattiioonn
+       Two regular expressions may be joined by  the  infix  operator  ||;  the
+       resulting   regular  expression  matches  any  string  matching  either
+       alternate expression.
+
+   PPrreecceeddeennccee
+       Repetition takes precedence over concatenation,  which  in  turn  takes
+       precedence  over  alternation.   A  whole expression may be enclosed in
+       parentheses  to  override   these   precedence   rules   and   form   a
+       subexpression.
+
+   BBaacckk RReeffeerreenncceess aanndd SSuubbeexxpprreessssiioonnss
+       The back-reference \\_n, where _n is a single digit, matches the substring
+       previously matched  by  the  _nth  parenthesized  subexpression  of  the
+       regular expression.
+
+   BBaassiicc vvss EExxtteennddeedd RReegguullaarr EExxpprreessssiioonnss
+       In  basic  regular expressions the meta-characters ??, ++, {{, ||, ((, and ))
+       lose their special meaning; instead use the  backslashed  versions  \\??,
+       \\++, \\{{, \\||, \\((, and \\)).
+
+       Traditional  eeggrreepp did not support the {{ meta-character, and some eeggrreepp
+       implementations support \\{{ instead, so portable scripts should avoid  {{
+       in ggrreepp --EE patterns and should use [[{{]] to match a literal {{.
+
+       GNU ggrreepp --EE attempts to support traditional usage by assuming that {{ is
+       not  special  if  it  would  be  the  start  of  an  invalid   interval
+       specification.   For example, the command ggrreepp --EE ’’{{11’’ searches for the
+       two-character string {{11 instead of reporting  a  syntax  error  in  the
+       regular  expression.  POSIX.2 allows this behavior as an extension, but
+       portable scripts should avoid it.
+
+EENNVVIIRROONNMMEENNTT VVAARRIIAABBLLEESS
+       The  behavior  of  ggrreepp  is  affected  by  the  following   environment
+       variables.
+
+       The  locale  for  category  LLCC___f_o_o  is specified by examining the three
+       environment variables LLCC__AALLLL, LLCC___f_o_o, LLAANNGG, in that order.   The  first
+       of  these  variables that is set specifies the locale.  For example, if
+       LLCC__AALLLL is not set, but LLCC__MMEESSSSAAGGEESS is set to pptt__BBRR, then the  Brazilian
+       Portuguese  locale  is used for the LLCC__MMEESSSSAAGGEESS category.  The C locale
+       is used if none of these environment variables are set, if  the  locale
+       catalog  is  not  installed,  or if ggrreepp was not compiled with national
+       language support (NLS).
+
+       GGRREEPP__OOPPTTIIOONNSS
+              This variable specifies default options to be placed in front of
+              any   explicit   options.    For  example,  if  GGRREEPP__OOPPTTIIOONNSS  is
+              ’’----bbiinnaarryy--ffiilleess==wwiitthhoouutt--mmaattcchh ----ddiirreeccttoorriieess==sskkiipp’’, ggrreepp  behaves
+              as   if   the   two   options  ----bbiinnaarryy--ffiilleess==wwiitthhoouutt--mmaattcchh  and
+              ----ddiirreeccttoorriieess==sskkiipp  had  been  specified  before  any   explicit
+              options.   Option specifications are separated by whitespace.  A
+              backslash escapes the next character,  so  it  can  be  used  to
+              specify an option containing whitespace or a backslash.
+
+       GGRREEPP__CCOOLLOORR
+              This  variable  specifies  the  color  used to highlight matched
+              (non-empty) text.  It is deprecated in favor of GGRREEPP__CCOOLLOORRSS, but
+              still supported.  The mmtt, mmss, and mmcc capabilities of GGRREEPP__CCOOLLOORRSS
+              have priority over it.  It can only specify the  color  used  to
+              highlight  the  matching  non-empty text in any matching line (a
+              selected line when the --vv command-line option is omitted,  or  a
+              context line when --vv is specified).  The default is 0011;;3311, which
+              means a bold red  foreground  text  on  the  terminal’s  default
+              background.
+
+       GGRREEPP__CCOOLLOORRSS
+              Specifies  the  colors  and  other  attributes used to highlight
+              various parts of the output.  Its  value  is  a  colon-separated
+              list       of       capabilities      that      defaults      to
+              mmss==0011;;3311::mmcc==0011;;3311::ssll==::ccxx==::ffnn==3355::llnn==3322::bbnn==3322::ssee==3366  with  the  rrvv
+              and  nnee  boolean  capabilities omitted (i.e., false).  Supported
+              capabilities are as follows.
+
+              ssll==    SGR substring for whole selected  lines  (i.e.,  matching
+                     lines when the --vv command-line option is omitted, or non-
+                     matching lines when --vv is  specified).   If  however  the
+                     boolean  rrvv capability and the --vv command-line option are
+                     both specified, it  applies  to  context  matching  lines
+                     instead.   The  default  is  empty  (i.e., the terminal’s
+                     default color pair).
+
+              ccxx==    SGR substring for whole context lines (i.e., non-matching
+                     lines  when  the  --vv  command-line  option is omitted, or
+                     matching lines when --vv is  specified).   If  however  the
+                     boolean  rrvv capability and the --vv command-line option are
+                     both specified, it applies to selected non-matching lines
+                     instead.   The  default  is  empty  (i.e., the terminal’s
+                     default color pair).
+
+              rrvv     Boolean value that reverses (swaps) the meanings  of  the
+                     ssll==  and ccxx== capabilities when the --vv command-line option
+                     is specified.  The default is false (i.e., the capability
+                     is omitted).
+
+              mmtt==0011;;3311
+                     SGR substring for matching non-empty text in any matching
+                     line (i.e., a selected  line  when  the  --vv  command-line
+                     option   is  omitted,  or  a  context  line  when  --vv  is
+                     specified).  Setting this is equivalent to  setting  both
+                     mmss==  and mmcc== at once to the same value.  The default is a
+                     bold  red  text  foreground   over   the   current   line
+                     background.
+
+              mmss==0011;;3311
+                     SGR  substring  for matching non-empty text in a selected
+                     line.  (This is only used when the --vv command-line option
+                     is  omitted.)   The  effect  of  the  ssll==  (or ccxx== if rrvv)
+                     capability  remains  active  when  this  kicks  in.   The
+                     default  is  a  bold red text foreground over the current
+                     line background.
+
+              mmcc==0011;;3311
+                     SGR substring for matching non-empty text  in  a  context
+                     line.  (This is only used when the --vv command-line option
+                     is specified.)  The effect of the  ccxx==  (or  ssll==  if  rrvv)
+                     capability  remains  active  when  this  kicks  in.   The
+                     default is a bold red text foreground  over  the  current
+                     line background.
+
+              ffnn==3355  SGR  substring for file names prefixing any content line.
+                     The  default  is  a  magenta  text  foreground  over  the
+                     terminal’s default background.
+
+              llnn==3322  SGR  substring  for  line  numbers  prefixing any content
+                     line.  The default is a green text  foreground  over  the
+                     terminal’s default background.
+
+              bbnn==3322  SGR  substring  for  byte  offsets  prefixing any content
+                     line.  The default is a green text  foreground  over  the
+                     terminal’s default background.
+
+              ssee==3366  SGR  substring  for  separators that are inserted between
+                     selected line fields (::), between  context  line  fields,
+                     (--),  and  between  groups of adjacent lines when nonzero
+                     context is specified (----).  The default is  a  cyan  text
+                     foreground over the terminal’s default background.
+
+              nnee     Boolean  value  that prevents clearing to the end of line
+                     using Erase in Line (EL) to Right  (\\3333[[KK)  each  time  a
+                     colorized  item  ends.   This  is  needed on terminals on
+                     which EL is not supported.  It  is  otherwise  useful  on
+                     terminals  for  which  the bbaacckk__ccoolloorr__eerraassee (bbccee) boolean
+                     terminfo capability  does  not  apply,  when  the  chosen
+                     highlight colors do not affect the background, or when EL
+                     is too slow or causes too much flicker.  The  default  is
+                     false (i.e., the capability is omitted).
+
+              Note  that  boolean  capabilities  have no ==...  part.  They are
+              omitted (i.e., false) by default and become true when specified.
+
+              See   the   Select   Graphic  Rendition  (SGR)  section  in  the
+              documentation of the text terminal that is  used  for  permitted
+              values   and  their  meaning  as  character  attributes.   These
+              substring values are integers in decimal representation and  can
+              be  concatenated with semicolons.  ggrreepp takes care of assembling
+              the result into a  complete  SGR  sequence  (\\3333[[...mm).   Common
+              values to concatenate include 11 for bold, 44 for underline, 55 for
+              blink, 77 for inverse, 3399 for default foreground color, 3300 to  3377
+              for  foreground  colors,  9900  to 9977 for 16-color mode foreground
+              colors, 3388;;55;;00 to 3388;;55;;225555  for  88-color  and  256-color  modes
+              foreground colors, 4499 for default background color, 4400 to 4477 for
+              background colors, 110000  to  110077  for  16-color  mode  background
+              colors,  and 4488;;55;;00 to 4488;;55;;225555 for 88-color and 256-color modes
+              background colors.
+
+       LLCC__AALLLL, LLCC__CCOOLLLLAATTEE, LLAANNGG
+              These variables specify the locale for the LLCC__CCOOLLLLAATTEE  category,
+              which  determines the collating sequence used to interpret range
+              expressions like [[aa--zz]].
+
+       LLCC__AALLLL, LLCC__CCTTYYPPEE, LLAANNGG
+              These variables specify the locale for  the  LLCC__CCTTYYPPEE  category,
+              which  determines the type of characters, e.g., which characters
+              are whitespace.
+
+       LLCC__AALLLL, LLCC__MMEESSSSAAGGEESS, LLAANNGG
+              These variables specify the locale for the LLCC__MMEESSSSAAGGEESS category,
+              which  determines the language that ggrreepp uses for messages.  The
+              default C locale uses American English messages.
+
+       PPOOSSIIXXLLYY__CCOORRRREECCTT
+              If set,  ggrreepp  behaves  as  POSIX.2  requires;  otherwise,  ggrreepp
+              behaves  more  like  other  GNU programs.  POSIX.2 requires that
+              options that follow file names must be treated as file names; by
+              default,  such  options are permuted to the front of the operand
+              list and are treated as options.  Also,  POSIX.2  requires  that
+              unrecognized  options  be diagnosed as “illegal”, but since they
+              are not really against the law the default is to  diagnose  them
+              as      “invalid”.       PPOOSSIIXXLLYY__CCOORRRREECCTT      also      disables
+              ___N__GGNNUU__nnoonnooppttiioonn__aarrggvv__ffllaaggss__, described below.
+
+       ___N__GGNNUU__nnoonnooppttiioonn__aarrggvv__ffllaaggss__
+              (Here _N is ggrreepp’s numeric process ID.)  If the _ith character  of
+              this  environment variable’s value is 11, do not consider the _ith
+              operand of ggrreepp to be an option, even if it appears to  be  one.
+              A  shell  can  put  this  variable  in  the environment for each
+              command it runs, specifying which operands are  the  results  of
+              file name wildcard expansion and therefore should not be treated
+              as options.  This behavior is available  only  with  the  GNU  C
+              library, and only when PPOOSSIIXXLLYY__CCOORRRREECCTT is not set.
+
+EEXXIITT SSTTAATTUUSS
+       Normally,  the  exit  status  is  0  if  selected lines are found and 1
+       otherwise.  But the exit status is 2 if an error occurred,  unless  the
+       --qq  or ----qquuiieett or ----ssiilleenntt option is used and a selected line is found.
+       Note, however, that POSIX only mandates, for  programs  such  as  ggrreepp,
+       ccmmpp, and ddiiffff, that the exit status in case of error be greater than 1;
+       it is therefore advisable, for the sake of portability,  to  use  logic
+       that  tests  for  this  general  condition  instead  of strict equality
+       with 2.
+
+CCOOPPYYRRIIGGHHTT
+       Copyright 1998-2000, 2002, 2005-2010 Free Software Foundation, Inc.
+
+       This is free software; see the source for copying conditions.  There is
+       NO  warranty;  not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR
+       PURPOSE.
+
+BBUUGGSS
+   RReeppoorrttiinngg BBuuggss
+       Email bug reports to <bbuugg--ggrreepp@@ggnnuu..oorrgg>, a mailing list whose web  page
+       is  <hhttttpp::////lliissttss..ggnnuu..oorrgg//mmaaiillmmaann//lliissttiinnffoo//bbuugg--ggrreepp>.   ggrreepp’s Savannah
+       bug tracker is located at <hhttttpp::////ssaavvaannnnaahh..ggnnuu..oorrgg//bbuuggss//??ggrroouupp==ggrreepp>.
+
+   KKnnoowwnn BBuuggss
+       Large repetition counts in the {{_n,,_m}} construct may cause  ggrreepp  to  use
+       lots of memory.  In addition, certain other obscure regular expressions
+       require exponential time and space, and may cause ggrreepp to  run  out  of
+       memory.
+
+       Back-references are very slow, and may require exponential time.
+
+SSEEEE AALLSSOO
+   RReegguullaarr MMaannuuaall PPaaggeess
+       awk(1),  cmp(1),  diff(1),  find(1), gzip(1), perl(1), sed(1), sort(1),
+       xargs(1),   zgrep(1),   mmap(2),   read(2),   pcre(3),   pcresyntax(3),
+       pcrepattern(3), terminfo(5), glob(7), regex(7).
+
+   PPOOSSIIXX PPrrooggrraammmmeerr’’ss MMaannuuaall PPaaggee
+       grep(1p).
+
+   TTeeXXiinnffoo DDooccuummeennttaattiioonn
+       The  full documentation for ggrreepp is maintained as a TeXinfo manual.  If
+       the iinnffoo and ggrreepp programs are properly installed  at  your  site,  the
+       command
+
+              iinnffoo ggrreepp
+
+       should give you access to the complete manual.
+
+NNOOTTEESS
+       GNU’s not Unix, but Unix is a beast; its plural form is Unixen.
+
+
+
+User Commands                   GNU grep 2.6.3                         GREP(1)

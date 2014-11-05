@@ -1,0 +1,160 @@
+SCP(1)                    BSD General Commands Manual                   SCP(1)
+
+NNAAMMEE
+     ssccpp - secure copy (remote file copy program)
+
+SSYYNNOOPPSSIISS
+     ssccpp [--11224466BBCCppqqrrvv] [--cc _c_i_p_h_e_r] [--FF _s_s_h___c_o_n_f_i_g] [--ii _i_d_e_n_t_i_t_y___f_i_l_e]
+         [--ll _l_i_m_i_t] [--oo _s_s_h___o_p_t_i_o_n] [--PP _p_o_r_t] [--SS _p_r_o_g_r_a_m]
+         [[_u_s_e_r@]_h_o_s_t_1:]_f_i_l_e_1 _._._. [[_u_s_e_r@]_h_o_s_t_2:]_f_i_l_e_2
+
+DDEESSCCRRIIPPTTIIOONN
+     ssccpp copies files between hosts on a network.  It uses ssh(1) for data
+     transfer, and uses the same authentication and provides the same security
+     as ssh(1).  Unlike rcp(1), ssccpp will ask for passwords or passphrases if
+     they are needed for authentication.
+
+     File names may contain a user and host specification to indicate that the
+     file is to be copied to/from that host.  Local file names can be made
+     explicit using absolute or relative pathnames to avoid ssccpp treating file
+     names containing ‘:’ as host specifiers.  Copies between two remote hosts
+     are also permitted.
+
+     When copying a source file to a target file which already exists, ssccpp
+     will replace the contents of the target file (keeping the inode).
+
+     If the target file does not yet exist, an empty file with the target file
+     name is created, then filled with the source file contents.  No attempt
+     is made at "near-atomic" transfer using temporary files.
+
+     The options are as follows:
+
+     --11      Forces ssccpp to use protocol 1.
+
+     --22      Forces ssccpp to use protocol 2.
+
+     --44      Forces ssccpp to use IPv4 addresses only.
+
+     --66      Forces ssccpp to use IPv6 addresses only.
+
+     --BB      Selects batch mode (prevents asking for passwords or
+             passphrases).
+
+     --CC      Compression enable.  Passes the --CC flag to ssh(1) to enable com-
+             pression.
+
+     --cc _c_i_p_h_e_r
+             Selects the cipher to use for encrypting the data transfer.  This
+             option is directly passed to ssh(1).
+
+     --FF _s_s_h___c_o_n_f_i_g
+             Specifies an alternative per-user configuration file for sssshh.
+             This option is directly passed to ssh(1).
+
+     --ii _i_d_e_n_t_i_t_y___f_i_l_e
+             Selects the file from which the identity (private key) for public
+             key authentication is read.  This option is directly passed to
+             ssh(1).
+
+     --ll _l_i_m_i_t
+             Limits the used bandwidth, specified in Kbit/s.
+
+     --oo _s_s_h___o_p_t_i_o_n
+             Can be used to pass options to sssshh in the format used in
+             ssh_config(5).  This is useful for specifying options for which
+             there is no separate ssccpp command-line flag.  For full details of
+             the options listed below, and their possible values, see
+             ssh_config(5).
+
+                   AddressFamily
+                   BatchMode
+                   BindAddress
+                   ChallengeResponseAuthentication
+                   CheckHostIP
+                   Cipher
+                   Ciphers
+                   Compression
+                   CompressionLevel
+                   ConnectionAttempts
+                   ConnectTimeout
+                   ControlMaster
+                   ControlPath
+                   GlobalKnownHostsFile
+                   GSSAPIAuthentication
+                   GSSAPIDelegateCredentials
+                   HashKnownHosts
+                   Host
+                   HostbasedAuthentication
+                   HostKeyAlgorithms
+                   HostKeyAlias
+                   HostName
+                   IdentityFile
+                   IdentitiesOnly
+                   KbdInteractiveDevices
+                   LogLevel
+                   MACs
+                   NoHostAuthenticationForLocalhost
+                   NumberOfPasswordPrompts
+                   PasswordAuthentication
+                   PKCS11Provider
+                   Port
+                   PreferredAuthentications
+                   Protocol
+                   ProxyCommand
+                   PubkeyAuthentication
+                   RekeyLimit
+                   RhostsRSAAuthentication
+                   RSAAuthentication
+                   SendEnv
+                   ServerAliveInterval
+                   ServerAliveCountMax
+                   StrictHostKeyChecking
+                   TCPKeepAlive
+                   UsePrivilegedPort
+                   User
+                   UserKnownHostsFile
+                   VerifyHostKeyDNS
+
+     --PP _p_o_r_t
+             Specifies the port to connect to on the remote host.  Note that
+             this option is written with a capital ‘P’, because --pp is already
+             reserved for preserving the times and modes of the file in
+             rcp(1).
+
+     --pp      Preserves modification times, access times, and modes from the
+             original file.
+
+     --qq      Quiet mode: disables the progress meter as well as warning and
+             diagnostic messages from ssh(1).
+
+     --rr      Recursively copy entire directories.  Note that ssccpp follows sym-
+             bolic links encountered in the tree traversal.
+
+     --SS _p_r_o_g_r_a_m
+             Name of _p_r_o_g_r_a_m to use for the encrypted connection.  The program
+             must understand ssh(1) options.
+
+     --vv      Verbose mode.  Causes ssccpp and ssh(1) to print debugging messages
+             about their progress.  This is helpful in debugging connection,
+             authentication, and configuration problems.
+
+     The ssccpp utility exits 0 on success, and >0 if an error occurs.
+
+IIPPVV66
+     IPv6 address can be used everywhere where IPv4 address. In all entries
+     must be the IPv6 address enclosed in square brackets. Note: The square
+     brackets are metacharacters for the shell and must be escaped in shell.
+
+SSEEEE AALLSSOO
+     rcp(1), sftp(1), ssh(1), ssh-add(1), ssh-agent(1), ssh-keygen(1),
+     ssh_config(5), sshd(8)
+
+HHIISSTTOORRYY
+     ssccpp is based on the rcp(1) program in BSD source code from the Regents of
+     the University of California.
+
+AAUUTTHHOORRSS
+     Timo Rinne 〈tri@iki.fi〉
+     Tatu Ylonen 〈ylo@cs.hut.fi〉
+
+BSD                            October 10, 2014                            BSD
