@@ -1,0 +1,91 @@
+Small Testplan:
+    Run indexer on the small_test directory, and then validate the following commands on the search program.
+
+    Input:
+        so the
+    Output:
+        Expected:
+            small_test/buddha.txt, small_test/robbins.txt, small_test/fox.txt, small_test/churchill.txt, small_test/anon.txt
+        Actual:
+            small_test/buddha.txt, small_test/robbins.txt, small_test/fox.txt, small_test/churchill.txt, small_test/anon.txt
+
+    Input:
+        so short roll quotation
+    Output:
+        Expected:
+            small_test/wilde.txt, small_test/einstein.txt, small_test/anon.txt
+        Actual:
+            small_test/wilde.txt, small_test/einstein.txt, small_test/anon.txt
+
+    Input:
+        sa your without success
+    Output:
+        Expected:
+            small_test/churchill.txt
+        Actual:
+            small_test/churchill.txt
+
+    Input:
+        sa people passions opinions
+    Output:
+        Expected:
+            small_test/wilde.txt
+        Actual:
+            small_test/wilde.txt
+
+    Input:
+        so supercalifragilisticexpialidocious
+    Output:
+        Expected:
+
+        Actual:
+
+    Input:
+        sa wise tongue thoughts
+    Output:
+        Expected:
+
+        Actual:
+
+Large Testplan:
+    Run indexer on the big_test directory, and then validate the following commands on the search program.
+
+    Input:
+        so the
+    Output:
+        Expected:
+            big_test/tolstoy/peace/peace.txt, big_test/potter/order/order.txt, big_test/potter/hallows/hallows.txt, big_test/potter/goblet/goblet.txt, big_test/potter/halfblood/halfblood.txt, big_test/potter/azkaban/azkaban.txt, big_test/manpages/gcc.txt, big_test/potter/philosopher/philosopher.txt, big_test/potter/chamber/chamber.txt, big_test/manpages/bash.txt, big_test/narnia/voyage/voyage.txt, big_test/narnia/silver/silver.txt, big_test/narnia/horse/horse.txt, big_test/narnia/battle/battle.txt, big_test/narnia/caspian/caspian.txt, big_test/narnia/nephew/nephew.txt, big_test/narnia/wardrobe/wardrobe.txt, big_test/manpages/rsync.txt, big_test/manpages/hg.txt, big_test/manpages/ssh.txt, big_test/manpages/grep.txt, big_test/manpages/java.txt, big_test/manpages/git.txt, big_test/manpages/sadness.txt, big_test/manpages/vim.txt, big_test/manpages/python.txt, big_test/manpages/ruby.txt, big_test/manpages/nano.txt, big_test/manpages/scp.txt, big_test/manpages/ln.txt, big_test/manpages/wc.txt, big_test/manpages/tr.txt, big_test/manpages/svn.txt, big_test/manpages/cat.txt
+        Actual:
+            big_test/tolstoy/peace/peace.txt, big_test/potter/order/order.txt, big_test/potter/hallows/hallows.txt, big_test/potter/goblet/goblet.txt, big_test/potter/halfblood/halfblood.txt, big_test/potter/azkaban/azkaban.txt, big_test/manpages/gcc.txt, big_test/potter/philosopher/philosopher.txt, big_test/potter/chamber/chamber.txt, big_test/manpages/bash.txt, big_test/narnia/voyage/voyage.txt, big_test/narnia/silver/silver.txt, big_test/narnia/horse/horse.txt, big_test/narnia/battle/battle.txt, big_test/narnia/caspian/caspian.txt, big_test/narnia/nephew/nephew.txt, big_test/narnia/wardrobe/wardrobe.txt, big_test/manpages/rsync.txt, big_test/manpages/hg.txt, big_test/manpages/ssh.txt, big_test/manpages/grep.txt, big_test/manpages/java.txt, big_test/manpages/git.txt, big_test/manpages/sadness.txt, big_test/manpages/vim.txt, big_test/manpages/python.txt, big_test/manpages/ruby.txt, big_test/manpages/nano.txt, big_test/manpages/scp.txt, big_test/manpages/ln.txt, big_test/manpages/wc.txt, big_test/manpages/tr.txt, big_test/manpages/svn.txt, big_test/manpages/cat.txt
+
+    Input:
+        so broomstick quidditch dragon
+    Output:
+        Expected:
+            big_test/narnia/voyage/voyage.txt, big_test/potter/philosopher/philosopher.txt, big_test/potter/hallows/hallows.txt, big_test/potter/azkaban/azkaban.txt, big_test/potter/order/order.txt, big_test/potter/goblet/goblet.txt, big_test/potter/chamber/chamber.txt, big_test/potter/halfblood/halfblood.txt, big_test/narnia/battle/battle.txt, big_test/tolstoy/peace/peace.txt, big_test/narnia/wardrobe/wardrobe.txt, big_test/narnia/silver/silver.txt, big_test/narnia/nephew/nephew.txt, big_test/narnia/horse/horse.txt, big_test/narnia/caspian/caspian.txt
+        Actual:
+            big_test/narnia/voyage/voyage.txt, big_test/potter/philosopher/philosopher.txt, big_test/potter/hallows/hallows.txt, big_test/potter/azkaban/azkaban.txt, big_test/potter/order/order.txt, big_test/potter/goblet/goblet.txt, big_test/potter/chamber/chamber.txt, big_test/potter/halfblood/halfblood.txt, big_test/narnia/battle/battle.txt, big_test/tolstoy/peace/peace.txt, big_test/narnia/wardrobe/wardrobe.txt, big_test/narnia/silver/silver.txt, big_test/narnia/nephew/nephew.txt, big_test/narnia/horse/horse.txt, big_test/narnia/caspian/caspian.txt
+
+    Input:
+        sa crumple horned snorkack
+    Output:
+        Expected:
+            big_test/potter/order/order.txt, big_test/potter/hallows/hallows.txt
+        Actual:
+            big_test/potter/order/order.txt, big_test/potter/hallows/hallows.txt
+
+    Input:
+        sa hoggy warty hogwarts
+    Output:
+        Expected:
+            big_test/potter/philosopher/philosopher.txt
+        Actual:
+            big_test/potter/philosopher/philosopher.txt
+
+    Input:
+        sa eustace clarence scrubb
+    Output:
+        Expected:
+            big_test/narnia/voyage/voyage.txt
+        Actual: 
+            big_test/narnia/voyage/voyage.txt
