@@ -200,6 +200,11 @@ void *SLNextItem(SortedListIterator *iter) {
 
 // Function returns data for the node iterator is currently parked on
 void *SLGetItem(SortedListIterator *iter) {
+    if (!iter->started) {
+        iter->started = 1;
+        iter->current = iter->list->head;
+        iter->current->pointers++;
+    }
     return iter->current->data;
 }
 
