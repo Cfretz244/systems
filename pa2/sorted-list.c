@@ -28,6 +28,7 @@ SortedList *SLCreate(CompareFuncT cf, DestructFuncT df) {
 
     if (list) {
         list->head = NULL;
+        list->size = 0;
         list->comparator = cf;
         list->destructor = df;
     }
@@ -58,6 +59,7 @@ int SLInsert(SortedList *list, void *newObj) {
         // Handle edge case of inserting into an empty list.
         ListNode *head = LNCreate(newObj);
         list->head = head;
+        list->size++;
         return 1;
     }
 
@@ -77,6 +79,10 @@ int SLInsert(SortedList *list, void *newObj) {
                 prev->next = node;
                 node->next = current;
             }
+            
+            // Increment list size.
+            list->size++;
+
             return 1;
         }
         // Advance pointers.
@@ -88,6 +94,9 @@ int SLInsert(SortedList *list, void *newObj) {
     // was found.
     ListNode *node = LNCreate(newObj);
     prev->next = node;
+
+    // Increment list size.
+    list->size++;
     return 1;
 }
 
@@ -119,6 +128,10 @@ int SLRemove(SortedList *list, void *newObj) {
             if (!current->pointers) {
                 LNDestroy(current, list->destructor);
             }
+
+            // Decrement list size.
+            list->size--;
+
             return 1;
         }
 
@@ -136,7 +149,7 @@ SortedListIterator *SLCreateIterator(SortedList *list) {
 
     if (iterator) {
         iterator->list = list;
-        iterator->current = NULL;
+        iterator->current = list->head;
         iterator->started = 0;
     }
 
@@ -157,12 +170,19 @@ ListNode *SLFindNext(SortedList *list, ListNode *old) {
 // Function advances the given iterator and returns the next element in
 // the list
 void *SLNextItem(SortedListIterator *iter) {
+    if (!iter->list->size) {
+        return NULL;
+    }
     if (!iter->started) {
         // Iteration has only just been allocated. Begin traversal.
         iter->started = 1;
-        iter->current = iter->list->head;
+        if (!iter->current) {
+            iter->current = iter->list->head;
+        }
+        void *data = iter->current->data;
+        iter->current = iter->current->next;
         iter->current->pointers++;
-        return iter->current->data;
+        return data;
     } else if (!iter->current) {
         // Iteration is already over. Return NULL.
         return NULL;
@@ -200,6 +220,9 @@ void *SLNextItem(SortedListIterator *iter) {
 
 // Function returns data for the node iterator is currently parked on
 void *SLGetItem(SortedListIterator *iter) {
+    if (!iter->list->size) {
+        return NULL;
+    }
     if (!iter->started) {
         iter->started = 1;
         iter->current = iter->list->head;

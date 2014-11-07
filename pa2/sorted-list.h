@@ -23,6 +23,7 @@ typedef struct ListNode {
 // Sorted List Struct
 typedef struct SortedList {
     ListNode *head;
+    int size;
     CompareFuncT comparator;
     DestructFuncT destructor;
 } SortedList;
