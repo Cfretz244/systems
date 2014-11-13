@@ -36,6 +36,7 @@ typedef struct customer {
     int id;
     float credit;
     list *approved, *rejected;
+    pthread_mutex_t *mutex;
 } customer;
 
 customer *create_customer(char *name, char *street, char *state, char *zip, int id, float credit);

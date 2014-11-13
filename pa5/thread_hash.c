@@ -1,5 +1,7 @@
 #include "thread_hash.h"
 
+/*----- Thread Hash Functions -----*/
+
 // Function handles creation of a hash struct.
 thread_hash *create_thread_hash() {
     thread_hash *table = (thread_hash *) malloc(sizeof(thread_hash));
@@ -57,7 +59,7 @@ void rehash(thread_hash *table) {
 }
 
 // Insert data into a hash for a specific key.
-bool put(thread_hash *table, char *key, customer *data) {
+bool put(thread_hash *table, char *key, void *data, node_type type) {
     // Verify parameters.
     if (!table || !key || !data) {
         return false;
@@ -82,7 +84,7 @@ bool put(thread_hash *table, char *key, customer *data) {
         // key.
         if (!find_hash_node(table->data[hash], key)) {
             // Data is new.
-            hash_node *node = create_hash_node(key, data);
+            hash_node *node = create_hash_node(key, data, type);
             insert_hash_node(table->data[hash], node);
             table->count++;
             pthread_mutex_unlock(table->mutex);
@@ -94,7 +96,7 @@ bool put(thread_hash *table, char *key, customer *data) {
         }
     } else {
         // Insert new data into table.
-        hash_node *node = create_hash_node(key, data);
+        hash_node *node = create_hash_node(key, data, type);
         table->data[hash] = node;
         table->count++;
         pthread_mutex_unlock(table->mutex);
@@ -103,7 +105,7 @@ bool put(thread_hash *table, char *key, customer *data) {
 }
 
 // Function handles getting data out of a hash for a specific key.
-customer *get(thread_hash *table, char *key) {
+void *get(thread_hash *table, char *key) {
     // Verify parameters.
     if (!table || !table->count || !key) {
         return NULL;
@@ -198,4 +200,98 @@ void destroy_thread_hash(thread_hash *table) {
     }
     free(table->data);
     free(table);
+}
+
+/*---- Hash Node Functions ----*/
+
+// Function handles the creation of a hash_node struct.
+hash_node *create_hash_node(char *key, void *data, node_type type) {
+    hash_node *node = (hash_node *) malloc(sizeof(hash_node));
+
+    if (node) {
+        char *intern_key = (char *) malloc(sizeof(char) * (strlen(key) + 1));
+        if (intern_key) {
+            strcpy(intern_key, key);
+            node->key = intern_key;
+            node->data = data;
+            node->next = NULL;
+        }
+    }
+
+    return node;
+}
+
+// Function handles inserting a hash node into a linked list of hash nodes.
+bool insert_hash_node(hash_node *head, hash_node *insert) {
+    // Validate paramaters and insert if the list doesn't already contain
+    // the given node.
+    if (head && insert) {
+        for (hash_node *current = head; current; current = current->next) {
+            if (!strcmp(insert->key, current->key)) {
+                return false;
+            } else if(!current->next) {
+                current->next = insert;
+                return true;
+            }
+        }
+        return false;
+    } else {
+        return false;
+    }
+}
+
+// Function handles finding hash_node with a specific key in a linked list
+// of nodes.
+hash_node *find_hash_node(hash_node *head, char *key) {
+    // Validate parameters and search.
+    if (head && key) {
+        for (hash_node *current = head; current; current = current->next) {
+            if (!strcmp(current->key, key)) {
+                return current;
+            }
+        }
+        return NULL;
+    } else {
+        return NULL;
+    }
+}
+
+// Function handles removing a hash_node specified by key from a linked
+// list of nodes.
+hash_node *remove_hash_node(hash_node *head, char *key) {
+    if (head && key) {
+        hash_node *prev = NULL;
+        for (hash_node *current = head; current; current = current->next) {
+            if (!strcmp(current->key, key)) {
+                if (prev) {
+                    prev->next = current->next;
+                    return head;
+                } else {
+                    return head->next;
+                }
+            }
+            prev = current;
+        }
+    }
+    return head;
+}
+
+// Function handles the destruction of an entire linked list of hash_nodes.
+void destroy_hash_chain(hash_node *head) {
+    while (head) {
+        hash_node *tmp = head;
+        head = head->next;
+        destroy_hash_node(tmp);
+    }
+}
+
+// Function handles the destruction of a specific hash_node struct.
+void destroy_hash_node(hash_node *node) {
+    free(node->key);
+    if (node->type == CUSTOMER) {
+        destroy_customer(node->data);
+    } else {
+        destroy_consumer(node->data);
+    }
+    free(node);
 }

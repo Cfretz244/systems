@@ -7,6 +7,7 @@
 #include "hash_node.h"
 
 void construct_database(thread_hash *table, FILE *database);
+pthread_t **generate_consumers(FILE *categories);
 char *get_line(FILE *file);
 char *unquote(char *str);
 void panic(char *reason);
@@ -20,6 +21,7 @@ int main(int argc, char **argv) {
     if (database && input && categories) {
         thread_hash *table = create_thread_hash();
         construct_database(table, database);
+        pthread_t **threads = generate_consumers(categories);
     } else {
         panic("Could not open one of the input files. Perhaps it doesn't exist?");
     }
@@ -45,6 +47,10 @@ void construct_database(thread_hash *table, FILE *database) {
         }
         free(line);
     }
+}
+
+pthread_t **generate_consumers(FILE *categories) {
+    // Revisit this in a bit
 }
 
 char *get_line(FILE *file) {

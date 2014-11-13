@@ -18,6 +18,8 @@ customer *create_customer(char *name, char *street, char *state, char *zip, int 
         money->credit = credit;
         money->approved = create_list(false);
         money->rejected = create_list(false);
+        money->mutex = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
+        pthread_mutex_init(money->mutex, NULL);
     }
 
     return money;
@@ -36,6 +38,7 @@ void destroy_customer(customer *money) {
     free(money->street);
     free(money->state);
     free(money->zip);
+    pthread_mutex_destroy(money->mutex);
     free(money);
 }
 
