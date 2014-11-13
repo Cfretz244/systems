@@ -25,7 +25,9 @@ void lpush(list *lst, order *data) {
     }
 
     list_node *node = create_list_node(data);
-    pthread_mutex_lock(lst->mutex);
+    if (lst->threaded) {
+        pthread_mutex_lock(lst->mutex);
+    }
 
     if (lst->head) {
         node->next = lst->head;
@@ -37,7 +39,9 @@ void lpush(list *lst, order *data) {
     }
     lst->size++;
 
-    pthread_mutex_unlock(lst->mutex);
+    if (lst->threaded) {
+        pthread_mutex_unlock(lst->mutex);
+    }
 }
 
 order *rpop(list *lst) {
@@ -45,14 +49,18 @@ order *rpop(list *lst) {
         return NULL;
     }
 
-    pthread_mutex_lock(lst->mutex);
+    if (lst->threaded) {
+        pthread_mutex_lock(lst->mutex);
+    }
 
     list_node *node = lst->tail;
     lst->tail = lst->tail->prev;
     lst->tail->next = NULL;
     lst->size--;
 
-    pthread_mutex_unlock(lst->mutex);
+    if (lst->threaded) {
+        pthread_mutex_unlock(lst->mutex);
+    }
     order *book = node->data;
     destroy_list_node(node);
     return book;
