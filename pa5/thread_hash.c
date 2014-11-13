@@ -62,6 +62,11 @@ bool put(hash *table, char *key, customer *data) {
         return false;
     }
 
+    // Locking the mutex this early, and for this long, makes me sad,
+    // but I don't see too many ways around it without introducing small
+    // race conditions.
+    pthread_mutex_lock(table->mutex);
+
     // Check if table needs a rehash.
     if (table->count / (float) table->size > 0.8) {
         rehash(table);
@@ -71,7 +76,7 @@ bool put(hash *table, char *key, customer *data) {
     int hash = hash_key(key, table->size);
 
     // Verify that table does not already contain given key.
-    if(table->data[hash]) {
+    if (table->data[hash]) {
         // Check if we're dealing with a hash collision, or a repeat
         // key.
         if (!find_hash_node(table->data[hash], key)) {
@@ -79,9 +84,11 @@ bool put(hash *table, char *key, customer *data) {
             hash_node *node = create_hash_node(key, data);
             insert_hash_node(table->data[hash], node);
             table->count++;
+            pthread_mutex_unlock(table->mutex);
             return true;
         } else {
             // Key already exists in table.
+            pthread_mutex_unlock(table->mutex);
             return false;
         }
     } else {
@@ -89,6 +96,7 @@ bool put(hash *table, char *key, customer *data) {
         hash_node *node = create_hash_node(key, data);
         table->data[hash] = node;
         table->count++;
+        pthread_mutex_unlock(table->mutex);
         return true;
     }
 }
@@ -99,15 +107,20 @@ customer *get(hash *table, char *key) {
     if (!table || !table->count || !key) {
         return NULL;
     }
+
+    pthread_mutex_lock(table->mutex);
     
     // Generate hash value and find data.
     int hash = hash_key(key, table->size);
     hash_node *found = find_hash_node(table->data[hash], key);
+
+    pthread_mutex_unlock(table->mutex);
     if (found) {
         return found->data;
     } else {
         return NULL;
     }
+
 }
 
 // Handle removal of a key from hash. Although never actually called in the
@@ -118,6 +131,8 @@ bool drop(hash *table, char *key) {
         return false;
     }
 
+    pthread_mutex_lock(table->mutex);
+
     // Generate hash value and find data.
     int hash = hash_key(key, table->size);
     if (table->data[hash]) {
@@ -125,13 +140,16 @@ bool drop(hash *table, char *key) {
             // Remove appropriate data.
             table->data[hash] = remove_hash_node(table->data[hash], key);
             table->count--;
+            pthread_mutex_unlock(table->mutex);
             return true;
         } else {
             // Key does not exist in table.
+            pthread_mutex_unlock(table->mutex);
             return false;
         }
     } else {
         // Key does not exist in table.
+        pthread_mutex_unlock(table->mutex);
         return false;
     }
 }
@@ -144,6 +162,9 @@ char **get_keys(hash *table) {
     }
     int current = 0;
     char **keys = (char **) malloc(sizeof(char *) * table->count);
+
+    pthread_mutex_lock(table->mutex);
+
     for (int i = 0; i < table->size; i++) {
         if (table->data[i]) {
             for (hash_node *tmp = table->data[i]; tmp; tmp = tmp->next) {
@@ -152,6 +173,9 @@ char **get_keys(hash *table) {
             }
         }
     }
+
+    pthread_mutex_unlock(table->mutex);
+    
     return keys;
 }
 

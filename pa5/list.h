@@ -39,10 +39,12 @@ typedef struct list {
 #endif
 
 /*----- Thread Safe Functions -----*/
+
 void lpush(list *lst, order *data);
 order *rpop(list *lst);
 
 /*----- Unsafe Functions -----*/
+
 list *create_list(bool threaded);
 void destroy_list(list *lst);
 

@@ -17,12 +17,16 @@ typedef struct hash {
     pthread_mutex_t *mutex;
 } hash;
 
-// Function declarations.
-hash *create_hash();
+/*----- Thread Safe Functions -----*/
+
 bool put(hash *table, char *key, customer *data);
 customer *get(hash *table, char *key);
 char **get_keys(hash *table);
 bool drop(hash *table, char *key);
+
+/*----- Unsafe Functions -----*/
+
+hash *create_hash();
 void destroy_hash(hash *table);
 
 #endif
