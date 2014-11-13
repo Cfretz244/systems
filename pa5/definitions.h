@@ -1,7 +1,5 @@
-#ifndef DEFINITIONS
-#define DEFINITIONS
-
-#include <stdlib.h>
+#ifndef DEFINITIONS_H
+#define DEFINITIONS_H
 
 // A simple boolean typedef from an enum.
 typedef enum {

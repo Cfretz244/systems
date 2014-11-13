@@ -1,5 +1,5 @@
-#ifndef BUSINESS
-#define BUSINESS
+#ifndef BUSINESS_H
+#define BUSINESS_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -7,22 +7,40 @@
 #include "definitions.h"
 #include "list.h"
 
+#ifndef LIST_DECLARE
+#define LIST_DECLARE
+typedef struct list list;
+#endif
+
+// Ignore this circularly dependent struct declaration.
+#ifdef ORDER_DECLARE
+struct order {
+#else
+typedef struct order {
+#endif
+    char *title, *category;
+    float price;
+    int id;
+#ifdef ORDER_DECLARE
+};
+#else
+#define ORDER_DECLARE
+} order;
+#endif
+
 // Customer Struct.
 typedef struct customer {
-    char *name;
+    char *name, *street, *state, *zip;
     int id;
     float credit;
     list *approved, *rejected;
 } customer;
 
-// Order Struct.
-typedef struct order {
-    char *title, *category;
-    float price;
-}
+customer *create_customer(char *name, char *street, char *state, char *zip, int id, float credit);
+void destroy_customer(customer *money);
 
-customer *create_customer(/* stuff */);
-bool customers_are_equal(customer *f, customer *s);
-void destroy_customer(customer *cust);
+order *create_order(char *title, char *category, float price, int id);
+bool orders_are_equal(order *f, order *s);
+void destroy_order(order *book);
 
 #endif

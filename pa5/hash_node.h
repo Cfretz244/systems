@@ -1,16 +1,10 @@
-#ifndef NODES
-#define NODES
+#ifndef HASH_NODE_H
+#define HASH_NODE_H
 
 #include <stdlib.h>
 #include <string.h>
 #include "definitions.h"
 #include "business.h"
-
-// Enum used for distinguishing between nodes.
-typedef enum node_type {
-    LIST,
-    HASH
-} node_type;
 
 // hash_node struct represents a collection of all filenames that reference
 // a particular token.
@@ -20,13 +14,7 @@ typedef struct hash_node {
     struct hash_node *next;
 } hash_node;
 
-// list_node struct
-typedef struct list_node {
-    // stuff
-} list_node;
-
-bool nodes_are_equal(void *f, void *s, node_type type);
-
+bool hash_nodes_are_equal(hash_node *f, hash_node *s);
 hash_node *create_hash_node(char *key, customer *data);
 bool insert_hash_node(hash_node *head, hash_node *new);
 hash_node *find_hash_node(hash_node *head, char *key);

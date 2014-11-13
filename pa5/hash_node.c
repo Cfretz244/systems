@@ -1,15 +1,10 @@
-#include "nodes.h"
+#include "hash_node.h"
 
 /*---- Generic Functions ----*/
 
 // Function handles checking if two nodes of a single specified type are equal.
-bool nodes_are_equal(void *f, void *s, node_type type) {
-    if (type == LIST) {
-        // cool stuff
-    } else {
-        hash_node *first = (hash_node *) f, *second = (hash_node *) s;
-        return strcmp(first->key, second->key) == 0 && customers_are_equal(first->data, second->data);
-    }
+bool hash_nodes_are_equal(hash_node *f, hash_node *s) {
+    return !strcmp(f->key, s->key) && customers_are_equal(f->data, s->data);
 }
 
 /*---- Hash Node Functions ----*/
@@ -37,7 +32,7 @@ bool insert_hash_node(hash_node *head, hash_node *new) {
     // the given node.
     if (head && new) {
         for (hash_node *current = head; current; current = current->next) {
-            if (nodes_are_equal(current, new, HASH)) {
+            if (hash_nodes_are_equal(current, new)) {
                 return false;
             } else if(!current->next) {
                 current->next = new;

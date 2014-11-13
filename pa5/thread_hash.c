@@ -1,4 +1,4 @@
-#include "hash.h"
+#include "thread_hash.h"
 
 // Function handles creation of a hash struct.
 hash *create_hash() {
@@ -9,6 +9,7 @@ hash *create_hash() {
         table->data = (hash_node **) calloc(START_SIZE, sizeof(hash_node *));
         table->count = 0;
         table->size = START_SIZE;
+        pthread_mutex_init(table->mutex, NULL);
     }
 
     return table;
@@ -55,7 +56,7 @@ void rehash(hash *table) {
 }
 
 // Insert data into a hash for a specific key.
-bool put(hash *table, char *key, index_node *data) {
+bool put(hash *table, char *key, customer *data) {
     // Verify parameters.
     if (!table || !key || !data) {
         return false;
@@ -93,7 +94,7 @@ bool put(hash *table, char *key, index_node *data) {
 }
 
 // Function handles getting data out of a hash for a specific key.
-index_node *get(hash *table, char *key) {
+customer *get(hash *table, char *key) {
     // Verify parameters.
     if (!table || !table->count || !key) {
         return NULL;
@@ -106,32 +107,6 @@ index_node *get(hash *table, char *key) {
         return found->data;
     } else {
         return NULL;
-    }
-}
-
-// Update data already in hash for a specific key. Necessary to handle
-// head replacements.
-bool update(hash *table, char *key, index_node *head) {
-    // Verify parameters.
-    if (!table || !table->count || !key || !head) {
-        return false;
-    }
-
-    // Generate hash value and find data.
-    int hash = hash_key(key, table->size);
-    if (table->data[hash]) {
-        hash_node *found = find_hash_node(table->data[hash], key);
-        if (found) {
-            // Replace appropriate data with new data.
-            found->data = head;
-            return true;
-        } else {
-            // Key does not exist in table.
-            return false;
-        }
-    } else {
-        // Key does not exist in table.
-        return false;
     }
 }
 
