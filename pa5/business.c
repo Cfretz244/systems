@@ -6,10 +6,14 @@ customer *create_customer(char *name, char *street, char *state, char *zip, int 
     customer *money = (customer *) malloc(sizeof(customer));
 
     if (money) {
-        money->name = name;
-        money->street = street;
-        money->state = state;
-        money->zip = zip;
+        money->name = (char *) malloc(sizeof(char) * (strlen(name) + 1));
+        strcpy(money->name, name);
+        money->street = (char *) malloc(sizeof(char) * (strlen(street) + 1));
+        strcpy(money->street, street);
+        money->state = (char *) malloc(sizeof(char) * (strlen(state) + 1));
+        strcpy(money->state, state);
+        money->zip = (char *) malloc(sizeof(char) * (strlen(zip) + 1));
+        strcpy(money->zip, zip);
         money->id = id;
         money->credit = credit;
         money->approved = create_list(false);
@@ -17,6 +21,12 @@ customer *create_customer(char *name, char *street, char *state, char *zip, int 
     }
 
     return money;
+}
+
+bool customers_are_equal(customer *f, customer *s) {
+    int names = !strcmp(f->name, s->name), streets = !strcmp(f->street, s->street);
+    int states = !strcmp(f->state, s->state), zips = !strcmp(f->zip, s->zip);
+    return names && streets && states && zips && f->id == s->id && f->credit == s->credit;
 }
 
 void destroy_customer(customer *money) {
@@ -35,8 +45,10 @@ order *create_order(char *title, char *category, float price, int id) {
     order *book = (order *) malloc(sizeof(order));
 
     if (book) {
-        book->title = title;
-        book->category = category;
+        book->title = (char *) malloc(sizeof(char) * (strlen(title) + 1));
+        strcpy(book->title, title);
+        book->category = (char *) malloc(sizeof(char) * (strlen(category) + 1));
+        strcpy(book->category, category);
         book->price = price;
         book->id = id;
     }

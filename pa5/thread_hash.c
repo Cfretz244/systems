@@ -1,8 +1,8 @@
 #include "thread_hash.h"
 
 // Function handles creation of a hash struct.
-hash *create_hash() {
-    hash *table = (hash *) malloc(sizeof(hash));
+thread_hash *create_thread_hash() {
+    thread_hash *table = (thread_hash *) malloc(sizeof(thread_hash));
 
     if (table) {
         // Allocate table with calloc to allow for NULL checks.
@@ -26,7 +26,7 @@ int hash_key(char *key, int size) {
 
 // Function handles the rehash process encountered when a hash reaches
 // 80% capacity.
-void rehash(hash *table) {
+void rehash(thread_hash *table) {
     // Allocate new table with calloc to allow for NULL checks.
     hash_node **old_data = table->data;
     hash_node **new_data = (hash_node **) calloc(table->size * 2, sizeof(hash_node *));
@@ -56,7 +56,7 @@ void rehash(hash *table) {
 }
 
 // Insert data into a hash for a specific key.
-bool put(hash *table, char *key, customer *data) {
+bool put(thread_hash *table, char *key, customer *data) {
     // Verify parameters.
     if (!table || !key || !data) {
         return false;
@@ -102,7 +102,7 @@ bool put(hash *table, char *key, customer *data) {
 }
 
 // Function handles getting data out of a hash for a specific key.
-customer *get(hash *table, char *key) {
+customer *get(thread_hash *table, char *key) {
     // Verify parameters.
     if (!table || !table->count || !key) {
         return NULL;
@@ -125,7 +125,7 @@ customer *get(hash *table, char *key) {
 
 // Handle removal of a key from hash. Although never actually called in the
 // project, it seemed dishonest not to include it.
-bool drop(hash *table, char *key) {
+bool drop(thread_hash *table, char *key) {
     // Verify parameters.
     if (!table || table->count == 0 || !key) {
         return false;
@@ -156,7 +156,7 @@ bool drop(hash *table, char *key) {
 
 // Function handles the enumeration of all keys currently stored in hash.
 // Returns said keys in any order.
-char **get_keys(hash *table) {
+char **get_keys(thread_hash *table) {
     if (!table) {
         return NULL;
     }
@@ -180,7 +180,7 @@ char **get_keys(hash *table) {
 }
 
 // Function handles the destruction of hash struct.
-void destroy_hash(hash *table) {
+void destroy_thread_hash(thread_hash *table) {
     // Verify parameters.
     if (!table) {
         return;

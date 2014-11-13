@@ -10,23 +10,23 @@
 #define START_SIZE 10
 
 // Main hashtable struct.
-typedef struct hash {
+typedef struct thread_hash {
     hash_node **data;
     int count;
     int size;
     pthread_mutex_t *mutex;
-} hash;
+} thread_hash;
 
 /*----- Thread Safe Functions -----*/
 
-bool put(hash *table, char *key, customer *data);
-customer *get(hash *table, char *key);
-char **get_keys(hash *table);
-bool drop(hash *table, char *key);
+bool put(thread_hash *table, char *key, customer *data);
+customer *get(thread_hash *table, char *key);
+char **get_keys(thread_hash *table);
+bool drop(thread_hash *table, char *key);
 
 /*----- Unsafe Functions -----*/
 
-hash *create_hash();
-void destroy_hash(hash *table);
+thread_hash *create_thread_hash();
+void destroy_thread_hash(thread_hash *table);
 
 #endif

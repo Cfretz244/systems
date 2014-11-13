@@ -39,6 +39,7 @@ typedef struct customer {
 } customer;
 
 customer *create_customer(char *name, char *street, char *state, char *zip, int id, float credit);
+bool customers_are_equal(customer *f, customer *s);
 void destroy_customer(customer *money);
 
 order *create_order(char *title, char *category, float price, int id);
