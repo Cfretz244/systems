@@ -9,6 +9,7 @@ thread_hash *create_thread_hash() {
         table->data = (hash_node **) calloc(START_SIZE, sizeof(hash_node *));
         table->count = 0;
         table->size = START_SIZE;
+        table->mutex = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
         pthread_mutex_init(table->mutex, NULL);
     }
 

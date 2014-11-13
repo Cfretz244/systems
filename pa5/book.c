@@ -8,6 +8,7 @@
 
 void construct_database(thread_hash *table, FILE *database);
 char *get_line(FILE *file);
+char *unquote(char *str);
 void panic(char *reason);
 
 int main(int argc, char **argv) {
@@ -26,12 +27,12 @@ int main(int argc, char **argv) {
 
 void construct_database(thread_hash *table, FILE *database) {
     for (char *line = get_line(database); line; line = get_line(database)) {
-        char *name = strtok(line, "|");
-        char *id_str = strtok(NULL, "|");
-        char *credit_str = strtok(NULL, "|");
-        char *street = strtok(NULL, "|");
-        char *state = strtok(NULL, "|");
-        char *zip = strtok(NULL, "|");
+        char *name = unquote(strtok(line, "|"));
+        char *id_str = unquote(strtok(NULL, "|"));
+        char *credit_str = unquote(strtok(NULL, "|"));
+        char *street = unquote(strtok(NULL, "|"));
+        char *state = unquote(strtok(NULL, "|"));
+        char *zip = unquote(strtok(NULL, "|"));
 
         int id = strtol(id_str, NULL, 0);
         float credit = strtof(credit_str, NULL);
@@ -80,6 +81,17 @@ char *get_line(FILE *file) {
     } else {
         panic("Could not allocate space for input string while reading from file");
     }
+}
+
+char *unquote(char *str) {
+    if (*str == '"') {
+        str++;
+    }
+    int length = strlen(str);
+    if (*(str + length - 1) == '"') {
+        *(str + length - 1) = '\0';
+    }
+    return str;
 }
 
 // Function is responsible for reporting a fatal error and halting execution.
