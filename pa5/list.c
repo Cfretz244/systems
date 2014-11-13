@@ -19,6 +19,45 @@ list *create_list(bool threaded) {
     return lst;
 }
 
+void lpush(list *lst, order *data) {
+    if (!lst || !data) {
+        return;
+    }
+
+    list_node *node = create_list_node(data);
+    pthread_mutex_lock(lst->mutex);
+
+    if (lst->head) {
+        node->next = lst->head;
+        lst->head->prev = node;
+        lst->head = node;
+    } else {
+        lst->head = node;
+        lst->tail = node;
+    }
+    lst->size++;
+
+    pthread_mutex_unlock(lst->mutex);
+}
+
+order *rpop(list *lst) {
+    if (!lst || !lst->head) {
+        return NULL;
+    }
+
+    pthread_mutex_lock(lst->mutex);
+
+    list_node *node = lst->tail;
+    lst->tail = lst->tail->prev;
+    lst->tail->next = NULL;
+    lst->size--;
+
+    pthread_mutex_unlock(lst->mutex);
+    order *book = node->data;
+    destroy_list_node(node);
+    return book;
+}
+
 void destroy_list(list *lst) {
     if (lst->head) {
         list_node *current = lst->head;
@@ -44,12 +83,12 @@ list_node *create_list_node(order *data) {
     if (node) {
         node->data = data;
         node->next = NULL;
+        node->prev = NULL;
     }
 
     return node;
 }
 
 void destroy_list_node(list_node *node) {
-    destroy_order(node->data);
     free(node);
 }

@@ -12,7 +12,9 @@
 typedef struct list list;
 #endif
 
-// Ignore this circularly dependent struct declaration.
+// Circularly dependent Order struct declaration.
+// I know I probably should have just designed things differently,
+// but I wanted experience resolving a circular dependency.
 #ifdef ORDER_DECLARE
 struct order {
 #else
