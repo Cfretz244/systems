@@ -14,6 +14,7 @@ void construct_database(thread_hash *table, FILE *database);
 thread_hash *generate_consumers(FILE *categories, thread_hash *table);
 char *get_line(FILE *file);
 char *unquote(char *str);
+int digits(int num);
 void panic(char *reason);
 
 /*----- Function Implementations -----*/
@@ -92,11 +93,22 @@ void *consume(void *args) {
     free(args);
     while(true) {
         order *book = rpop(queue);
-        printf("Received order for %s for user %d on thread %s\n", book->title, book->id, book->category);
         if (!strcmp(book->title, "stop") && !strcmp(book->category, "#!~=")) {
             break;
         }
+        int length = digits(book->id);
+        char id[length + 1];
+        sprintf(id, "%d", book->id);
+        customer *money = get(table, id);
+        if (money->credit >= book->price) {
+            money->credit -= book->price;
+            printf("Order Confirmation: %s (listed for $%.2f) will be delivered to %s at %s, %s %s.\n",
+                    book->title, book->price, money->name, money->street, money->state, money->zip);
+        } else {
+            printf("Order Rejection: %s does not have sufficient funds to order %s. Remaining funds: $%.2f\n", money->name, book->title, money->credit);
+        }
     }
+    return NULL;
 }
 
 void construct_database(thread_hash *table, FILE *database) {
@@ -113,7 +125,7 @@ void construct_database(thread_hash *table, FILE *database) {
 
         if (id && credit) {
             customer *money = create_customer(name, street, state, zip, id, credit);
-            put(table, name, money, CUSTOMER);
+            put(table, id_str, money, CUSTOMER);
         } else {
             panic("Database file is malformatted. Either ID or credit integer/float conversion failed");
         }
@@ -175,6 +187,16 @@ char *unquote(char *str) {
         *(str + length - 1) = '\0';
     }
     return str;
+}
+
+// Return number of digits in a particular number.
+int digits(int num) {
+    int count = 0;
+    while (num > 0) {
+        num /= 10;
+        count++;
+    }
+    return count;
 }
 
 // Function is responsible for reporting a fatal error and halting execution.
