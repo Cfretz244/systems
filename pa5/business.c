@@ -3,27 +3,27 @@
 /*----- Customer Functions -----*/
 
 customer *create_customer(char *name, char *street, char *state, char *zip, int id, float credit) {
-    customer *money = (customer *) malloc(sizeof(customer));
+    customer *user = (customer *) malloc(sizeof(customer));
 
-    if (money) {
-        money->name = (char *) malloc(sizeof(char) * (strlen(name) + 1));
-        strcpy(money->name, name);
-        money->street = (char *) malloc(sizeof(char) * (strlen(street) + 1));
-        strcpy(money->street, street);
-        money->state = (char *) malloc(sizeof(char) * (strlen(state) + 1));
-        strcpy(money->state, state);
-        money->zip = (char *) malloc(sizeof(char) * (strlen(zip) + 1));
-        strcpy(money->zip, zip);
-        money->id = id;
-        money->start_credit = credit;
-        money->credit = credit;
-        money->approved = create_list(false);
-        money->rejected = create_list(false);
-        money->mutex = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
-        pthread_mutex_init(money->mutex, NULL);
+    if (user) {
+        user->name = (char *) malloc(sizeof(char) * (strlen(name) + 1));
+        strcpy(user->name, name);
+        user->street = (char *) malloc(sizeof(char) * (strlen(street) + 1));
+        strcpy(user->street, street);
+        user->state = (char *) malloc(sizeof(char) * (strlen(state) + 1));
+        strcpy(user->state, state);
+        user->zip = (char *) malloc(sizeof(char) * (strlen(zip) + 1));
+        strcpy(user->zip, zip);
+        user->id = id;
+        user->start_credit = credit;
+        user->credit = credit;
+        user->approved = create_list(false);
+        user->rejected = create_list(false);
+        user->mutex = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
+        pthread_mutex_init(user->mutex, NULL);
     }
 
-    return money;
+    return user;
 }
 
 bool customers_are_equal(customer *f, customer *s) {
@@ -32,15 +32,15 @@ bool customers_are_equal(customer *f, customer *s) {
     return names && streets && states && zips && f->id == s->id && f->credit == s->credit;
 }
 
-void destroy_customer(customer *money) {
-    destroy_list(money->approved);
-    destroy_list(money->rejected);
-    free(money->name);
-    free(money->street);
-    free(money->state);
-    free(money->zip);
-    pthread_mutex_destroy(money->mutex);
-    free(money);
+void destroy_customer(customer *user) {
+    destroy_list(user->approved);
+    destroy_list(user->rejected);
+    free(user->name);
+    free(user->street);
+    free(user->state);
+    free(user->zip);
+    pthread_mutex_destroy(user->mutex);
+    free(user);
 }
 
 /*----- Order Functions -----*/

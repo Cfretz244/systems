@@ -56,7 +56,7 @@ typedef struct void_args {
 
 customer *create_customer(char *name, char *street, char *state, char *zip, int id, float credit);
 bool customers_are_equal(customer *f, customer *s);
-void destroy_customer(customer *money);
+void destroy_customer(customer *user);
 
 /*----- Order Functions -----*/
 

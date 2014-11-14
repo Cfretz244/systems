@@ -12,8 +12,8 @@ void produce(FILE *input, thread_hash *consumers);
 void *consume(void *args);
 void construct_database(thread_hash *table, FILE *database);
 thread_hash *generate_consumers(FILE *categories, thread_hash *table);
+void print_overview(thread_hash *table);
 char *get_line(FILE *file);
-char *unquote(char *str);
 int digits(int num);
 void panic(char *reason);
 
@@ -45,9 +45,11 @@ int main(int argc, char **argv) {
         consumer *worker = get(consumers, key);
         pthread_join(*worker->thread, NULL);
     }
+    free(keys);
+
+    print_overview(table);
 
     // Deallocations.
-    free(keys);
     destroy_thread_hash(consumers);
     destroy_thread_hash(table);
     fclose(database);
@@ -57,10 +59,10 @@ int main(int argc, char **argv) {
 
 void produce(FILE *input, thread_hash *consumers) {
     for (char *line = get_line(input); line; line = get_line(input)) {
-        char *title = unquote(strtok(line, "|"));
-        char *price_str = unquote(strtok(NULL, "|"));
-        char *id_str = unquote(strtok(NULL, "|"));
-        char *category = unquote(strtok(NULL, "|"));
+        char *title = strtok(line, "|");
+        char *price_str = strtok(NULL, "|");
+        char *id_str = strtok(NULL, "|");
+        char *category = strtok(NULL, "|");
         float price = strtof(price_str, NULL);
         int id = strtol(id_str, NULL, 0);
         if (price && id) {
@@ -99,13 +101,16 @@ void *consume(void *args) {
         int length = digits(book->id);
         char id[length + 1];
         sprintf(id, "%d", book->id);
-        customer *money = get(table, id);
-        if (money->credit >= book->price) {
-            money->credit -= book->price;
+        customer *user = get(table, id);
+        if (user->credit >= book->price) {
+            user->credit -= book->price;
+            lpush(user->approved, book);
             printf("Order Confirmation: %s (listed for $%.2f) will be delivered to %s at %s, %s %s.\n",
-                    book->title, book->price, money->name, money->street, money->state, money->zip);
+                    book->title, book->price, user->name, user->street, user->state, user->zip);
         } else {
-            printf("Order Rejection: %s does not have sufficient funds to order %s. Remaining funds: $%.2f\n", money->name, book->title, money->credit);
+            lpush(user->rejected, book);
+            printf("Order Rejection: %s does not have sufficient funds to order %s. Remaining funds: $%.2f\n",
+                    user->name, book->title, user->credit);
         }
     }
     return NULL;
@@ -113,19 +118,19 @@ void *consume(void *args) {
 
 void construct_database(thread_hash *table, FILE *database) {
     for (char *line = get_line(database); line; line = get_line(database)) {
-        char *name = unquote(strtok(line, "|"));
-        char *id_str = unquote(strtok(NULL, "|"));
-        char *credit_str = unquote(strtok(NULL, "|"));
-        char *street = unquote(strtok(NULL, "|"));
-        char *state = unquote(strtok(NULL, "|"));
-        char *zip = unquote(strtok(NULL, "|"));
+        char *name = strtok(line, "|");
+        char *id_str = strtok(NULL, "|");
+        char *credit_str = strtok(NULL, "|");
+        char *street = strtok(NULL, "|");
+        char *state = strtok(NULL, "|");
+        char *zip = strtok(NULL, "|");
 
         int id = strtol(id_str, NULL, 0);
         float credit = strtof(credit_str, NULL);
 
         if (id && credit) {
-            customer *money = create_customer(name, street, state, zip, id, credit);
-            put(table, id_str, money, CUSTOMER);
+            customer *user = create_customer(name, street, state, zip, id, credit);
+            put(table, id_str, user, CUSTOMER);
         } else {
             panic("Database file is malformatted. Either ID or credit integer/float conversion failed");
         }
@@ -140,6 +145,20 @@ thread_hash *generate_consumers(FILE *categories, thread_hash *table) {
         put(consumers, line, worker, CONSUMER);
     }
     return consumers;
+}
+
+void print_overview(thread_hash *table) {
+    char **keys = get_keys(table);
+    for (int i = 0; i < table->count; i++) {
+        char *key = keys[i];
+        customer *user = get(table, key);
+        puts("=== BEGIN CUSTOMER INFO ===");
+        puts("### BALANCE ###");
+        printf("Customer name: %s\n", user->name);
+        printf("Customer ID number: %d\n", user->id);
+        printf("Remaining credit balance after all purchases (a dollar amount): %.2f\n", user->credit);
+        puts("### SUCCESSFUL ORDERS ###");
+    }
 }
 
 char *get_line(FILE *file) {
@@ -176,17 +195,6 @@ char *get_line(FILE *file) {
     } else {
         panic("Could not allocate space for input string while reading from file");
     }
-}
-
-char *unquote(char *str) {
-    if (*str == '"') {
-        str++;
-    }
-    int length = strlen(str);
-    if (*(str + length - 1) == '"') {
-        *(str + length - 1) = '\0';
-    }
-    return str;
 }
 
 // Return number of digits in a particular number.
