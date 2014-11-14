@@ -159,7 +159,7 @@ hash *generate_consumers(FILE *categories, array *users) {
 void handle_output(array *users) {
     int size = 128, filled = 0, needed = 0;
     char *output = (char *) malloc(sizeof(char) * size);
-    for (int i = 0; i < users->count; i++) {
+    for (int i = 0; i < users->size; i++) {
         customer *user = retrieve(users, i);
         if (user) {
             needed = strlen(user->name) + BEGIN_STR_LENGTH + 1;
