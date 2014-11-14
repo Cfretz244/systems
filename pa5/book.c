@@ -47,8 +47,8 @@ int main(int argc, char **argv) {
 
     // Deallocations.
     free(keys);
-    destroy_thread_hash(table);
     destroy_thread_hash(consumers);
+    destroy_thread_hash(table);
     fclose(database);
     fclose(input);
     fclose(categories);
@@ -73,11 +73,30 @@ void produce(FILE *input, thread_hash *consumers) {
         } else {
             panic("Book order file is malformatted. Either ID or price integer/float conversion failed");
         }
+        free(line);
     }
+    char **keys = get_keys(consumers);
+    for (int i = 0; i < consumers->count; i++) {
+        char *key = keys[i];
+        consumer *worker = get(consumers, key);
+        order *book = create_order("stop", "#!~=", 0.0, 0);
+        lpush(worker->queue, book);
+    }
+    free(keys);
 }
 
 void *consume(void *args) {
-
+    void_args *arguments = (void_args *) args;
+    thread_hash *table = arguments->table;
+    list *queue = arguments->queue;
+    free(args);
+    while(true) {
+        order *book = rpop(queue);
+        printf("Received order for %s for user %d on thread %s\n", book->title, book->id, book->category);
+        if (!strcmp(book->title, "stop") && !strcmp(book->category, "#!~=")) {
+            break;
+        }
+    }
 }
 
 void construct_database(thread_hash *table, FILE *database) {

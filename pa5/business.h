@@ -34,7 +34,7 @@ typedef struct order {
 typedef struct customer {
     char *name, *street, *state, *zip;
     int id;
-    float credit;
+    float start_credit, credit;
     list *approved, *rejected;
     pthread_mutex_t *mutex;
 } customer;

@@ -15,6 +15,7 @@ customer *create_customer(char *name, char *street, char *state, char *zip, int 
         money->zip = (char *) malloc(sizeof(char) * (strlen(zip) + 1));
         strcpy(money->zip, zip);
         money->id = id;
+        money->start_credit = credit;
         money->credit = credit;
         money->approved = create_list(false);
         money->rejected = create_list(false);

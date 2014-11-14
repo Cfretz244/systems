@@ -11,9 +11,12 @@ list *create_list(bool threaded) {
         lst->threaded = threaded;
         if (threaded) {
             lst->mutex = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
+            lst->signal = (pthread_cond_t *) malloc(sizeof(pthread_cond_t));
             pthread_mutex_init(lst->mutex, NULL);
+            pthread_cond_init(lst->signal, NULL);
         } else {
             lst->mutex = NULL;
+            lst->signal = NULL;
         }
     }
 
@@ -41,22 +44,31 @@ void lpush(list *lst, order *data) {
     lst->size++;
 
     if (lst->threaded) {
+        pthread_cond_signal(lst->signal);
         pthread_mutex_unlock(lst->mutex);
     }
 }
 
 order *rpop(list *lst) {
-    if (!lst || !lst->head) {
+    if (!lst || (!lst->size && !lst->threaded)) {
         return NULL;
     }
 
     if (lst->threaded) {
         pthread_mutex_lock(lst->mutex);
+        if (!lst->size) {
+            pthread_cond_wait(lst->signal, lst->mutex);
+        }
     }
 
     list_node *node = lst->tail;
-    lst->tail = lst->tail->prev;
-    lst->tail->next = NULL;
+    if (lst->size > 1) {
+        lst->tail = lst->tail->prev;
+        lst->tail->next = NULL;
+    } else {
+        lst->head = NULL;
+        lst->tail = NULL;
+    }
     lst->size--;
 
     if (lst->threaded) {

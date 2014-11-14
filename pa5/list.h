@@ -32,6 +32,7 @@ typedef struct list {
     int size;
     bool threaded;
     pthread_mutex_t *mutex;
+    pthread_cond_t *signal;
 #ifdef LIST_DECLARE
 };
 #else

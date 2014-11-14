@@ -214,6 +214,7 @@ hash_node *create_hash_node(char *key, void *data, node_type type) {
             strcpy(intern_key, key);
             node->key = intern_key;
             node->data = data;
+            node->type = type;
             node->next = NULL;
         }
     }
