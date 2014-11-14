@@ -13,6 +13,7 @@
 #define SUCCESSFUL_STR_LENGTH 26
 #define REJECTED_STR_LENGTH 24
 #define END_STR_LENGTH 27
+#define REVENUE_STR_LENGTH 15
 
 /*----- Function stub declarations -----*/
 
@@ -56,6 +57,7 @@ int main(int argc, char **argv) {
     }
     free(keys);
 
+    // Output report.
     handle_output(users);
 
     // Deallocations.
@@ -158,10 +160,13 @@ hash *generate_consumers(FILE *categories, array *users) {
 
 void handle_output(array *users) {
     int size = 128, filled = 0, needed = 0;
+    float revenue = 0.0;
     char *output = (char *) malloc(sizeof(char) * size);
     for (int i = 0; i < users->size; i++) {
         customer *user = retrieve(users, i);
         if (user) {
+            revenue += user->start_credit - user->credit;
+
             needed = strlen(user->name) + BEGIN_STR_LENGTH + 1;
             output = enforce(output, needed, size, filled, &size);
             sprintf(output + filled, "=== BEGIN CUSTOMER INFO ===\n### BALANCE ###\nCustomer name: %s\n", user->name);
@@ -211,7 +216,12 @@ void handle_output(array *users) {
             filled += needed;
         }
     }
-    output[filled - 2] = '\0';
+    needed = REVENUE_STR_LENGTH + digits((int) revenue) + 4;
+    output = enforce(output, needed, size, filled, &size);
+    sprintf(output + filled, "Total Revenue: %.2f\n", revenue);
+    filled += needed;
+
+    output[filled] = '\0';
     puts(output);
     remove("output.txt");
     FILE *file = fopen("output.txt", "wr");
