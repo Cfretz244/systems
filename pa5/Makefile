@@ -12,8 +12,8 @@ all: $(BOOK)
 $(BOOK): $(HASH) $(ARRAY) $(LIST) $(BUSINESS)
 	$(CC) $(CFLAGS) -o book book.c $(HASH) $(ARRAY) $(LIST) $(BUSINESS)
 
-$(HASH): thread_hash.c thread_hash.h
-	$(CC) $(CFLAGS) -c thread_hash.c -o $(HASH)
+$(HASH): hash.c hash.h
+	$(CC) $(CFLAGS) -c hash.c -o $(HASH)
 
 $(ARRAY): array.c array.h
 	$(CC) $(CFLAGS) -c array.c -o $(ARRAY)

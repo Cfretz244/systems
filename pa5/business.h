@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "definitions.h"
-#include "thread_hash.h"
+#include "hash.h"
 #include "array.h"
 #include "list.h"
 

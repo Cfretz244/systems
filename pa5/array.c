@@ -29,6 +29,7 @@ bool insert(array *arr, int index, void *data) {
 
     if (!arr->storage[index]) {
         arr->storage[index] = data;
+        arr->count++;
         return true;
     } else {
         return false;
@@ -47,6 +48,7 @@ void *clear(array *arr, int index) {
     if (index < arr->size) {
         void *temp = arr->storage[index];
         arr->storage[index] = NULL;
+        arr->count--;
         return temp;
     } else {
         return NULL;

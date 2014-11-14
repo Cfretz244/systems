@@ -1,12 +1,9 @@
-#ifndef HASH_H
-#define HASH_H
-
-/*----- Includes without dependencies -----*/
+#ifndef HASH
+#define HASH
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <pthread.h>
 #include "definitions.h"
 #define START_SIZE 10
 
@@ -17,7 +14,7 @@ typedef enum {
     CONSUMER
 } node_type;
 
-// Node struct used for chaining in thread_hash.
+// Node struct used for chaining in hash.
 typedef struct hash_node {
     char *key;
     void *data;
@@ -25,25 +22,21 @@ typedef struct hash_node {
     struct hash_node *next;
 } hash_node;
 
-// Threadsafe Hashtable Struct.
-typedef struct thread_hash {
+// Main hashtable struct.
+typedef struct hash {
     hash_node **data;
     int count;
     int size;
-    pthread_mutex_t *mutex;
-} thread_hash;
+} hash;
 
-/*----- Thread Safe Hash Functions -----*/
+/*----- Hash Functions -----*/
 
-bool put(thread_hash *table, char *key, void *data, node_type type);
-void *get(thread_hash *table, char *key);
-char **get_keys(thread_hash *table);
-bool drop(thread_hash *table, char *key);
-
-/*----- Unsafe Hash Functions -----*/
-
-thread_hash *create_thread_hash();
-void destroy_thread_hash(thread_hash *table);
+hash *create_hash();
+bool put(hash *table, char *key, void *data, node_type type);
+void *get(hash *table, char *key);
+char **get_keys(hash *table);
+bool drop(hash *table, char *key);
+void destroy_hash(hash *table);
 
 /*----- Hash Node Functions -----*/
 
@@ -54,8 +47,7 @@ hash_node *remove_hash_node(hash_node *head, char *key);
 void destroy_hash_chain(hash_node *head);
 void destroy_hash_node(hash_node *node);
 
-
-/*----- Includes dependent on hash declarations -----*/
+/*----- Includes depdendent on hash declarations -----*/
 
 #include "business.h"
 

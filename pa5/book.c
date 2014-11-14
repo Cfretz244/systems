@@ -2,17 +2,17 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include "definitions.h"
-#include "thread_hash.h"
+#include "hash.h"
 #include "array.h"
 #include "list.h"
 #include "business.h"
 
 /*----- Function stub declarations -----*/
 
-void produce(FILE *input, thread_hash *consumers);
+void produce(FILE *input, hash *consumers);
 void *consume(void *args);
 void construct_database(array *users, FILE *database);
-thread_hash *generate_consumers(FILE *categories, array *users);
+hash *generate_consumers(FILE *categories, array *users);
 void print_overview(array *users);
 char *get_line(FILE *file);
 int digits(int num);
@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     // Perform setup and begin producing.
     array *users = create_array();
     construct_database(users, database);
-    thread_hash *consumers = generate_consumers(categories, users);
+    hash *consumers = generate_consumers(categories, users);
     produce(input, consumers);
 
     // Iterate across consumer hash and join every thread.
@@ -51,14 +51,14 @@ int main(int argc, char **argv) {
     print_overview(users);
 
     // Deallocations.
-    destroy_thread_hash(consumers);
+    destroy_hash(consumers);
     destroy_array(users, (void (*) (void *)) destroy_customer);
     fclose(database);
     fclose(input);
     fclose(categories);
 }
 
-void produce(FILE *input, thread_hash *consumers) {
+void produce(FILE *input, hash *consumers) {
     for (char *line = get_line(input); line; line = get_line(input)) {
         char *title = strtok(line, "|");
         char *price_str = strtok(NULL, "|");
@@ -138,8 +138,8 @@ void construct_database(array *users, FILE *database) {
     }
 }
 
-thread_hash *generate_consumers(FILE *categories, array *users) {
-    thread_hash *consumers = create_thread_hash();
+hash *generate_consumers(FILE *categories, array *users) {
+    hash *consumers = create_hash();
     for (char *line = get_line(categories); line; line = get_line(categories)) {
         consumer *worker = create_consumer(consume, line, users);
         put(consumers, line, worker, CONSUMER);

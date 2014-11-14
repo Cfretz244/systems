@@ -1,18 +1,16 @@
-#include "thread_hash.h"
+#include "hash.h"
 
-/*----- Thread Hash Functions -----*/
+/*----- Hash Functions -----*/
 
 // Function handles creation of a hash struct.
-thread_hash *create_thread_hash() {
-    thread_hash *table = (thread_hash *) malloc(sizeof(thread_hash));
+hash *create_hash() {
+    hash *table = (hash *) malloc(sizeof(hash));
 
     if (table) {
         // Allocate table with calloc to allow for NULL checks.
         table->data = (hash_node **) calloc(START_SIZE, sizeof(hash_node *));
         table->count = 0;
         table->size = START_SIZE;
-        table->mutex = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
-        pthread_mutex_init(table->mutex, NULL);
     }
 
     return table;
@@ -29,7 +27,7 @@ int hash_key(char *key, int size) {
 
 // Function handles the rehash process encountered when a hash reaches
 // 80% capacity.
-void rehash(thread_hash *table) {
+void rehash(hash *table) {
     // Allocate new table with calloc to allow for NULL checks.
     hash_node **old_data = table->data;
     hash_node **new_data = (hash_node **) calloc(table->size * 2, sizeof(hash_node *));
@@ -59,16 +57,11 @@ void rehash(thread_hash *table) {
 }
 
 // Insert data into a hash for a specific key.
-bool put(thread_hash *table, char *key, void *data, node_type type) {
+bool put(hash *table, char *key, void *data, node_type type) {
     // Verify parameters.
     if (!table || !key || !data) {
         return false;
     }
-
-    // Locking the mutex this early, and for this long, makes me sad,
-    // but I don't see too many ways around it without introducing small
-    // race conditions.
-    pthread_mutex_lock(table->mutex);
 
     // Check if table needs a rehash.
     if (table->count / (float) table->size > 0.8) {
@@ -87,11 +80,9 @@ bool put(thread_hash *table, char *key, void *data, node_type type) {
             hash_node *node = create_hash_node(key, data, type);
             insert_hash_node(table->data[hash], node);
             table->count++;
-            pthread_mutex_unlock(table->mutex);
             return true;
         } else {
             // Key already exists in table.
-            pthread_mutex_unlock(table->mutex);
             return false;
         }
     } else {
@@ -99,25 +90,21 @@ bool put(thread_hash *table, char *key, void *data, node_type type) {
         hash_node *node = create_hash_node(key, data, type);
         table->data[hash] = node;
         table->count++;
-        pthread_mutex_unlock(table->mutex);
         return true;
     }
 }
 
 // Function handles getting data out of a hash for a specific key.
-void *get(thread_hash *table, char *key) {
+void *get(hash *table, char *key) {
     // Verify parameters.
     if (!table || !table->count || !key) {
         return NULL;
     }
 
-    pthread_mutex_lock(table->mutex);
-    
     // Generate hash value and find data.
     int hash = hash_key(key, table->size);
     hash_node *found = find_hash_node(table->data[hash], key);
 
-    pthread_mutex_unlock(table->mutex);
     if (found) {
         return found->data;
     } else {
@@ -128,13 +115,11 @@ void *get(thread_hash *table, char *key) {
 
 // Handle removal of a key from hash. Although never actually called in the
 // project, it seemed dishonest not to include it.
-bool drop(thread_hash *table, char *key) {
+bool drop(hash *table, char *key) {
     // Verify parameters.
     if (!table || table->count == 0 || !key) {
         return false;
     }
-
-    pthread_mutex_lock(table->mutex);
 
     // Generate hash value and find data.
     int hash = hash_key(key, table->size);
@@ -143,30 +128,25 @@ bool drop(thread_hash *table, char *key) {
             // Remove appropriate data.
             table->data[hash] = remove_hash_node(table->data[hash], key);
             table->count--;
-            pthread_mutex_unlock(table->mutex);
             return true;
         } else {
             // Key does not exist in table.
-            pthread_mutex_unlock(table->mutex);
             return false;
         }
     } else {
         // Key does not exist in table.
-        pthread_mutex_unlock(table->mutex);
         return false;
     }
 }
 
 // Function handles the enumeration of all keys currently stored in hash.
 // Returns said keys in any order.
-char **get_keys(thread_hash *table) {
+char **get_keys(hash *table) {
     if (!table) {
         return NULL;
     }
     int current = 0;
     char **keys = (char **) malloc(sizeof(char *) * table->count);
-
-    pthread_mutex_lock(table->mutex);
 
     for (int i = 0; i < table->size; i++) {
         if (table->data[i]) {
@@ -177,13 +157,11 @@ char **get_keys(thread_hash *table) {
         }
     }
 
-    pthread_mutex_unlock(table->mutex);
-    
     return keys;
 }
 
 // Function handles the destruction of hash struct.
-void destroy_thread_hash(thread_hash *table) {
+void destroy_hash(hash *table) {
     // Verify parameters.
     if (!table) {
         return;
