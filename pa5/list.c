@@ -10,6 +10,7 @@ list *create_list(bool threaded) {
         lst->size = 0;
         lst->threaded = threaded;
         if (threaded) {
+            lst->mutex = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
             pthread_mutex_init(lst->mutex, NULL);
         } else {
             lst->mutex = NULL;

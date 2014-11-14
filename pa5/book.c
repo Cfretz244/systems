@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 #include "definitions.h"
 #include "thread_hash.h"
 #include "list.h"
 #include "business.h"
+
+/*----- Function stub declarations -----*/
 
 void produce(FILE *input, thread_hash *consumers);
 void *consume(void *args);
@@ -13,24 +16,64 @@ char *get_line(FILE *file);
 char *unquote(char *str);
 void panic(char *reason);
 
+/*----- Function Implementations -----*/
+
 int main(int argc, char **argv) {
     if (argc != 4) {
         panic("Wrong number of arguments");
     }
 
+    // Open necessary files.
     FILE *database = fopen(argv[1], "r"), *input = fopen(argv[2], "r"), *categories = fopen(argv[3], "r");
-    if (database && input && categories) {
-        thread_hash *table = create_thread_hash();
-        construct_database(table, database);
-        thread_hash *consumers = generate_consumers(categories, table);
-        produce(input, consumers);
-    } else {
+
+    // Check status of opened files.
+    if (!database || !input || !categories) {
         panic("Could not open one of the input files. Perhaps it doesn't exist?");
     }
+
+    // Perform setup and begin producing.
+    thread_hash *table = create_thread_hash();
+    construct_database(table, database);
+    thread_hash *consumers = generate_consumers(categories, table);
+    produce(input, consumers);
+
+    // Iterate across consumer hash and join every thread.
+    char **keys = get_keys(consumers);
+    for (int i = 0; i < consumers->count; i++) {
+        char *key = keys[i];
+        consumer *worker = get(consumers, key);
+        pthread_join(*worker->thread, NULL);
+    }
+
+    // Deallocations.
+    free(keys);
+    destroy_thread_hash(table);
+    destroy_thread_hash(consumers);
+    fclose(database);
+    fclose(input);
+    fclose(categories);
 }
 
 void produce(FILE *input, thread_hash *consumers) {
-
+    for (char *line = get_line(input); line; line = get_line(input)) {
+        char *title = unquote(strtok(line, "|"));
+        char *price_str = unquote(strtok(NULL, "|"));
+        char *id_str = unquote(strtok(NULL, "|"));
+        char *category = unquote(strtok(NULL, "|"));
+        float price = strtof(price_str, NULL);
+        int id = strtol(id_str, NULL, 0);
+        if (price && id) {
+            order *book = create_order(title, category, price, id);
+            consumer *worker = get(consumers, category);
+            if (worker) {
+                lpush(worker->queue, book);
+            } else {
+                panic("Book order file is malformatted. It contains an invalid category");
+            }
+        } else {
+            panic("Book order file is malformatted. Either ID or price integer/float conversion failed");
+        }
+    }
 }
 
 void *consume(void *args) {
@@ -53,7 +96,7 @@ void construct_database(thread_hash *table, FILE *database) {
             customer *money = create_customer(name, street, state, zip, id, credit);
             put(table, name, money, CUSTOMER);
         } else {
-            panic("Database file is malformatted. Either ID or credit float/integer conversion failed");
+            panic("Database file is malformatted. Either ID or credit integer/float conversion failed");
         }
         free(line);
     }
@@ -90,7 +133,7 @@ char *get_line(FILE *file) {
                 }
             }
         }
-        
+
         if (strcmp(line, "")) {
             // String is valid.
             return line;
