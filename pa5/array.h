@@ -16,7 +16,7 @@ typedef struct array {
 array *create_array();
 bool insert(array *arr, int index, void *data);
 void *retrieve(array *arr, int index);
-void *remove(array *arr, int index);
+void *clear(array *arr, int index);
 void destroy_array(array *arr, void (*func) (void *));
 
 #endif

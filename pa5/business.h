@@ -6,6 +6,7 @@
 #include <string.h>
 #include "definitions.h"
 #include "thread_hash.h"
+#include "array.h"
 #include "list.h"
 
 #ifndef LIST_DECLARE
@@ -48,7 +49,7 @@ typedef struct consumer {
 
 // Convenience struct for passing arguments to consumer threads.
 typedef struct void_args {
-    thread_hash *table;
+    array *users;
     list *queue;
 } void_args;
 
@@ -66,7 +67,7 @@ void destroy_order(order *book);
 
 /*----- Customer Functions -----*/
 
-consumer *create_consumer(void *(*thread_func) (void *), char *category, thread_hash *table);
+consumer *create_consumer(void *(*thread_func) (void *), char *category, array *users);
 void destroy_consumer(consumer *worker);
 
 #endif

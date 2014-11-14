@@ -73,7 +73,7 @@ void destroy_order(order *book) {
 
 /*----- Consumer Functions -----*/
 
-consumer *create_consumer(void *(*thread_func) (void *), char *category, thread_hash *table) {
+consumer *create_consumer(void *(*thread_func) (void *), char *category, array *users) {
     consumer *worker = (consumer *) malloc(sizeof(consumer));
 
     if (worker) {
@@ -81,7 +81,7 @@ consumer *create_consumer(void *(*thread_func) (void *), char *category, thread_
         worker->category = category;
         worker->queue = create_list(true);
         void_args *args = (void_args *) malloc(sizeof(void_args));
-        args->table = table;
+        args->users = users;
         args->queue = worker->queue;
         pthread_create(worker->thread, NULL, thread_func, args);
     }

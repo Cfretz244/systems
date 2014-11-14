@@ -1,5 +1,6 @@
 BOOK = book
 HASH = hash.o
+ARRAY = array.o
 LIST = list.o
 BUSINESS = business.o
 
@@ -8,11 +9,14 @@ CFLAGS = -std=gnu99 -pthread -g
 
 all: $(BOOK)
 
-$(BOOK): $(HASH) $(LIST) $(BUSINESS)
-	$(CC) $(CFLAGS) -o book book.c $(HASH) $(LIST) $(BUSINESS)
+$(BOOK): $(HASH) $(ARRAY) $(LIST) $(BUSINESS)
+	$(CC) $(CFLAGS) -o book book.c $(HASH) $(ARRAY) $(LIST) $(BUSINESS)
 
 $(HASH): thread_hash.c thread_hash.h
 	$(CC) $(CFLAGS) -c thread_hash.c -o $(HASH)
+
+$(ARRAY): array.c array.h
+	$(CC) $(CFLAGS) -c array.c -o $(ARRAY)
 
 $(LIST): list.c list.h
 	$(CC) $(CFLAGS) -c list.c -o $(LIST)

@@ -43,7 +43,7 @@ void *retrieve(array *arr, int index) {
     }
 }
 
-void *remove(array *arr, int index) {
+void *clear(array *arr, int index) {
     if (index < arr->size) {
         void *temp = arr->storage[index];
         arr->storage[index] = NULL;

@@ -3,6 +3,7 @@
 #include <pthread.h>
 #include "definitions.h"
 #include "thread_hash.h"
+#include "array.h"
 #include "list.h"
 #include "business.h"
 
@@ -10,9 +11,9 @@
 
 void produce(FILE *input, thread_hash *consumers);
 void *consume(void *args);
-void construct_database(thread_hash *table, FILE *database);
-thread_hash *generate_consumers(FILE *categories, thread_hash *table);
-void print_overview(thread_hash *table);
+void construct_database(array *users, FILE *database);
+thread_hash *generate_consumers(FILE *categories, array *users);
+void print_overview(array *users);
 char *get_line(FILE *file);
 int digits(int num);
 void panic(char *reason);
@@ -33,9 +34,9 @@ int main(int argc, char **argv) {
     }
 
     // Perform setup and begin producing.
-    thread_hash *table = create_thread_hash();
-    construct_database(table, database);
-    thread_hash *consumers = generate_consumers(categories, table);
+    array *users = create_array();
+    construct_database(users, database);
+    thread_hash *consumers = generate_consumers(categories, users);
     produce(input, consumers);
 
     // Iterate across consumer hash and join every thread.
@@ -47,11 +48,11 @@ int main(int argc, char **argv) {
     }
     free(keys);
 
-    print_overview(table);
+    print_overview(users);
 
     // Deallocations.
     destroy_thread_hash(consumers);
-    destroy_thread_hash(table);
+    destroy_array(users, (void (*) (void *)) destroy_customer);
     fclose(database);
     fclose(input);
     fclose(categories);
@@ -90,7 +91,7 @@ void produce(FILE *input, thread_hash *consumers) {
 
 void *consume(void *args) {
     void_args *arguments = (void_args *) args;
-    thread_hash *table = arguments->table;
+    array *users = arguments->users;
     list *queue = arguments->queue;
     free(args);
     while(true) {
@@ -98,10 +99,8 @@ void *consume(void *args) {
         if (!strcmp(book->title, "stop") && !strcmp(book->category, "#!~=")) {
             break;
         }
-        int length = digits(book->id);
-        char id[length + 1];
-        sprintf(id, "%d", book->id);
-        customer *user = get(table, id);
+        customer *user = retrieve(users, book->id);
+        pthread_mutex_lock(user->mutex);
         if (user->credit >= book->price) {
             user->credit -= book->price;
             lpush(user->approved, book);
@@ -112,11 +111,12 @@ void *consume(void *args) {
             printf("Order Rejection: %s does not have sufficient funds to order %s. Remaining funds: $%.2f\n",
                     user->name, book->title, user->credit);
         }
+        pthread_mutex_unlock(user->mutex);
     }
     return NULL;
 }
 
-void construct_database(thread_hash *table, FILE *database) {
+void construct_database(array *users, FILE *database) {
     for (char *line = get_line(database); line; line = get_line(database)) {
         char *name = strtok(line, "|");
         char *id_str = strtok(NULL, "|");
@@ -130,7 +130,7 @@ void construct_database(thread_hash *table, FILE *database) {
 
         if (id && credit) {
             customer *user = create_customer(name, street, state, zip, id, credit);
-            put(table, id_str, user, CUSTOMER);
+            insert(users, id, user);
         } else {
             panic("Database file is malformatted. Either ID or credit integer/float conversion failed");
         }
@@ -138,26 +138,26 @@ void construct_database(thread_hash *table, FILE *database) {
     }
 }
 
-thread_hash *generate_consumers(FILE *categories, thread_hash *table) {
+thread_hash *generate_consumers(FILE *categories, array *users) {
     thread_hash *consumers = create_thread_hash();
     for (char *line = get_line(categories); line; line = get_line(categories)) {
-        consumer *worker = create_consumer(consume, line, table);
+        consumer *worker = create_consumer(consume, line, users);
         put(consumers, line, worker, CONSUMER);
     }
     return consumers;
 }
 
-void print_overview(thread_hash *table) {
-    char **keys = get_keys(table);
-    for (int i = 0; i < table->count; i++) {
-        char *key = keys[i];
-        customer *user = get(table, key);
-        puts("=== BEGIN CUSTOMER INFO ===");
-        puts("### BALANCE ###");
-        printf("Customer name: %s\n", user->name);
-        printf("Customer ID number: %d\n", user->id);
-        printf("Remaining credit balance after all purchases (a dollar amount): %.2f\n", user->credit);
-        puts("### SUCCESSFUL ORDERS ###");
+void print_overview(array *users) {
+    for (int i = 0; i < users->count; i++) {
+        customer *user = retrieve(users, i);
+        if (user) {
+            puts("=== BEGIN CUSTOMER INFO ===");
+            puts("### BALANCE ###");
+            printf("Customer name: %s\n", user->name);
+            printf("Customer ID number: %d\n", user->id);
+            printf("Remaining credit balance after all purchases (a dollar amount): %.2f\n", user->credit);
+            puts("### SUCCESSFUL ORDERS ###");
+        }
     }
 }
 
