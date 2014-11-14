@@ -69,3 +69,26 @@ void destroy_order(order *book) {
     free(book->category);
     free(book);
 }
+
+/*----- Consumer Functions -----*/
+
+consumer *create_consumer(void *(*thread_func) (void *), char *category, thread_hash *table) {
+    consumer *worker = (consumer *) malloc(sizeof(consumer));
+
+    if (worker) {
+        worker->thread = (pthread_t *) malloc(sizeof(pthread_t));
+        worker->category = category;
+        worker->queue = create_list(true);
+        void_args *args = (void_args *) malloc(sizeof(void_args));
+        args->table = table;
+        args->queue = worker->queue;
+        pthread_create(worker->thread, NULL, thread_func, args);
+    }
+
+    return worker;
+}
+
+void destroy_consumer(consumer *worker) {
+    // Need to look up how to destroy a pthread.
+    free(worker);
+}

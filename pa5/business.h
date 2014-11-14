@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "definitions.h"
+#include "thread_hash.h"
 #include "list.h"
 
 #ifndef LIST_DECLARE
@@ -12,9 +13,8 @@
 typedef struct list list;
 #endif
 
-// Circularly dependent Order struct declaration.
-// I know I probably should have just designed things differently,
-// but I wanted experience resolving a circular dependency.
+// Order is part of a circular dependency with list, and therefore must
+// be declared differently based on while file we're processing.
 #ifdef ORDER_DECLARE
 struct order {
 #else
@@ -39,12 +39,34 @@ typedef struct customer {
     pthread_mutex_t *mutex;
 } customer;
 
+// Consumer struct.
+typedef struct consumer {
+    pthread_t *thread;
+    char *category;
+    list *queue;
+} consumer;
+
+// Convenience struct for passing arguments to consumer threads.
+typedef struct void_args {
+    thread_hash *table;
+    list *queue;
+} void_args;
+
+/*----- Customer Functions -----*/
+
 customer *create_customer(char *name, char *street, char *state, char *zip, int id, float credit);
 bool customers_are_equal(customer *f, customer *s);
 void destroy_customer(customer *money);
 
+/*----- Order Functions -----*/
+
 order *create_order(char *title, char *category, float price, int id);
 bool orders_are_equal(order *f, order *s);
 void destroy_order(order *book);
+
+/*----- Customer Functions -----*/
+
+consumer *create_consumer(void *(*thread_func) (void *), char *category, thread_hash *table);
+void destroy_consumer(consumer *worker);
 
 #endif

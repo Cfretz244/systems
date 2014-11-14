@@ -1,14 +1,17 @@
 #ifndef HASH_H
 #define HASH_H
 
+/*----- Includes without dependencies -----*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <pthread.h>
 #include "definitions.h"
-#include "business.h"
 #define START_SIZE 10
 
+// Thread_hash stores opaque types, so this enum allows it to
+// distinguish between them when it must.
 typedef enum {
     CUSTOMER,
     CONSUMER
@@ -50,5 +53,10 @@ hash_node *find_hash_node(hash_node *head, char *key);
 hash_node *remove_hash_node(hash_node *head, char *key);
 void destroy_hash_chain(hash_node *head);
 void destroy_hash_node(hash_node *node);
+
+
+/*----- Includes dependent on hash declarations -----*/
+
+#include "business.h"
 
 #endif

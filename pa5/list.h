@@ -1,6 +1,8 @@
 #ifndef LIST_H
 #define LIST_H
 
+/*----- Includes without dependencies -----*/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -19,9 +21,8 @@ typedef struct list_node {
     struct list_node *next, *prev;
 } list_node;
 
-// Circularly dependent List struct declaration.
-// I know I probably should have just designed things differently,
-// but I wanted experience resolving a circular dependency.
+// List is part of a circular dependency with order, and therefore must
+// be declared differently based on which file we're currently processing.
 #ifdef LIST_DECLARE
 struct list {
 #else

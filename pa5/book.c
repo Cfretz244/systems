@@ -4,10 +4,11 @@
 #include "thread_hash.h"
 #include "list.h"
 #include "business.h"
-#include "hash_node.h"
 
+void produce(FILE *input, thread_hash *consumers);
+void *consume(void *args);
 void construct_database(thread_hash *table, FILE *database);
-pthread_t **generate_consumers(FILE *categories);
+thread_hash *generate_consumers(FILE *categories, thread_hash *table);
 char *get_line(FILE *file);
 char *unquote(char *str);
 void panic(char *reason);
@@ -21,10 +22,19 @@ int main(int argc, char **argv) {
     if (database && input && categories) {
         thread_hash *table = create_thread_hash();
         construct_database(table, database);
-        pthread_t **threads = generate_consumers(categories);
+        thread_hash *consumers = generate_consumers(categories, table);
+        produce(input, consumers);
     } else {
         panic("Could not open one of the input files. Perhaps it doesn't exist?");
     }
+}
+
+void produce(FILE *input, thread_hash *consumers) {
+
+}
+
+void *consume(void *args) {
+
 }
 
 void construct_database(thread_hash *table, FILE *database) {
@@ -41,7 +51,7 @@ void construct_database(thread_hash *table, FILE *database) {
 
         if (id && credit) {
             customer *money = create_customer(name, street, state, zip, id, credit);
-            put(table, name, money);
+            put(table, name, money, CUSTOMER);
         } else {
             panic("Database file is malformatted. Either ID or credit float/integer conversion failed");
         }
@@ -49,8 +59,13 @@ void construct_database(thread_hash *table, FILE *database) {
     }
 }
 
-pthread_t **generate_consumers(FILE *categories) {
-    // Revisit this in a bit
+thread_hash *generate_consumers(FILE *categories, thread_hash *table) {
+    thread_hash *consumers = create_thread_hash();
+    for (char *line = get_line(categories); line; line = get_line(categories)) {
+        consumer *worker = create_consumer(consume, line, table);
+        put(consumers, line, worker, CONSUMER);
+    }
+    return consumers;
 }
 
 char *get_line(FILE *file) {
