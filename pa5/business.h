@@ -22,7 +22,7 @@ struct order {
 typedef struct order {
 #endif
     char *title, *category;
-    float price;
+    float price, remaining;
     int id;
 #ifdef ORDER_DECLARE
 };

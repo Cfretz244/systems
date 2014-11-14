@@ -7,14 +7,22 @@
 #include "list.h"
 #include "business.h"
 
+#define BEGIN_STR_LENGTH 59
+#define ID_STR_LENGTH 20
+#define BALANCE_STR_LENGTH 64
+#define SUCCESSFUL_STR_LENGTH 26
+#define REJECTED_STR_LENGTH 24
+#define END_STR_LENGTH 27
+
 /*----- Function stub declarations -----*/
 
 void produce(FILE *input, hash *consumers);
 void *consume(void *args);
 void construct_database(array *users, FILE *database);
 hash *generate_consumers(FILE *categories, array *users);
-void print_overview(array *users);
+void handle_output(array *users);
 char *get_line(FILE *file);
+char *enforce(char *str, int needed, int size, int filled, int *new_size);
 int digits(int num);
 void panic(char *reason);
 
@@ -48,7 +56,7 @@ int main(int argc, char **argv) {
     }
     free(keys);
 
-    print_overview(users);
+    handle_output(users);
 
     // Deallocations.
     destroy_hash(consumers);
@@ -103,6 +111,7 @@ void *consume(void *args) {
         pthread_mutex_lock(user->mutex);
         if (user->credit >= book->price) {
             user->credit -= book->price;
+            book->remaining = user->credit;
             lpush(user->approved, book);
             printf("Order Confirmation: %s (listed for $%.2f) will be delivered to %s at %s, %s %s.\n",
                     book->title, book->price, user->name, user->street, user->state, user->zip);
@@ -147,18 +156,67 @@ hash *generate_consumers(FILE *categories, array *users) {
     return consumers;
 }
 
-void print_overview(array *users) {
+void handle_output(array *users) {
+    int size = 128, filled = 0, needed = 0;
+    char *output = (char *) malloc(sizeof(char) * size);
     for (int i = 0; i < users->count; i++) {
         customer *user = retrieve(users, i);
         if (user) {
-            puts("=== BEGIN CUSTOMER INFO ===");
-            puts("### BALANCE ###");
-            printf("Customer name: %s\n", user->name);
-            printf("Customer ID number: %d\n", user->id);
-            printf("Remaining credit balance after all purchases (a dollar amount): %.2f\n", user->credit);
-            puts("### SUCCESSFUL ORDERS ###");
+            needed = strlen(user->name) + BEGIN_STR_LENGTH + 1;
+            output = enforce(output, needed, size, filled, &size);
+            sprintf(output + filled, "=== BEGIN CUSTOMER INFO ===\n### BALANCE ###\nCustomer name: %s\n", user->name);
+            filled += needed;
+
+            needed = digits(user->id) + ID_STR_LENGTH + 1;
+            output = enforce(output, needed, size, filled, &size);
+            sprintf(output + filled, "Customer ID number: %d\n", user->id);
+            filled += needed;
+
+            needed = BALANCE_STR_LENGTH + digits((int) user->credit) + 4;
+            output = enforce(output, needed, size, filled, &size);
+            sprintf(output +  filled, "Remaining credit balance after all purchases (a dollar amount): %.2f\n", user->credit);
+            filled += needed;
+
+            needed = SUCCESSFUL_STR_LENGTH;
+            output = enforce(output, needed, size, filled, &size);
+            sprintf(output + filled, "### SUCCESSFUL ORDERS ###\n");
+            filled += needed;
+
+            list *approved = user->approved;
+            for (order *success = rpop(approved); success; success = rpop(approved)) {
+                needed = strlen(success->title) + 1 + digits((int) success->price) + 4 + digits((int) success->remaining) + 4;
+                output = enforce(output, needed, size, filled, &size);
+                sprintf(output + filled, "%s|%.2f|%.2f\n", success->title, success->price, success->remaining);
+                filled += needed;
+                destroy_order(success);
+            }
+
+            needed = REJECTED_STR_LENGTH;
+            output = enforce(output, needed, size, filled, &size);
+            sprintf(output + filled, "### REJECTED ORDERS ###\n");
+            filled += needed;
+
+            list *rejected = user->rejected;
+            for (order *failure = rpop(rejected); failure; failure = rpop(rejected)) {
+                needed = strlen(failure->title) + 1 + digits((int) failure->price) + 4;
+                output = enforce(output, needed, size, filled, &size);
+                sprintf(output + filled, "%s|%.2f\n", failure->title, failure->price);
+                filled += needed;
+                destroy_order(failure);
+            }
+
+            needed = END_STR_LENGTH;
+            output = enforce(output, needed, size, filled, &size);
+            sprintf(output + filled, "=== END CUSTOMER INFO ===\n\n");
+            filled += needed;
         }
     }
+    output[filled - 2] = '\0';
+    puts(output);
+    remove("output.txt");
+    FILE *file = fopen("output.txt", "wr");
+    fputs(output, file);
+    fclose(file);
 }
 
 char *get_line(FILE *file) {
@@ -197,7 +255,20 @@ char *get_line(FILE *file) {
     }
 }
 
-// Return number of digits in a particular number.
+// Function takes care of any reallocations required to fit data into given string.
+char *enforce(char *str, int needed, int size, int filled, int *new_size) {
+    while (needed >= size - filled) {
+        size *= 2;
+        str = (char *) realloc(str, size);
+        if (!str) {
+            // Out of memory.
+            panic("Could not allocate memory for string");
+        }
+    }
+    *new_size = size;
+    return str;
+}
+
 int digits(int num) {
     int count = 0;
     while (num > 0) {

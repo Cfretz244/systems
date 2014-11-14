@@ -54,6 +54,7 @@ order *create_order(char *title, char *category, float price, int id) {
         book->category = (char *) malloc(sizeof(char) * (strlen(category) + 1));
         strcpy(book->category, category);
         book->price = price;
+        book->remaining = 0;
         book->id = id;
     }
 
