@@ -29,7 +29,9 @@ void panic(char *reason);
 
 /*----- Function Implementations -----*/
 
+// Main function.
 int main(int argc, char **argv) {
+    // Validate number of command line arguments.
     if (argc != 4) {
         panic("Wrong number of arguments");
     }
@@ -61,34 +63,46 @@ int main(int argc, char **argv) {
     handle_output(users);
 
     // Deallocations.
-    destroy_hash(consumers);
+    destroy_hash(consumers, (void (*) (void *)) destroy_consumer);
     destroy_array(users, (void (*) (void *)) destroy_customer);
     fclose(database);
     fclose(input);
     fclose(categories);
 }
 
+// Function is responsible for parsing through the order file and passing orders to the consumers.
 void produce(FILE *input, hash *consumers) {
     for (char *line = get_line(input); line; line = get_line(input)) {
+        // Identify information from line.
         char *title = strtok(line, "|");
         char *price_str = strtok(NULL, "|");
         char *id_str = strtok(NULL, "|");
         char *category = strtok(NULL, "|");
+
+        // Convert price and id to numbers.
         float price = strtof(price_str, NULL);
         int id = strtol(id_str, NULL, 0);
+
         if (price && id) {
+            // Create order and get worker that handles this category.
             order *book = create_order(title, category, price, id);
             consumer *worker = get(consumers, category);
+
             if (worker) {
+                // Push order into consumer work queue.
                 lpush(worker->queue, book);
             } else {
+                // Book order file contained a category not specified in the category file.
                 panic("Book order file is malformatted. It contains an invalid category");
             }
         } else {
+            // String to number conversion failed for either the price of id.
             panic("Book order file is malformatted. Either ID or price integer/float conversion failed");
         }
         free(line);
     }
+
+    // We've produced all orders. Enqueue stop order for all consumers.
     char **keys = get_keys(consumers);
     for (int i = 0; i < consumers->count; i++) {
         char *key = keys[i];
@@ -99,25 +113,39 @@ void produce(FILE *input, hash *consumers) {
     free(keys);
 }
 
+// Function is responsible for all consumer thread logic, and validates all orders passed to
+// it from the producer.
 void *consume(void *args) {
+    // Cast and grab arguments.
     void_args *arguments = (void_args *) args;
     array *users = arguments->users;
     list *queue = arguments->queue;
     free(args);
+
+    // Loop until receiving the stop order.
     while(true) {
+        // Pop an order off the queue.
         order *book = rpop(queue);
+
+        // Check if this is the stop order.
         if (!strcmp(book->title, "stop") && !strcmp(book->category, "#!~=")) {
             break;
         }
+
+        // Get user specified in order and check his/her finances.
         customer *user = retrieve(users, book->id);
         pthread_mutex_lock(user->mutex);
         if (user->credit >= book->price) {
+            // User has enough money for this book. Credit it, print a message about it, and add it
+            // to the user's approved list.
             user->credit -= book->price;
             book->remaining = user->credit;
             lpush(user->approved, book);
             printf("Order Confirmation: %s (listed for $%.2f) will be delivered to %s at %s, %s %s.\n",
                     book->title, book->price, user->name, user->street, user->state, user->zip);
         } else {
+            // User does not have sufficient funds for this book. Print a message about it, and add it
+            // to the users's rejected list.
             lpush(user->rejected, book);
             printf("Order Rejection: %s does not have sufficient funds to order %s. Remaining funds: $%.2f\n",
                     user->name, book->title, user->credit);
@@ -127,8 +155,10 @@ void *consume(void *args) {
     return NULL;
 }
 
+// Function is responsible for generating "database" of users from database file.
 void construct_database(array *users, FILE *database) {
     for (char *line = get_line(database); line; line = get_line(database)) {
+        // Identify information from line.
         char *name = strtok(line, "|");
         char *id_str = strtok(NULL, "|");
         char *credit_str = strtok(NULL, "|");
@@ -136,28 +166,35 @@ void construct_database(array *users, FILE *database) {
         char *state = strtok(NULL, "|");
         char *zip = strtok(NULL, "|");
 
+        // Convert id and credit to numbers.
         int id = strtol(id_str, NULL, 0);
         float credit = strtof(credit_str, NULL);
 
         if (id && credit) {
+            // Create user and add him to the "database" (array).
             customer *user = create_customer(name, street, state, zip, id, credit);
             insert(users, id, user);
         } else {
+            // ID or credit conversion failed.
             panic("Database file is malformatted. Either ID or credit integer/float conversion failed");
         }
         free(line);
     }
 }
 
+// Function is responsible for generating a consumer for each category in the category
+// file.
 hash *generate_consumers(FILE *categories, array *users) {
     hash *consumers = create_hash();
     for (char *line = get_line(categories); line; line = get_line(categories)) {
+        // Create a consumer for this category.
         consumer *worker = create_consumer(consume, line, users);
-        put(consumers, line, worker, CONSUMER);
+        put(consumers, line, worker);
     }
     return consumers;
 }
 
+// Function is responsible for printing and writing the report.
 void handle_output(array *users) {
     int size = 128, filled = 0, needed = 0;
     float revenue = 0.0;

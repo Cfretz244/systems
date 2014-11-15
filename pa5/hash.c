@@ -57,7 +57,7 @@ void rehash(hash *table) {
 }
 
 // Insert data into a hash for a specific key.
-bool put(hash *table, char *key, void *data, node_type type) {
+bool put(hash *table, char *key, void *data) {
     // Verify parameters.
     if (!table || !key || !data) {
         return false;
@@ -77,7 +77,7 @@ bool put(hash *table, char *key, void *data, node_type type) {
         // key.
         if (!find_hash_node(table->data[hash], key)) {
             // Data is new.
-            hash_node *node = create_hash_node(key, data, type);
+            hash_node *node = create_hash_node(key, data);
             insert_hash_node(table->data[hash], node);
             table->count++;
             return true;
@@ -87,7 +87,7 @@ bool put(hash *table, char *key, void *data, node_type type) {
         }
     } else {
         // Insert new data into table.
-        hash_node *node = create_hash_node(key, data, type);
+        hash_node *node = create_hash_node(key, data);
         table->data[hash] = node;
         table->count++;
         return true;
@@ -161,7 +161,7 @@ char **get_keys(hash *table) {
 }
 
 // Function handles the destruction of hash struct.
-void destroy_hash(hash *table) {
+void destroy_hash(hash *table, void (*destruct) (void *)) {
     // Verify parameters.
     if (!table) {
         return;
@@ -172,7 +172,7 @@ void destroy_hash(hash *table) {
         for (int i = 0; i < table->size; i++) {
             hash_node *node = table->data[i];
             if (node) {
-                destroy_hash_chain(node);
+                destroy_hash_chain(node, destruct);
             }
         }
     }
@@ -183,7 +183,7 @@ void destroy_hash(hash *table) {
 /*---- Hash Node Functions ----*/
 
 // Function handles the creation of a hash_node struct.
-hash_node *create_hash_node(char *key, void *data, node_type type) {
+hash_node *create_hash_node(char *key, void *data) {
     hash_node *node = (hash_node *) malloc(sizeof(hash_node));
 
     if (node) {
@@ -192,7 +192,6 @@ hash_node *create_hash_node(char *key, void *data, node_type type) {
             strcpy(intern_key, key);
             node->key = intern_key;
             node->data = data;
-            node->type = type;
             node->next = NULL;
         }
     }
@@ -256,21 +255,17 @@ hash_node *remove_hash_node(hash_node *head, char *key) {
 }
 
 // Function handles the destruction of an entire linked list of hash_nodes.
-void destroy_hash_chain(hash_node *head) {
+void destroy_hash_chain(hash_node *head, void (*destruct) (void *)) {
     while (head) {
         hash_node *tmp = head;
         head = head->next;
-        destroy_hash_node(tmp);
+        destroy_hash_node(tmp, destruct);
     }
 }
 
 // Function handles the destruction of a specific hash_node struct.
-void destroy_hash_node(hash_node *node) {
+void destroy_hash_node(hash_node *node, void (*destruct) (void *)) {
     free(node->key);
-    if (node->type == CUSTOMER) {
-        destroy_customer(node->data);
-    } else {
-        destroy_consumer(node->data);
-    }
+    destruct(node->data);
     free(node);
 }
