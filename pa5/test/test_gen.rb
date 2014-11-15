@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 unless ARGV.size == 3
     puts 'Usage: ruby test_gen.rb categories=<num categories> orders=<num orders> users=<num users>'
     exit(1)

@@ -285,6 +285,9 @@ int digits(int num) {
         num /= 10;
         count++;
     }
+    if (count == 0) {
+        count = 1;
+    }
     return count;
 }
 
