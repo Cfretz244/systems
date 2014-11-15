@@ -1,5 +1,3 @@
-require 'byebug'
-
 unless ARGV.size == 3
     puts 'Usage: ruby test_gen.rb categories=<num categories> orders=<num orders> users=<num users>'
     exit(1)
@@ -57,7 +55,7 @@ NUM_CATEGORIES.times do
     categories.push(cat)
 end
 
-NUM_USERS.times do |id|
+1.upto(NUM_USERS) do |id|
     name = String.new
     address = String.new
     state = String.new
