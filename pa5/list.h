@@ -4,6 +4,7 @@
 /*----- Includes without dependencies -----*/
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <pthread.h>
 #include "definitions.h"
 #include "business.h"

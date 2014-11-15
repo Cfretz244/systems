@@ -73,7 +73,9 @@ order *rpop(list *lst) {
     if (lst->threaded) {
         pthread_mutex_lock(lst->mutex);
         if (!lst->size) {
+            puts("Consumer waiting on producer...");
             pthread_cond_wait(lst->signal, lst->mutex);
+            puts("Consumer resuming...");
         }
     }
 
