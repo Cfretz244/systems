@@ -21,8 +21,8 @@ typedef struct list_node {
     struct list_node *next, *prev;
 } list_node;
 
-// List is part of a circular dependency with order, and therefore must
-// be declared differently based on which file we're currently processing.
+// List is part of a circular dependency with order and customer, and therefore
+// must be declared differently based on which file we're currently processing.
 // List struct represents a queue implemented using a doubly linked list.
 #ifdef LIST_DECLARE
 struct list {

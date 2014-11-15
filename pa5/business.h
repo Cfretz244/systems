@@ -15,8 +15,8 @@
 typedef struct list list;
 #endif
 
-// Order is part of a circular dependency with list, and therefore must
-// be declared differently based on while file we're processing.
+// Order is part of a circular dependency with list and customer, and therefore
+// must be declared differently based on while file we're processing.
 // Order struct represents a specific order read out of the order file.
 #ifdef ORDER_DECLARE
 struct order {
