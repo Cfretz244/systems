@@ -6,7 +6,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "definitions.h"
+
+/*----- Numerical Constants -----*/
+
 #define INIT_ARRAY_LENGTH 8
+
+/*----- Struct Declarations -----*/
 
 // Struct essentially behaves like an ArrayList.
 typedef struct array {

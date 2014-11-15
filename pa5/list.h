@@ -8,6 +8,8 @@
 #include "definitions.h"
 #include "business.h"
 
+/*----- Struct Declarations -----*/
+
 #ifndef ORDER_DECLARE
 #define ORDER_DECLARE
 typedef struct order order;

@@ -8,6 +8,8 @@
 #include "array.h"
 #include "list.h"
 
+/*----- Struct Declarations -----*/
+
 #ifndef LIST_DECLARE
 #define LIST_DECLARE
 typedef struct list list;

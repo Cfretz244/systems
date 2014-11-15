@@ -11,6 +11,8 @@
 
 #define START_SIZE 10
 
+/*----- Struct Declarations -----*/
+
 // Node struct used for chaining hash collision resolution.
 typedef struct hash_node {
     char *key;
