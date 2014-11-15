@@ -48,9 +48,9 @@ users = Array.new
 orders = Array.new
 
 NUM_CATEGORIES.times do
-    length = rand(1..10)
+    length = rand(10) + 1
     cat = String.new
-    length.times { cat << alpha[rand(0..25)] }
+    length.times { cat << alpha[rand(25)] }
     
     categories.push(cat)
 end
@@ -59,29 +59,29 @@ end
     name = String.new
     address = String.new
     state = String.new
-    zip = rand(10000..99999)
-    credit = (rand * rand(0..1000)).to_s
+    zip = rand(89999) + 10000
+    credit = (rand * rand(1000)).to_s
     credit = credit[0..(credit.index('.') + 2)]
 
-    length = rand(1..10)
-    length.times { name << alpha[rand(0..25)] }
-    length = rand(10..100)
-    length.times { address << alpha[rand(0..25)] }
-    length = rand(5..15)
-    length.times { state << alpha[rand(0..25)] }
+    length = rand(10) + 1
+    length.times { name << alpha[rand(25)] }
+    length = rand(90) + 10
+    length.times { address << alpha[rand(25)] }
+    length = rand(10) + 5
+    length.times { state << alpha[rand(25)] }
 
     users.push(User.new(name, address, state, zip, credit, id))
 end
 
 NUM_ORDERS.times do
     title = String.new
-    length = rand(1..20)
-    length.times { title << alpha[rand(0..25)] }
+    length = rand(20) + 1
+    length.times { title << alpha[rand(25)] }
 
-    price = (rand * rand(0..100)).to_s
+    price = (rand * rand(100)).to_s
     price = price[0..(price.index('.') + 2)]
-    category = categories[rand(0...categories.size)]
-    id = users[rand(0...users.size)].id
+    category = categories[rand(categories.size)]
+    id = users[rand(users.size)].id
 
     orders.push(Order.new(title, price, category, id))
 end
