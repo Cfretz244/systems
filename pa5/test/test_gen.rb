@@ -60,7 +60,9 @@ end
     address = String.new
     state = String.new
     zip = rand(89999) + 10000
-    credit = (rand * rand(1000)).to_s
+    random = rand * rand(1000)
+    random = rand * rand(1000) while random < 0.01
+    credit = random.to_s
     credit = credit[0..(credit.index('.') + 2)]
 
     length = rand(10) + 1
@@ -78,7 +80,9 @@ NUM_ORDERS.times do
     length = rand(20) + 1
     length.times { title << alpha[rand(25)] }
 
-    price = (rand * rand(100)).to_s
+    random = rand * rand(100)
+    random = rand * rand(100) while random < 0.01
+    price = random.to_s
     price = price[0..(price.index('.') + 2)]
     category = categories[rand(categories.size)]
     id = users[rand(users.size)].id

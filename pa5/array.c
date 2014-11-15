@@ -15,12 +15,12 @@ array *create_array() {
 }
 
 bool insert(array *arr, int index, void *data) {
-    while (index > arr->size) {
+    while (index >= arr->size) {
         int start_size = arr->size;
         arr->size *= 2;
-        void **temp = (void **) realloc(arr->storage, arr->size);
+        void **temp = (void **) realloc(arr->storage, sizeof(void *) * arr->size);
         if (temp) {
-            memset(temp[start_size], 0, arr->size - start_size);
+            memset(&temp[start_size], 0, (arr->size - start_size) * sizeof(void *));
             arr->storage = temp;
         } else {
             return false;
