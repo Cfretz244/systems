@@ -8,15 +8,18 @@
 #include "definitions.h"
 #define INIT_ARRAY_LENGTH 8
 
+// Struct essentially behaves like an ArrayList.
 typedef struct array {
     void **storage;
     int size, count;
 } array;
 
+/*----- Array Functions -----*/
+
 array *create_array();
 bool insert(array *arr, int index, void *data);
 void *retrieve(array *arr, int index);
 void *clear(array *arr, int index);
-void destroy_array(array *arr, void (*func) (void *));
+void destroy_array(array *arr, void (*destruct) (void *));
 
 #endif

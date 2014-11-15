@@ -4,8 +4,6 @@
 /*----- Includes without dependencies -----*/
 
 #include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include <pthread.h>
 #include "definitions.h"
 #include "business.h"
@@ -23,6 +21,7 @@ typedef struct list_node {
 
 // List is part of a circular dependency with order, and therefore must
 // be declared differently based on which file we're currently processing.
+// List struct represents a queue implemented using a doubly linked list.
 #ifdef LIST_DECLARE
 struct list {
 #else
@@ -40,15 +39,17 @@ typedef struct list {
 } list;
 #endif
 
-/*----- Thread Safe Functions -----*/
+/*----- Thread Safe List Functions -----*/
 
 void lpush(list *lst, order *data);
 order *rpop(list *lst);
 
-/*----- Unsafe Functions -----*/
+/*----- Unsafe List Functions -----*/
 
 list *create_list(bool threaded);
 void destroy_list(list *lst);
+
+/*----- List Node Functions -----*/
 
 list_node *create_list_node(order *data);
 void destroy_list_node(list_node *node);

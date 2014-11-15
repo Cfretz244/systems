@@ -1,11 +1,10 @@
 #ifndef BUSINESS_H
 #define BUSINESS_H
 
+/*----- Includes without dependencies -----*/
+
 #include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include "definitions.h"
-#include "hash.h"
 #include "array.h"
 #include "list.h"
 
@@ -16,6 +15,7 @@ typedef struct list list;
 
 // Order is part of a circular dependency with list, and therefore must
 // be declared differently based on while file we're processing.
+// Order struct represents a specific order read out of the order file.
 #ifdef ORDER_DECLARE
 struct order {
 #else
@@ -31,7 +31,8 @@ typedef struct order {
 } order;
 #endif
 
-// Customer Struct.
+// Customer Struct represents a single customer read out of the database
+// file.
 typedef struct customer {
     char *name, *street, *state, *zip;
     int id;
@@ -40,7 +41,8 @@ typedef struct customer {
     pthread_mutex_t *mutex;
 } customer;
 
-// Consumer struct.
+// Consumer struct represents a single consumer thread and its work
+// queue.
 typedef struct consumer {
     pthread_t *thread;
     char *category;

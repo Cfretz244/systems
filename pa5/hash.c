@@ -3,12 +3,13 @@
 /*----- Hash Functions -----*/
 
 // Function handles creation of a hash struct.
-hash *create_hash() {
+hash *create_hash(void (*destruct) (void *)) {
     hash *table = (hash *) malloc(sizeof(hash));
 
     if (table) {
         // Allocate table with calloc to allow for NULL checks.
         table->data = (hash_node **) calloc(START_SIZE, sizeof(hash_node *));
+        table->destruct = destruct;
         table->count = 0;
         table->size = START_SIZE;
     }
@@ -126,7 +127,7 @@ bool drop(hash *table, char *key) {
     if (table->data[hash]) {
         if (find_hash_node(table->data[hash], key)) {
             // Remove appropriate data.
-            table->data[hash] = remove_hash_node(table->data[hash], key);
+            table->data[hash] = remove_hash_node(table->data[hash], key, table->destruct);
             table->count--;
             return true;
         } else {
@@ -145,9 +146,12 @@ char **get_keys(hash *table) {
     if (!table) {
         return NULL;
     }
+
+    // Allocate key array.
     int current = 0;
     char **keys = (char **) malloc(sizeof(char *) * table->count);
 
+    // Iterate across each array index, and each hash_node chain.
     for (int i = 0; i < table->size; i++) {
         if (table->data[i]) {
             for (hash_node *tmp = table->data[i]; tmp; tmp = tmp->next) {
@@ -161,7 +165,7 @@ char **get_keys(hash *table) {
 }
 
 // Function handles the destruction of hash struct.
-void destroy_hash(hash *table, void (*destruct) (void *)) {
+void destroy_hash(hash *table) {
     // Verify parameters.
     if (!table) {
         return;
@@ -172,7 +176,7 @@ void destroy_hash(hash *table, void (*destruct) (void *)) {
         for (int i = 0; i < table->size; i++) {
             hash_node *node = table->data[i];
             if (node) {
-                destroy_hash_chain(node, destruct);
+                destroy_hash_chain(node, table->destruct);
             }
         }
     }
@@ -187,12 +191,17 @@ hash_node *create_hash_node(char *key, void *data) {
     hash_node *node = (hash_node *) malloc(sizeof(hash_node));
 
     if (node) {
+        // Copy given string so it can't be freed out from under us.
         char *intern_key = (char *) malloc(sizeof(char) * (strlen(key) + 1));
         if (intern_key) {
             strcpy(intern_key, key);
             node->key = intern_key;
             node->data = data;
             node->next = NULL;
+        } else {
+            // Key could not be copied. Continued initialization impossible.
+            free(node);
+            node = NULL;
         }
     }
 
@@ -225,9 +234,11 @@ hash_node *find_hash_node(hash_node *head, char *key) {
     if (head && key) {
         for (hash_node *current = head; current; current = current->next) {
             if (!strcmp(current->key, key)) {
+                // Found it.
                 return current;
             }
         }
+        // Didn't find it.
         return NULL;
     } else {
         return NULL;
@@ -236,15 +247,22 @@ hash_node *find_hash_node(hash_node *head, char *key) {
 
 // Function handles removing a hash_node specified by key from a linked
 // list of nodes.
-hash_node *remove_hash_node(hash_node *head, char *key) {
-    if (head && key) {
+hash_node *remove_hash_node(hash_node *head, char *key, void (*destruct) (void *)) {
+    // Validate parameters and search.
+    if (head && key && destruct) {
         hash_node *prev = NULL;
         for (hash_node *current = head; current; current = current->next) {
             if (!strcmp(current->key, key)) {
+                // Found it.
                 if (prev) {
-                    prev->next = current->next;
+                    // Normal case.
+                    hash_node *tmp = current->next;
+                    destruct(current);
+                    prev->next = tmp;
                     return head;
                 } else {
+                    // We need to remove the head.
+                    destruct(head);
                     return head->next;
                 }
             }
@@ -256,6 +274,7 @@ hash_node *remove_hash_node(hash_node *head, char *key) {
 
 // Function handles the destruction of an entire linked list of hash_nodes.
 void destroy_hash_chain(hash_node *head, void (*destruct) (void *)) {
+    // Iterate across list and destroy each node we come to.
     while (head) {
         hash_node *tmp = head;
         head = head->next;
