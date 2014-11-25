@@ -10,7 +10,7 @@ array *create_array() {
         // Use calloc to allocate storage space to allow for explicit NULL checks.
         arr->storage = (void **) calloc(INIT_ARRAY_LENGTH, sizeof(void **));
         arr->size = INIT_ARRAY_LENGTH;
-        arr->count = 0;;
+        arr->count = 0;
     }
 
     return arr;

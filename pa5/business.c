@@ -20,8 +20,8 @@ customer *create_customer(char *name, char *street, char *state, char *zip, int 
         user->id = id;
         user->start_credit = credit;
         user->credit = credit;
-        user->approved = create_list(false);
-        user->rejected = create_list(false);
+        user->approved = create_list();
+        user->rejected = create_list();
         user->mutex = (pthread_mutex_t *) malloc(sizeof(pthread_mutex_t));
         pthread_mutex_init(user->mutex, NULL);
     }
@@ -95,7 +95,7 @@ consumer *create_consumer(void *(*thread_func) (void *), char *category, array *
     if (worker) {
         worker->thread = (pthread_t *) malloc(sizeof(pthread_t));
         worker->category = category;
-        worker->queue = create_list(true);
+        worker->queue = create_threaded_list(category, CONSUMER_QUEUE_SIZE);
         void_args *args = (void_args *) malloc(sizeof(void_args));
         args->users = users;
         args->queue = worker->queue;

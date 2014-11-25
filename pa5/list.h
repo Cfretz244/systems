@@ -25,14 +25,18 @@ typedef struct list_node {
 // List is part of a circular dependency with order and customer, and therefore
 // must be declared differently based on which file we're currently processing.
 // List struct represents a queue implemented using a doubly linked list.
+// Also, although a linked list obviously has no maximum size, I was told that
+// for the purposes of the assignment, I was required to impose an arbitrary
+// maximum size on the list.
 #ifdef LIST_DECLARE
 struct list {
 #else
 typedef struct list {
 #endif
     list_node *head, *tail;
-    int size;
+    int count, size;
     bool threaded;
+    char *category;
     pthread_mutex_t *mutex;
     pthread_cond_t *signal;
 #ifdef LIST_DECLARE
@@ -49,7 +53,8 @@ order *rpop(list *lst);
 
 /*----- Unsafe List Functions -----*/
 
-list *create_list(bool threaded);
+list *create_list();
+list *create_threaded_list(char *category, int size);
 void destroy_list(list *lst);
 
 /*----- List Node Functions -----*/

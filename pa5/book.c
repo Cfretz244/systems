@@ -277,8 +277,8 @@ void handle_output(array *users) {
     // Terminate string, print it out, and write it to a file.
     output[filled] = '\0';
     puts(output);
-    remove("output.txt");
-    FILE *file = fopen("output.txt", "wr");
+    remove("finalreport.txt");
+    FILE *file = fopen("finalreport.txt", "wr");
     fputs(output, file);
     fclose(file);
 }

@@ -8,6 +8,12 @@
 #include "array.h"
 #include "list.h"
 
+/*----- Numerical Constants -----*/
+
+// I was told that, for the purposes of the project, although a linked list
+// obviously has no maximum size, I was required to enforce one.
+#define CONSUMER_QUEUE_SIZE 8
+
 /*----- Struct Declarations -----*/
 
 #ifndef LIST_DECLARE
