@@ -58,7 +58,7 @@ void lpush(list *lst, order *data) {
         // So this code blocks of the queue is full and waits until a consumer
         // pops an element off of the queue.
         if (lst->count == lst->size) {
-            puts("Producer waiting on cosumers...");
+            puts("Producer waiting on consumers...");
             pthread_cond_wait(lst->signal, lst->mutex);
             puts("Producer resuming...");
         }
