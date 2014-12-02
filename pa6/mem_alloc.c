@@ -3,6 +3,7 @@
 /*----- Internal Function Declarations -----*/
 
 char *find_best_fit(char *memory, size_t size);
+void split_block(char *block, size_t size);
 void set_block_links(char *block, size_t size);
 char *get_next_block(char *block, bool forward);
 size_t get_block_size(char *block);
@@ -30,10 +31,20 @@ void *allocate(size_t size, const char *file, const int line) {
         initialized = true;
         memset(memory, 0, sizeof(char) * MAX_MEMORY);
         set_block_links(memory, MAX_MEMORY - size_of_link());
-        set_block_status(memory, true);
+        set_block_status(memory, false);
     }
 
     char *best_fit = find_best_fit(memory, size);
+    if (best_fit) {
+        size_t block_size = get_block_data_size(best_fit);
+        float diff = block_size - size;
+        if (diff / MAX_MEMORY > SPLIT_THRESHOLD) {
+            split_block(best_fit, size);
+        }
+        set_block_status(best_fit, true);
+    }
+
+    return best_fit;
 }
 
 void deallocate(void *ptr, const char *file, const int line) {
@@ -43,10 +54,35 @@ void deallocate(void *ptr, const char *file, const int line) {
 /*----- Internal Function Implementations -----*/
 
 char *find_best_fit(char *memory, size_t size) {
-    char *block = memory, *best_fit;
+    char *block = memory, *best_fit = NULL;
     while (block >= memory && block < (memory + MAX_MEMORY)) {
+        if (get_block_status(block)) {
+            block = get_next_block(block, true);
+            continue;
+        }
 
+        size_t new_fit = get_block_data_size(block);
+
+        if (best_fit) {
+            size_t old_fit = get_block_data_size(best_fit);
+            if (new_fit >= size && (size - new_fit) < (size - old_fit)) {
+                best_fit = block;
+            }
+        } else if (new_fit >= size) {
+            best_fit = block;
+        }
+
+        block = get_next_block(block, true);
     }
+    return best_fit;
+}
+
+void split_block(char *block, size_t size) {
+    size_t start_data_size = get_block_data_size(block);
+    set_block_links(block, size);
+    size_t end_full_size = get_block_size(block);
+    char *new_block = get_next_block(block, true);
+    set_block_links(new_block, start_data_size - end_full_size);
 }
 
 void set_block_links(char *block, size_t size) {
@@ -91,6 +127,7 @@ size_t get_block_size(char *block) {
     } else {
         size = *((size_t *) block);
     }
+    size = coerce_size(size, false);
     return size + (length * 2);
 }
 
@@ -100,14 +137,19 @@ size_t get_block_data_size(char *block) {
 
 void set_block_status(char *block, bool used) {
     int length = size_of_link();
+    void *header = block, *footer = block + length + get_block_data_size(block);
     if (length == 1) {
-        *block |= used;
+        *((char *) header) |= used;
+        *((char *) footer) |= used;
     } else if (length == 2) {
-        *((short *) block) |= used;
+        *((short *) header) |= used;
+        *((short *) footer) |= used;
     } else if (length == 4) {
-        *((int *) block) |= used;
+        *((int *) header) |= used;
+        *((int *) footer) |= used;
     } else {
-        *((size_t *) block) |= used;
+        *((size_t *) header) |= used;
+        *((size_t *) footer) |= used;
     }
 }
 

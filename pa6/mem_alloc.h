@@ -16,6 +16,7 @@
 #define SINGLE_BYTE_MAX 255
 #define DOUBLE_BYTE_MAX 65535
 #define QUAD_BYTE_MAX 4294967295
+#define SPLIT_THRESHOLD 0.01
 
 /*----- Macro Definitions -----*/
 
