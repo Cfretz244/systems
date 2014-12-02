@@ -33,7 +33,7 @@ void *allocate(size_t size, const char *file, const int line) {
     if (!initialized) {
         initialized = true;
         memset(memory, 0, sizeof(char) * MAX_MEMORY);
-        set_block_links(start, MAX_MEMORY - (size_of_link() * 2));
+        set_block_links(start, MAX_MEMORY - (size_of_link() * 3));
         set_block_status(start, false);
     }
 

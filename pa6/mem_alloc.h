@@ -13,9 +13,9 @@
 
 #define MIN_ALLOC 2
 #define MAX_MEMORY 5000
-#define SINGLE_BYTE_MAX 255
-#define DOUBLE_BYTE_MAX 65535
-#define QUAD_BYTE_MAX 4294967295
+#define SINGLE_BYTE_MAX 127
+#define DOUBLE_BYTE_MAX 32767
+#define QUAD_BYTE_MAX 2147483647
 #define SPLIT_THRESHOLD 0.01
 
 /*----- Macro Definitions -----*/

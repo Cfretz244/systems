@@ -9,6 +9,9 @@ int main() {
             mem *= 2;
         }
         ptrs[i - 2] = malloc(mem);
+        if (!ptrs[i - 2]) {
+            break;
+        }
     }
 
     print_heap(start);
