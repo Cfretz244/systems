@@ -2,12 +2,15 @@
 
 /*----- Internal Function Declarations -----*/
 
-void set_block_size(char *header, size_t size);
-size_t get_block_size(char *header);
-void set_block_status(char *header, bool used);
-bool get_block_status(char *header);
-int size_of_header();
+char *find_best_fit(char *memory, size_t size);
+void set_block_links(char *block, size_t size);
+char *get_next_block(char *block, bool forward);
+size_t get_block_size(char *block);
+size_t get_block_data_size(char *block);
+void set_block_status(char *block, bool used);
+bool get_block_status(char *block);
 size_t coerce_size(size_t size, bool up);
+int size_of_link();
 void panic_full(char *reason, const char *file, const int line);
 void panic(char *reason);
 
@@ -26,11 +29,11 @@ void *allocate(size_t size, const char *file, const int line) {
     if (!initialized) {
         initialized = true;
         memset(memory, 0, sizeof(char) * MAX_MEMORY);
-        set_block_size(memory, MAX_MEMORY);
+        set_block_links(memory, MAX_MEMORY - size_of_link());
         set_block_status(memory, true);
     }
 
-    // Actual work goes here.
+    char *best_fit = find_best_fit(memory, size);
 }
 
 void deallocate(void *ptr, const char *file, const int line) {
@@ -39,70 +42,85 @@ void deallocate(void *ptr, const char *file, const int line) {
 
 /*----- Internal Function Implementations -----*/
 
-void set_block_size(char *header, size_t size) {
-    int length = size_of_header();
-    if (length == 1) {
-        *header = (char) size;
-    } else if (length == 2) {
-        short *cast_header = (short *) header;
-        *cast_header = (short) size;
-    } else if (length == 4) {
-        int *cast_header = (int *) header;
-        *cast_header = (int) size;
-    } else {
-        size_t *cast_header = (size_t *) header;
-        *cast_header = size;
+char *find_best_fit(char *memory, size_t size) {
+    char *block = memory, *best_fit;
+    while (block >= memory && block < (memory + MAX_MEMORY)) {
+
     }
 }
 
-size_t get_block_size(char *header) {
-    int length = size_of_header();
+void set_block_links(char *block, size_t size) {
+    int length = size_of_link();
+    void *header = block, *footer = block + length + size;
     if (length == 1) {
-        return (size_t) *header;
+        char data = (char) size, *cast_head = header, *cast_foot = footer;
+        *cast_head = data;
+        *cast_foot = data;
     } else if (length == 2) {
-        return (size_t) *((short *) header);
+        short data = (short) size, *cast_head = header, *cast_foot = footer;
+        *cast_head = data;
+        *cast_foot = data;
     } else if (length == 4) {
-        return (size_t) *((int *) header);
+        int data = (int) size, *cast_head = header, *cast_foot = footer;
+        *cast_head = data;
+        *cast_foot = data;
     } else {
-        return *((size_t *) header);
+        size_t data = (size_t) size, *cast_head = header, *cast_foot = footer;
+        *cast_head = data;
+        *cast_foot = data;
     }
 }
 
-void set_block_status(char *header, bool used) {
-    int length = size_of_header();
-    if (length == 1) {
-        *header |= used;
-    } else if (length == 2) {
-        *((short *) header) |= used;
-    } else if (length == 4) {
-        *((int *) header) |= used;
+char *get_next_block(char *block, bool forward) {
+    if (forward) {
+        return block + get_block_size(block);
     } else {
-        *((size_t *) header) |= used;
+        return block - get_block_size(block - size_of_link());
     }
 }
 
-bool get_block_status(char *header) {
-    int length = size_of_header();
+size_t get_block_size(char *block) {
+    int length = size_of_link();
+    size_t size;
     if (length == 1) {
-        return *header & 1;
+        size = (size_t) *block;
     } else if (length == 2) {
-        return *((short *) header) & 1;
+        size = (size_t) *((short *) block);
     } else if (length == 4) {
-        return *((int *) header) & 1;
+        size = (size_t) *((int *) block);
     } else {
-        return *((size_t *) header) & 1;
+        size = *((size_t *) block);
+    }
+    return size + (length * 2);
+}
+
+size_t get_block_data_size(char *block) {
+    return get_block_size(block) - (size_of_link() * 2);
+}
+
+void set_block_status(char *block, bool used) {
+    int length = size_of_link();
+    if (length == 1) {
+        *block |= used;
+    } else if (length == 2) {
+        *((short *) block) |= used;
+    } else if (length == 4) {
+        *((int *) block) |= used;
+    } else {
+        *((size_t *) block) |= used;
     }
 }
 
-int size_of_header() {
-    if (MAX_MEMORY <= SINGLE_BYTE_MAX) {
-        return 1;
-    } else if (MAX_MEMORY <= DOUBLE_BYTE_MAX) {
-        return 2;
-    } else if (MAX_MEMORY <= QUAD_BYTE_MAX) {
-        return 4;
+bool get_block_status(char *block) {
+    int length = size_of_link();
+    if (length == 1) {
+        return *block & 1;
+    } else if (length == 2) {
+        return *((short *) block) & 1;
+    } else if (length == 4) {
+        return *((int *) block) & 1;
     } else {
-        return sizeof(size_t);
+        return *((size_t *) block) & 1;
     }
 }
 
@@ -115,6 +133,18 @@ size_t coerce_size(size_t size, bool up) {
         return up ? next : next - MIN_ALLOC;
     } else {
         return size;
+    }
+}
+
+int size_of_link() {
+    if (MAX_MEMORY <= SINGLE_BYTE_MAX) {
+        return 1;
+    } else if (MAX_MEMORY <= DOUBLE_BYTE_MAX) {
+        return 2;
+    } else if (MAX_MEMORY <= QUAD_BYTE_MAX) {
+        return 4;
+    } else {
+        return sizeof(size_t);
     }
 }
 
