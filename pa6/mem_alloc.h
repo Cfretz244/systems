@@ -28,4 +28,7 @@
 void *allocate(size_t size, const char *file, const int line);
 void deallocate(void *ptr, const char *file, const int line);
 
+/*----- Debugging Functions -----*/
+void print_heap(char *start_block);
+
 #endif

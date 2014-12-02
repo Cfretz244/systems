@@ -2,7 +2,9 @@
 
 /*----- Internal Function Declarations -----*/
 
-char *find_best_fit(char *memory, size_t size);
+char *find_best_fit(char *start, size_t size);
+void merge(char *block);
+char *backtrack(char *block);
 void split_block(char *block, size_t size);
 void set_block_links(char *block, size_t size);
 char *get_next_block(char *block, bool forward);
@@ -15,11 +17,12 @@ int size_of_link();
 void panic_full(char *reason, const char *file, const int line);
 void panic(char *reason);
 
-/*----- Memory Allocation Functions -----*/
+/*----- Memory Allocation Function Implementations -----*/
 
 void *allocate(size_t size, const char *file, const int line) {
     static bool initialized = false;
     static char memory[MAX_MEMORY];
+    char *start = memory + size_of_link();
 
     if (size == 0 || size > MAX_MEMORY) {
         panic_full("User passed bad value", file, line);
@@ -30,11 +33,11 @@ void *allocate(size_t size, const char *file, const int line) {
     if (!initialized) {
         initialized = true;
         memset(memory, 0, sizeof(char) * MAX_MEMORY);
-        set_block_links(memory, MAX_MEMORY - size_of_link());
-        set_block_status(memory, false);
+        set_block_links(start, MAX_MEMORY - (size_of_link() * 2));
+        set_block_status(start, false);
     }
 
-    char *best_fit = find_best_fit(memory, size);
+    char *best_fit = find_best_fit(start, size);
     if (best_fit) {
         size_t block_size = get_block_data_size(best_fit);
         float diff = block_size - size;
@@ -44,18 +47,31 @@ void *allocate(size_t size, const char *file, const int line) {
         set_block_status(best_fit, true);
     }
 
-    return best_fit;
+    return best_fit + size_of_link();
 }
 
 void deallocate(void *ptr, const char *file, const int line) {
-    // Cool stuff to come.
+    char *block = ((char *) ptr) - size_of_link();
+    set_block_status(block, false);
+    block = backtrack(block);
+    merge(block);
+}
+
+/*----- Debugging Function Implementations -----*/
+
+void print_heap(char *start_block) {
+    while (get_block_data_size(start_block) > 0) {
+        printf("[Size: %d, In-Use: %d]->", get_block_data_size(start_block), get_block_status(start_block));
+        start_block = get_next_block(start_block, true);
+    }
+    printf("[]\n");
 }
 
 /*----- Internal Function Implementations -----*/
 
-char *find_best_fit(char *memory, size_t size) {
-    char *block = memory, *best_fit = NULL;
-    while (block >= memory && block < (memory + MAX_MEMORY)) {
+char *find_best_fit(char *start, size_t size) {
+    char *block = start, *best_fit = NULL;
+    while (get_block_data_size(block) > 0) {
         if (get_block_status(block)) {
             block = get_next_block(block, true);
             continue;
@@ -75,6 +91,27 @@ char *find_best_fit(char *memory, size_t size) {
         block = get_next_block(block, true);
     }
     return best_fit;
+}
+
+void merge(char *block) {
+    char *next = get_next_block(block, true);
+    while (!get_block_status(next) && get_block_data_size(next) > 0) {
+        size_t curr_size = get_block_data_size(block);
+        size_t next_size = get_block_data_size(next);
+        size_t total_size = curr_size + next_size + (2 * size_of_link());
+        set_block_links(block, total_size);
+
+        next = get_next_block(block, true);
+    }
+}
+
+char *backtrack(char *block) {
+    char *next = get_next_block(block, false);
+    while (!get_block_status(next) && get_block_data_size(next) > 0) {
+        block = next;
+        next = get_next_block(block, false);
+    }
+    return block;
 }
 
 void split_block(char *block, size_t size) {
@@ -139,17 +176,37 @@ void set_block_status(char *block, bool used) {
     int length = size_of_link();
     void *header = block, *footer = block + length + get_block_data_size(block);
     if (length == 1) {
-        *((char *) header) |= used;
-        *((char *) footer) |= used;
+        if (used) {
+            *((char *) header) |= 1;
+            *((char *) footer) |= 1;
+        } else {
+            *((char *) header) &= ~1;
+            *((char *) footer) &= ~1;
+        }
     } else if (length == 2) {
-        *((short *) header) |= used;
-        *((short *) footer) |= used;
+        if (used) {
+            *((short *) header) |= 1;
+            *((short *) footer) |= 1;
+        } else {
+            *((short *) header) &= ~1;
+            *((short *) footer) &= ~1;
+        }
     } else if (length == 4) {
-        *((int *) header) |= used;
-        *((int *) footer) |= used;
+        if (used) {
+            *((int *) header) |= 1;
+            *((int *) footer) |= 1;
+        } else {
+            *((int *) header) &= ~1;
+            *((int *) footer) &= ~1;
+        }
     } else {
-        *((size_t *) header) |= used;
-        *((size_t *) footer) |= used;
+        if (used) {
+            *((size_t *) header) |= 1;
+            *((size_t *) footer) |= 1;
+        } else {
+            *((size_t *) header) &= ~1;
+            *((size_t *) footer) &= ~1;
+        }
     }
 }
 
@@ -191,11 +248,11 @@ int size_of_link() {
 }
 
 void panic_full(char *reason, const char *file, const int line) {
-    fprintf(stderr, "Encountered error [%s] at line #%d in file %s.", reason, line, file);
+    fprintf(stderr, "Encountered error [%s] at line #%d in file %s\n", reason, line, file);
     exit(EXIT_FAILURE);
 }
 
 void panic(char *reason) {
-    fprintf(stderr, "Encountered error [%s].", reason);
+    fprintf(stderr, "Encountered error [%s]\n", reason);
     exit(EXIT_FAILURE);
 }
