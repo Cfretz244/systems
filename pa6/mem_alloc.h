@@ -11,7 +11,11 @@
 
 /*----- Numerical Constants -----*/
 
+#define MIN_ALLOC 2
 #define MAX_MEMORY 5000
+#define SINGLE_BYTE_MAX 255
+#define DOUBLE_BYTE_MAX 65535
+#define QUAD_BYTE_MAX 4294967295
 
 /*----- Macro Definitions -----*/
 
