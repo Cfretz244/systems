@@ -1,7 +1,7 @@
 #include "mem_alloc.h"
 
 int main() {
-    void *start = malloc(1) - 2;
+    void *start = malloc(1) - 4;
     void *ptrs[10];
     for (int i = 2; i < 12; i++) {
         int mem = 1;
@@ -39,6 +39,8 @@ int main() {
     free(ptrs[0]);
     print_heap(start);
 
-    free(start + 2);
+    free(start + 4);
     print_heap(start);
+
+    free(start + 2);
 }
