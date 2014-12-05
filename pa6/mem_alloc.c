@@ -51,8 +51,8 @@ void *allocate(size_t size, const char *file, const int line) {
 
         // Implementation detects valid blocks by checking a hash value. This generates
         // said hash value off of the host name. Seemed as sensible a thing as any to hash.
-        char hostname[HOST_NAME_MAX];
-        gethostname(hostname, HOST_NAME_MAX);
+        char hostname[_POSIX_HOST_NAME_MAX];
+        gethostname(hostname, _POSIX_HOST_NAME_MAX);
         host_hash = generate_hash(hostname);
 
         // Set up header and footer for initial max size block.
