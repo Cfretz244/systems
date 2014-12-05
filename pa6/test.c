@@ -29,7 +29,7 @@ int main() {
     for (int i = 0; i < 1000; i++) {
         array *arr = create_array();
 
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 1000; j++) {
             fill(arr);
             check_integrity(arr);
             rand_dump(arr);
