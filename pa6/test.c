@@ -1,46 +1,116 @@
 #include "mem_alloc.h"
+#include "array.h"
+#include "assert.h"
+
+/*----- Debugging Helper Function Declarations -----*/
+
+void check_integrity(array *arr);
+void fill(array *arr);
+void rand_dump(array *arr);
+void empty(array *arr);
+int last_element(array *arr);
+void no_op(void *ignored);
+
+/*----- Debugging Main -----*/
 
 int main() {
-    void *start = malloc(1) - 4;
-    void *ptrs[10];
-    for (int i = 2; i < 12; i++) {
-        int mem = 1;
-        for (int k = 0; k < i; k++) {
-            mem *= 2;
+    for (int i = 0; i < 1000; i++) {
+        array *arr = create_array();
+
+        fill(arr);
+        check_integrity(arr);
+        empty(arr);
+
+        destroy_array(arr, no_op);
+    }
+
+    print_heap();
+
+    for (int i = 0; i < 1000; i++) {
+        array *arr = create_array();
+
+        for (int j = 0; j < 10; j++) {
+            fill(arr);
+            check_integrity(arr);
+            rand_dump(arr);
         }
-        ptrs[i - 2] = malloc(mem);
-        if (!ptrs[i - 2]) {
+        empty(arr);
+
+        destroy_array(arr, no_op);
+    }
+
+    print_heap();
+}
+
+/*----- Debugging Helper Function Implementations -----*/
+
+void check_integrity(array *arr) {
+    for (int i = 0; i < arr->count; i++) {
+        void *elem = retrieve(arr, i);
+        if (elem) {
+            for (int k = i + 1; k < arr->count; k++) {
+                void *tmp = retrieve(arr, k);
+                assert(tmp != elem);
+            }
+        }
+    }
+}
+
+void fill(array *arr) {
+    for (int i = last_element(arr); true; i++) {
+        int size = (rand() % 20) + 1;
+        void *ptr = malloc(size);
+
+        if (ptr) {
+            for (int j = 0; j < size; j++) {
+                char *tmp = ptr;
+
+                if (j == size - 1) {
+                    tmp[j] = '\0';
+                } else {
+                    tmp[j] = i + '0';
+                }
+            }
+            insert(arr, i, ptr);
+        } else {
             break;
         }
     }
+}
 
-    print_heap(start);
+void rand_dump(array *arr) {
+    int dump = rand() % arr->count;
 
-    free(ptrs[1]);
-    free(ptrs[3]);
-    free(ptrs[5]);
-    free(ptrs[7]);
-    free(ptrs[9]);
+    for (int i = 0; i < dump; i++) {
+        int chosen = rand() % arr->count;
+        void *elem = retrieve(arr, chosen);
+        if (elem) {
+            clear(arr, chosen);
+            free(elem);
+        }
+    }
+}
 
-    print_heap(start);
+void empty(array *arr) {
+    for (int i = 0; i < arr->size; i++) {
+        void *tmp = retrieve(arr, i);
+        if (tmp) {
+            clear(arr, i);
+            free(tmp);
+        }
+    }
+}
 
-    free(ptrs[8]);
-    print_heap(start);
+int last_element(array *arr) {
+    int last = 0;
+    for (int i = 0; i < arr->size; i++) {
+        if (retrieve(arr, i)) {
+            last = i;
+        }
+    }
+    return last + 1;
+}
 
-    free(ptrs[6]);
-    print_heap(start);
-
-    free(ptrs[4]);
-    print_heap(start);
-
-    free(ptrs[2]);
-    print_heap(start);
-
-    free(ptrs[0]);
-    print_heap(start);
-
-    free(start + 4);
-    print_heap(start);
-
-    free(start + 2);
+void no_op(void *ignored) {
+    return;
 }

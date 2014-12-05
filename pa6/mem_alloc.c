@@ -60,7 +60,11 @@ void *allocate(size_t size, const char *file, const int line) {
         set_block_status(best_fit, true);
     }
 
-    return best_fit + size_of_header();
+    if (best_fit) {
+        return best_fit + size_of_header();
+    } else {
+        return NULL;
+    }
 }
 
 void deallocate(void *ptr, const char *file, const int line) {
@@ -85,7 +89,8 @@ void deallocate(void *ptr, const char *file, const int line) {
 
 /*----- Debugging Function Implementations -----*/
 
-void print_heap(char *start_block) {
+void print_heap() {
+    char *start_block = memory + size_of_footer();
     while (get_block_data_size(start_block) > 0) {
         printf("[Size: %d, In-Use: %d]->", get_block_data_size(start_block), get_block_status(start_block));
         start_block = get_next_block(start_block, true);
