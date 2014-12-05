@@ -13,7 +13,11 @@ void no_op(void *ignored);
 
 /*----- Debugging Main -----*/
 
+// Main testing function. Test is considered a pass if the program doesn't
+// segfault, and if, at each call to print heap, the heap consists of only
+// free space.
 int main() {
+    // For loop randomly fills and empties the heap 1000 times.
     for (int i = 0; i < 1000; i++) {
         array *arr = create_array();
 
@@ -26,6 +30,8 @@ int main() {
 
     print_heap();
 
+    // For loop randomly fills the heap, then makes LOTS of random allocations and
+    // deallocations, and then empties the heap and repeats 1000 times.
     for (int i = 0; i < 1000; i++) {
         array *arr = create_array();
 
@@ -44,6 +50,7 @@ int main() {
 
 /*----- Debugging Helper Function Implementations -----*/
 
+// Function makes sure that allocate is always handing out unique addresses.
 void check_integrity(array *arr) {
     for (int i = 0; i < arr->count; i++) {
         void *elem = retrieve(arr, i);
@@ -56,6 +63,9 @@ void check_integrity(array *arr) {
     }
 }
 
+// Function makes random allocations until the heap is full and fills all
+// allocated sections with random data to ensure no memory corruption
+// occurs.
 void fill(array *arr) {
     for (int i = last_element(arr); true; i++) {
         int size = (rand() % 20) + 1;
@@ -78,6 +88,7 @@ void fill(array *arr) {
     }
 }
 
+// Function frees a random number of random addresses that have been allocated.
 void rand_dump(array *arr) {
     int dump = rand() % arr->count;
 
@@ -91,6 +102,7 @@ void rand_dump(array *arr) {
     }
 }
 
+// Function calls free on all allocated pointers.
 void empty(array *arr) {
     for (int i = 0; i < arr->size; i++) {
         void *tmp = retrieve(arr, i);
@@ -101,6 +113,8 @@ void empty(array *arr) {
     }
 }
 
+// Function returns the first index of the given array
+// that is guaranteed not to have any data after it.
 int last_element(array *arr) {
     int last = 0;
     for (int i = 0; i < arr->size; i++) {
@@ -111,6 +125,8 @@ int last_element(array *arr) {
     return last + 1;
 }
 
+// Function does nothing and is passed to destroy_array
+// as a destructor function.
 void no_op(void *ignored) {
     return;
 }
