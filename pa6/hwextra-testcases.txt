@@ -1,0 +1,19 @@
+Testplan:
+    test.c implements a fairly exhaustive test of my code. It uses a custom array struct I wrote for a previous project to keep track of all
+    the pointers that it allocates, and it breaks down into essential two phases.
+
+    Phase 1:
+        Phase one occurs inside of a for loop that runs 1,000 times. On each iteration, random allocations are made until the heap is full
+        (malloc returns a null pointer), and each allocation is completely filled with random data to ensure that memory corruption occurs
+        if the implementation is incorrectly spacing blocks of memory. After this, all allocations that were made are freed, and the loop
+        reinitializes. After the loop finishes running the heap is printed. The test is considered a pass if, upon reaching the end of the
+        loop, the heap is empty (shows that the implementation is managing memory correctly). This test will make on the order of 10's to 100's
+        of thousands of allocations and deallocations.
+
+    Phase 2:
+        Phase two also occurs inside of a for loop that runs 1,000 times, however, there is also an inner loop that also runs 1,000 times.
+        On each iteration of the inner loop, the heap is filled with random allocations (which are all filled with random data), and then
+        a random number of random addresses are deallocated. After the inner loop finishes, all remaining allocations are freed, and the
+        outer loop reinitializes. After the outer loop finishes, the heap is printed and the test is considered a pass if the heap is empty
+        (shows that the implementation is managing memory correctly). This test will make on the order of 10's to 100's of millions of
+        allocations and deallocations.
