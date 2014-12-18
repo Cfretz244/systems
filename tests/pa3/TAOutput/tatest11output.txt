@@ -1,0 +1,19 @@
+<list> a
+TAInput/test11/test11-5.txt 1 TAInput/test11/test11-4.txt 1 TAInput/test11/test11-3.txt 1 TAInput/test11/test11-2.txt 1 TAInput/test11/test11-1.txt 1 
+</list>
+<list> had
+TAInput/test11/test11-5.txt 1 TAInput/test11/test11-4.txt 1 TAInput/test11/test11-3.txt 1 TAInput/test11/test11-2.txt 1 TAInput/test11/test11-1.txt 1 
+</list>
+<list> lamb
+TAInput/test11/test11-5.txt 1 TAInput/test11/test11-4.txt 1 TAInput/test11/test11-3.txt 1 TAInput/test11/test11-2.txt 1 TAInput/test11/test11-1.txt 1 
+</list>
+<list> little
+TAInput/test11/test11-9.txt 2 TAInput/test11/test11-8.txt 2 TAInput/test11/test11-7.txt 2 TAInput/test11/test11-6.txt 2 TAInput/test11/test11-5.txt 2 
+TAInput/test11/test11-4.txt 2 TAInput/test11/test11-3.txt 2 TAInput/test11/test11-21.txt 2 TAInput/test11/test11-20.txt 2 TAInput/test11/test11-2.txt 2 
+TAInput/test11/test11-19.txt 2 TAInput/test11/test11-18.txt 2 TAInput/test11/test11-17.txt 2 TAInput/test11/test11-16.txt 2 TAInput/test11/test11-15.txt 2 
+TAInput/test11/test11-14.txt 2 TAInput/test11/test11-13.txt 2 TAInput/test11/test11-12.txt 2 TAInput/test11/test11-11.txt 2 TAInput/test11/test11-10.txt 2 
+TAInput/test11/test11-1.txt 2 
+</list>
+<list> mary
+TAInput/test11/test11-5.txt 1 TAInput/test11/test11-4.txt 1 TAInput/test11/test11-3.txt 1 TAInput/test11/test11-2.txt 1 TAInput/test11/test11-1.txt 1 
+</list>

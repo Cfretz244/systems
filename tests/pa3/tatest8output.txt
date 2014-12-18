@@ -1,0 +1,15 @@
+<list> mary
+TAInput/test8/test8-2/test8-2-A/test82A.txt 1 TAInput/test8/test8-1/test8-1-B/test81B.txt 1 TAInput/test8/test8-1/test8-1-A/test81A.txt 1
+</list>
+<list> little
+TAInput/test8/test8-2/test8-2-A/test82A.txt 2 TAInput/test8/test8-1/test8-1-B/test81B.txt 2 TAInput/test8/test8-1/test8-1-A/test81A.txt 2
+</list>
+<list> lamb
+TAInput/test8/test8-2/test8-2-A/test82A.txt 1 TAInput/test8/test8-1/test8-1-B/test81B.txt 1 TAInput/test8/test8-1/test8-1-A/test81A.txt 1
+</list>
+<list> had
+TAInput/test8/test8-2/test8-2-A/test82A.txt 1 TAInput/test8/test8-1/test8-1-B/test81B.txt 1 TAInput/test8/test8-1/test8-1-A/test81A.txt 1
+</list>
+<list> a
+TAInput/test8/test8-2/test8-2-A/test82A.txt 1 TAInput/test8/test8-1/test8-1-B/test81B.txt 1 TAInput/test8/test8-1/test8-1-A/test81A.txt 1
+</list>

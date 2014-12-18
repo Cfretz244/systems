@@ -1,0 +1,3 @@
+<list> singletoken
+TAInput/test17.txt 1 
+</list>

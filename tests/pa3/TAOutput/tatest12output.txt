@@ -1,0 +1,15 @@
+<list> a
+TAInput/test12.txt 2 
+</list>
+<list> had
+TAInput/test12.txt 2 
+</list>
+<list> lamb
+TAInput/test12.txt 2 
+</list>
+<list> little
+TAInput/test12.txt 4 
+</list>
+<list> mary
+TAInput/test12.txt 2 
+</list>

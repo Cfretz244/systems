@@ -1,0 +1,16 @@
+<list> a
+TAInput/test10/test10-5.txt 1 TAInput/test10/test10-4.txt 1 TAInput/test10/test10-3.txt 1 TAInput/test10/test10-2.txt 1 TAInput/test10/test10-1.txt 1 
+</list>
+<list> had
+TAInput/test10/test10-5.txt 1 TAInput/test10/test10-4.txt 1 TAInput/test10/test10-3.txt 1 TAInput/test10/test10-2.txt 1 TAInput/test10/test10-1.txt 1 
+</list>
+<list> lamb
+TAInput/test10/test10-5.txt 1 TAInput/test10/test10-4.txt 1 TAInput/test10/test10-3.txt 1 TAInput/test10/test10-2.txt 1 TAInput/test10/test10-1.txt 1 
+</list>
+<list> little
+TAInput/test10/test10-7.txt 2 TAInput/test10/test10-6.txt 2 TAInput/test10/test10-5.txt 2 TAInput/test10/test10-4.txt 2 TAInput/test10/test10-3.txt 2 
+TAInput/test10/test10-2.txt 2 TAInput/test10/test10-1.txt 2 
+</list>
+<list> mary
+TAInput/test10/test10-5.txt 1 TAInput/test10/test10-4.txt 1 TAInput/test10/test10-3.txt 1 TAInput/test10/test10-2.txt 1 TAInput/test10/test10-1.txt 1 
+</list>

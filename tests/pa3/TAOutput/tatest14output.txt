@@ -1,0 +1,24 @@
+<list> a
+TAInput/test14/test14-2/test14-2-B/test142B.txt 1 TAInput/test14/test14-2/test14-2-A/test142A.txt 1 TAInput/test14/test14-1/test14-1-B/test141B.txt 1 TAInput/test14/test14-1/test14-1-A/test141A.txt 1 
+</list>
+<list> first
+TAInput/test14/test14.txt 2 
+</list>
+<list> had
+TAInput/test14/test14-2/test14-2-B/test142B.txt 1 TAInput/test14/test14-2/test14-2-A/test142A.txt 1 TAInput/test14/test14-1/test14-1-B/test141B.txt 1 TAInput/test14/test14-1/test14-1-A/test141A.txt 1 
+</list>
+<list> lamb
+TAInput/test14/test14-2/test14-2-B/test142B.txt 1 TAInput/test14/test14-2/test14-2-A/test142A.txt 1 TAInput/test14/test14-1/test14-1-B/test141B.txt 1 TAInput/test14/test14-1/test14-1-A/test141A.txt 1 
+</list>
+<list> little
+TAInput/test14/test14-2/test14-2-B/test142B.txt 2 TAInput/test14/test14-2/test14-2-A/test142A.txt 2 TAInput/test14/test14-1/test14-1-B/test141B.txt 2 TAInput/test14/test14-1/test14-1-A/test141A.txt 2 
+</list>
+<list> mary
+TAInput/test14/test14-2/test14-2-B/test142B.txt 1 TAInput/test14/test14-2/test14-2-A/test142A.txt 1 TAInput/test14/test14-1/test14-1-B/test141B.txt 1 TAInput/test14/test14-1/test14-1-A/test141A.txt 1 
+</list>
+<list> second
+TAInput/test14/test14-1/test14-1copy.txt 2 TAInput/test14/test14-1/test14-1.txt 2 
+</list>
+<list> third
+TAInput/test14/test14-2/test14-2copycopy.txt 2 TAInput/test14/test14-2/test14-2copy.txt 2 TAInput/test14/test14-2/test14-2.txt 2 
+</list>

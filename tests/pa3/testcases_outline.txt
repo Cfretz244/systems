@@ -1,0 +1,31 @@
+
+argv[1]: inverted index output
+argv[2]: file/directory input
+
+1) Basic file argument (file exists)
+2) Nonexistent file as argument
+3) Empty file as argument
+4) Shallow directory as argument (file exists)
+5) Empty shallow directory
+6) Nested directory as argument (files exist in all leaves)
+7) Identically-named files in different directories
+8) Nested directories, 1 empty
+9) Chain of directories, no file at leaf
+10) 1 word with 5<x<10 records (7 here)
+11) 1 word with > 20 records (21 here)
+12) Non-alphanumerics in file 
+13) Case-insensitivity test
+14) Nested directories as argument (files exist at all levels in hierarchy)
+15) Alphanumeric tokens (numbers included)
+16) Test order of records for correctness
+17) Single token file
+
+
+18) Previously existing inverted-index file (prompt for overwrite)
+
+
+
+Misc:
+
+19) Too many arguments
+20) Too few arguments

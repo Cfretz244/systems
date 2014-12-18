@@ -1,0 +1,18 @@
+<list> 8
+TAInput/test15.txt 1 
+</list>
+<list> 9lambs
+TAInput/test15.txt 1 
+</list>
+<list> had
+TAInput/test15.txt 1 
+</list>
+<list> lambs
+TAInput/test15.txt 1 
+</list>
+<list> little
+TAInput/test15.txt 1 
+</list>
+<list> mary
+TAInput/test15.txt 1 
+</list>

@@ -1,0 +1,12 @@
+<list> this
+TAInput/test7/test7-2/test7.txt 1 TAInput/test7/test7-1/test7.txt 1
+</list>
+<list> test
+TAInput/test7/test7-2/test7.txt 1 TAInput/test7/test7-1/test7.txt 1
+</list>
+<list> is
+TAInput/test7/test7-2/test7.txt 1 TAInput/test7/test7-1/test7.txt 1
+</list>
+<list> a
+TAInput/test7/test7-2/test7.txt 1 TAInput/test7/test7-1/test7.txt 1
+</list>
