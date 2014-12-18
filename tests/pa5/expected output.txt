@@ -1,0 +1,21 @@
+1-4.  Graceful error.
+
+5-6. Graceful error, or processes orders without failing.  If processed, expected output is same as with sample files.
+
+7. 1 successful, 0 failed. Total revenue: $100.
+
+8. 0 successful, 1 failed. Total revenue: $0.
+
+9. 5 successful, 2 failed.  Total revenue: $500.
+
+10.  10 successful, 20 failed.  Total revenue: $1000.
+
+11. 6 successful, 0 failed.  Total revenue: $600.
+
+12. 10 successful, 20 failed.  Total revenue: $1000.
+
+13. Graceful error or process orders without failing.  Total revenue: $0.
+
+14. User 1: 10 successful, 2 failed.  User 2: 6 successful.  User 3: 3 successful.  User 4: 9 successful.  Total revenue: $2800
+
+15.  User 1: 50 successful.  User 2: 50 successful.  User 3: 32 successful, 18 failed.  User 4: 15 successful, 35 failed.  Total revenue: $14700

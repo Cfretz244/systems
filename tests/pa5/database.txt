@@ -1,0 +1,5 @@
+"BrianRussell"|1|500.00|"110FrelinghuysenRd.,Piscataway"|"NewJersey"|"08854"
+"YingZhan"|2|65.00|"3100HamiltonBlvd,SouthPlainfield"|"NewJersey"|"07080"
+"SejongYoon"|3|10.00|"200PromenadeBoulevard,Bridgewater"|"NewJersey"|"08807"
+"YuanzhenGu"|4|80.00|"45KilmerRoad,Edison"|"NewJersey"|"08817"
+"ZiYan"|5|100.00|"100MiddlesexEssexTurnpike,Iselin"|"NewJersey"|"08830"

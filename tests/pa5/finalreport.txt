@@ -1,0 +1,237 @@
+=== BEGIN CUSTOMER INFO ===
+### BALANCE ###
+Customer name: "BrianRussell"
+Customer ID number: 1
+Remaining credit balance after all purchases (a dollar amount): 0.00
+### SUCCESSFUL ORDERS ###
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|4900.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|4800.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|4700.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|4600.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|4500.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|4400.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|4300.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|4200.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|4100.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|4000.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|3900.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|3800.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|3700.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|3600.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|3500.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|3400.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|3300.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|3200.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|3100.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|3000.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|2900.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|2800.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|2700.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|2600.00
+"ICouldPeeonThis:AndOtherPoemsbyCats"|100.00|2500.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|2400.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|2300.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|2200.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|2100.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|2000.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|1900.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|1800.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|1700.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|1600.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|1500.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|1400.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|1300.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|1200.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|1100.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|1000.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|900.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|800.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|700.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|600.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|500.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|400.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|300.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|200.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|100.00
+"FiftyPlacestoDiveBeforeYouDie:DivingExpertsSharetheWorld'sGreatestDestinations"|100.00|0.00
+### REJECTED ORDERS ###
+=== END CUSTOMER INFO ===
+
+=== BEGIN CUSTOMER INFO ===
+### BALANCE ###
+Customer name: "YingZhan"
+Customer ID number: 2
+Remaining credit balance after all purchases (a dollar amount): 0.00
+### SUCCESSFUL ORDERS ###
+"TheHistoryofSurfing"|100.00|4900.00
+"TheHistoryofSurfing"|100.00|4800.00
+"TheHistoryofSurfing"|100.00|4700.00
+"TheHistoryofSurfing"|100.00|4600.00
+"TheHistoryofSurfing"|100.00|4500.00
+"TheHistoryofSurfing"|100.00|4400.00
+"TheHistoryofSurfing"|100.00|4300.00
+"TheHistoryofSurfing"|100.00|4200.00
+"TheHistoryofSurfing"|100.00|4100.00
+"TheHistoryofSurfing"|100.00|4000.00
+"TheHistoryofSurfing"|100.00|3900.00
+"TheHistoryofSurfing"|100.00|3800.00
+"TheHistoryofSurfing"|100.00|3700.00
+"TheHistoryofSurfing"|100.00|3600.00
+"TheHistoryofSurfing"|100.00|3500.00
+"TheHistoryofSurfing"|100.00|3400.00
+"TheHistoryofSurfing"|100.00|3300.00
+"TheHistoryofSurfing"|100.00|3200.00
+"TheHistoryofSurfing"|100.00|3100.00
+"TheHistoryofSurfing"|100.00|3000.00
+"TheHistoryofSurfing"|100.00|2900.00
+"TheHistoryofSurfing"|100.00|2800.00
+"TheHistoryofSurfing"|100.00|2700.00
+"TheHistoryofSurfing"|100.00|2600.00
+"TheHistoryofSurfing"|100.00|2500.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|2400.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|2300.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|2200.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|2100.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|2000.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|1900.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|1800.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|1700.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|1600.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|1500.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|1400.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|1300.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|1200.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|1100.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|1000.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|900.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|800.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|700.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|600.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|500.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|400.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|300.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|200.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|100.00
+"HowtoCreateaMind:TheSecretofHumanThoughtRevealed"|100.00|0.00
+### REJECTED ORDERS ###
+=== END CUSTOMER INFO ===
+
+=== BEGIN CUSTOMER INFO ===
+### BALANCE ###
+Customer name: "SejongYoon"
+Customer ID number: 3
+Remaining credit balance after all purchases (a dollar amount): 0.00
+### SUCCESSFUL ORDERS ###
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|3100.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|3000.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|2900.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|2800.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|2700.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|2600.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|2500.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|2400.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|2300.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|2200.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|2100.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|2000.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|1900.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|1800.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|1700.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|1600.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|1500.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|1400.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|1300.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|1200.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|1100.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|1000.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|900.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|800.00
+"Damaged:TheHeartbreakingTrueStoryofaForgottenChild"|100.00|700.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00|600.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00|500.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00|400.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00|300.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00|200.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00|0.00
+### REJECTED ORDERS ###
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+"TheHandbuiltHome:34SimpleStylishandBudget-FriendlyWoodworkingProjectsforEveryRoom"|100.00
+=== END CUSTOMER INFO ===
+
+=== BEGIN CUSTOMER INFO ===
+### BALANCE ###
+Customer name: "YuanzhenGu"
+Customer ID number: 4
+Remaining credit balance after all purchases (a dollar amount): 0.00
+### SUCCESSFUL ORDERS ###
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|1400.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|1300.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|1200.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|1100.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|1000.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|900.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|800.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|700.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|600.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|500.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|400.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|300.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|200.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|100.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00|0.00
+### REJECTED ORDERS ###
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00
+"OrigamiFunKitforBeginners(DoverFunKit)"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+"AcrossIslandsandOceans"|100.00
+=== END CUSTOMER INFO ===
+
+Total Revenue: 14700.00

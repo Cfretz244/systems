@@ -1,0 +1,18 @@
+1.  Too many arguments
+2.  Too few arguments
+3.  Database input file does not exist
+4.  Book order input files does not exist
+5.  Category names input file does not exist (or empty category input string, whichever we prefer)
+6.  orders.txt - bad user ID (handle it gracefully)
+7.  1 user, 1 book order, within balance
+8.  1 user, 1 book order, out of balance
+9.  1 user, multiple book orders, some in balance and some out
+10.  1 user, large # book orders from 2-3 categories (test for deadlock)
+11.  1 user, small # book orders for 2 categories (test for category-user race condition)
+12.  1 user, large # book orders from 1 category (producer-consumer race condition test)
+13.  all files empty, except users (should not fail)
+14.  4 users, general test
+15.  Interleaving test - large orders
+
+
+Points: 4 each
